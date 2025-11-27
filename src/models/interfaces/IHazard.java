@@ -1,3 +1,3 @@
-package hazard_types;
+package models.interfaces;
 
 public interface IHazard {}
