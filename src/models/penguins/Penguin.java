@@ -12,13 +12,12 @@ public abstract class Penguin{
     private int carriedWeight = 0;
     private final ArrayList<Food> inventory;
 
-    public Penguin(PenguinType penguinType){
+    public Penguin(PenguinType penguinType,Position position){
         if(penguinType != null){
             this.type = penguinType;
         }
-
+        this.position = position;
         this.inventory = new ArrayList<>();
-
     }
     public void removeLightestFood(){
         if(!inventory.isEmpty()){
@@ -33,24 +32,26 @@ public abstract class Penguin{
             inventory.remove(minIndex);
         }
     }
+
     private int measureInventory() //measure the weight of each food in the inventory
     {
         int sum = 0;
         for(Food food : inventory){
             sum += food.getWeight();
         }
+        carriedWeight = sum;
         return sum;
     }
 
     abstract void ability1();
 
-    private void pickupFood(Food food) {
+    public void pickupFood(Food food) {
         if(food != null){
             inventory.add(food);
         }
     }
 
-    private void slide(){
+    public void slide(){
         //sliding function
     }
 
@@ -59,6 +60,7 @@ public abstract class Penguin{
     }
 
     public int getCarriedWeight(){
+        measureInventory();
         return carriedWeight;
     }
 }
