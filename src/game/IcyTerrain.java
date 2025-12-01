@@ -1,3 +1,7 @@
 package game;
 
-public class IcyTerrain {}
+import enums.PenguinType;
+
+public class IcyTerrain {
+    PenguinType
+}
