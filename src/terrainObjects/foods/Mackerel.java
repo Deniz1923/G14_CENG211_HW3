@@ -1,4 +1,4 @@
 package terrainObjects.foods;
 
-public class Mackerel {
+public class Mackerel extends food{
 }

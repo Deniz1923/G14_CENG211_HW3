@@ -1,4 +1,4 @@
 package terrainObjects.foods;
 
-public class Anchovy {
+public class Anchovy extends food{
 }

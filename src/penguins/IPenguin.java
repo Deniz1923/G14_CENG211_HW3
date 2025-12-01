@@ -5,7 +5,7 @@ public interface IPenguin {
 
     private int measureInventory() //measure the weight of each food in the inventory
     {
-        return 0;
+            return 0;
     }
     void slide();
 }

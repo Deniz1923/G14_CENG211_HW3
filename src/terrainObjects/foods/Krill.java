@@ -1,4 +1,4 @@
 package terrainObjects.foods;
 
-public class Krill {
+public class Krill extends food{
 }
