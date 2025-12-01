@@ -1,4 +1,4 @@
-package penguins;
+package models.penguins;
 
 public class KingPenguin {
     int carriedWeight = 0;

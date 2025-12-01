@@ -1,4 +1,4 @@
-package penguins;
+package models.penguins;
 
 public interface IPenguin {
     int carriedWeight = 0;

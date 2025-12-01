@@ -1,4 +1,4 @@
-package penguins;
+package models.penguins;
 
 public class RockhopperPenguin {
 }
