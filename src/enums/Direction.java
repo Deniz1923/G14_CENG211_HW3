@@ -1,4 +1,8 @@
 package enums;
 
-public class Direction {
+public enum Direction {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT
 }
