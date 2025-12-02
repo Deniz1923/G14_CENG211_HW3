@@ -30,20 +30,4 @@ public class Food {
     this.position = position;
   }
 
-  public String getSymbol() {
-    switch (type) {
-      case KRILL:
-        return "Kr";
-      case CRUSTACEAN:
-        return "Cr";
-      case ANCHOVY:
-        return "An";
-      case SQUID:
-        return "Sq";
-      case MACKEREL:
-        return "Ma";
-      default:
-        return "??";
-    }
-  }
 }
