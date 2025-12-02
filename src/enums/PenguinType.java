@@ -1,8 +1,8 @@
 package enums;
 
 public enum PenguinType {
-    EMPEROR,
-    KING,
-    ROCKHOPPER,
-    ROYAL;
+  EMPEROR,
+  KING,
+  ROCKHOPPER,
+  ROYAL;
 }

@@ -3,19 +3,18 @@ package models.penguins;
 import enums.PenguinType;
 
 public class EmperorPenguin extends Penguin {
-    int carriedWeight = 0;
-    private String type ;
+  int carriedWeight = 0;
+  private String type;
 
-    public EmperorPenguin(){
-        super(PenguinType.EMPEROR);
-    }
-    int measureInventory(){
+  public EmperorPenguin() {
+    super(PenguinType.EMPEROR);
+  }
 
-        return 0;
-    }
+  int measureInventory() {
 
-    @Override
-    void ability1() {
+    return 0;
+  }
 
-    }
+  @Override
+  void ability1() {}
 }

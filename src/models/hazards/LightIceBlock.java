@@ -1,21 +1,21 @@
 package models.hazards;
 
-import models.penguins.Penguin;
 import game.TerrainGrid;
+import models.penguins.Penguin;
 
 public class LightIceBlock extends Hazard {
 
-    public LightIceBlock() {
-        super(true);
-    }
+  public LightIceBlock() {
+    super(true);
+  }
 
-    @Override
-    public void onCollision(Penguin penguin, TerrainGrid grid) {
-        penguin.setStunned(true);
-    }
+  @Override
+  public void onCollision(Penguin penguin, TerrainGrid grid) {
+    penguin.setStunned(true);
+  }
 
-    @Override
-    public String getSymbol() {
-        return "LB";
-    }
+  @Override
+  public String getSymbol() {
+    return "LB";
+  }
 }

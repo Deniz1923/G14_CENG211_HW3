@@ -1,5 +1,6 @@
 package game;
 
+import enums.Direction;
 import enums.PenguinType;
 import java.security.SecureRandom;
 
@@ -9,6 +10,7 @@ public class RandUtil {
 
   // Cache the values array for performance
   private static final PenguinType[] PENGUIN_TYPES = PenguinType.values();
+  private static final Direction[] DIRECTIONS = Direction.values();
 
   public static int getFoodWeight() {
     return random.nextInt(1, 6);
@@ -16,5 +18,9 @@ public class RandUtil {
 
   public static PenguinType getFoodType() {
     return PENGUIN_TYPES[random.nextInt(PENGUIN_TYPES.length)];
+  }
+
+  public static Direction randomDirection() {
+    return DIRECTIONS[random.nextInt(DIRECTIONS.length)];
   }
 }

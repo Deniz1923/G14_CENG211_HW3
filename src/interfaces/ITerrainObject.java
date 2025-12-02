@@ -3,9 +3,9 @@ package interfaces;
 import models.Position;
 
 public interface ITerrainObject {
-    Position getPosition();
+  Position getPosition();
 
-    void setPosition(Position position);
+  void setPosition(Position position);
 
-    String getSymbol();
+  String getSymbol();
 }

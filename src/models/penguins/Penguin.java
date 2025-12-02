@@ -1,16 +1,16 @@
 package models.penguins;
 
 import enums.PenguinType;
+import java.util.ArrayList;
 import models.Food;
 import models.Position;
 
-import java.util.ArrayList;
-
 public abstract class Penguin{
+    private final ArrayList<Food> inventory;
     private PenguinType type;
     private Position position;
     private int carriedWeight = 0;
-    private final ArrayList<Food> inventory;
+    private boolean stunned = false;
 
     public Penguin(PenguinType penguinType,Position position){
         if(penguinType != null){
@@ -62,5 +62,13 @@ public abstract class Penguin{
     public int getCarriedWeight(){
         measureInventory();
         return carriedWeight;
+    }
+
+    public boolean isStunned() {
+        return stunned;
+    }
+
+    public void setStunned(boolean b) {
+        stunned = b;
     }
 }

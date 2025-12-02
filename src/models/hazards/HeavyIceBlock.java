@@ -1,21 +1,21 @@
 package models.hazards;
 
-import models.penguins.Penguin;
 import game.TerrainGrid;
+import models.penguins.Penguin;
 
 public class HeavyIceBlock extends Hazard {
 
-    public HeavyIceBlock() {
-        super(false);
-    }
+  public HeavyIceBlock() {
+    super(false);
+  }
 
-    @Override
-    public void onCollision(Penguin penguin, TerrainGrid grid) {
-        penguin.removeLightestFood();
-    }
+  @Override
+  public void onCollision(Penguin penguin, TerrainGrid grid) {
+    penguin.removeLightestFood();
+  }
 
-    @Override
-    public String getSymbol() {
-        return "HB";
-    }
+  @Override
+  public String getSymbol() {
+    return "HB";
+  }
 }
