@@ -5,70 +5,71 @@ import java.util.ArrayList;
 import models.Food;
 import models.Position;
 
-public abstract class Penguin{
-    private final ArrayList<Food> inventory;
-    private PenguinType type;
-    private Position position;
-    private int carriedWeight = 0;
-    private boolean stunned = false;
+public abstract class Penguin {
+  private final ArrayList<Food> inventory;
+  private PenguinType type;
+  private Position position;
+  private int carriedWeight = 0;
+  private boolean stunned = false;
 
-    public Penguin(PenguinType penguinType,Position position){
-        if(penguinType != null){
-            this.type = penguinType;
+  public Penguin(PenguinType penguinType, Position position) {
+    if (penguinType != null) {
+      this.type = penguinType;
+    }
+    this.position = position;
+    this.inventory = new ArrayList<>();
+  }
+
+  public void removeLightestFood() {
+    if (!inventory.isEmpty()) {
+      int min = Integer.MAX_VALUE;
+      int minIndex = 0;
+      for (int i = 0; i < inventory.size(); i++) {
+        if (inventory.get(i).getWeight() < min) {
+          min = inventory.get(i).getWeight();
+          minIndex = i;
         }
-        this.position = position;
-        this.inventory = new ArrayList<>();
+      }
+      inventory.remove(minIndex);
     }
-    public void removeLightestFood(){
-        if(!inventory.isEmpty()){
-            int min = Integer.MAX_VALUE;
-            int minIndex = 0;
-            for(int i = 0; i < inventory.size() ; i++){
-                if (inventory.get(i).getWeight() < min){
-                    min = inventory.get(i).getWeight();
-                    minIndex = i;
-                }
-            }
-            inventory.remove(minIndex);
-        }
-    }
+  }
 
-    private int measureInventory() //measure the weight of each food in the inventory
-    {
-        int sum = 0;
-        for(Food food : inventory){
-            sum += food.getWeight();
-        }
-        carriedWeight = sum;
-        return sum;
+  private int measureInventory() // measure the weight of each food in the inventory
+      {
+    int sum = 0;
+    for (Food food : inventory) {
+      sum += food.getWeight();
     }
+    carriedWeight = sum;
+    return sum;
+  }
 
-    abstract void ability1();
+  abstract void ability1();
 
-    public void pickupFood(Food food) {
-        if(food != null){
-            inventory.add(food);
-        }
+  public void pickupFood(Food food) {
+    if (food != null) {
+      inventory.add(food);
     }
+  }
 
-    public void slide(){
-        //sliding function
-    }
+  public void slide() {
+    // sliding function
+  }
 
-    public String getType(){
-        return type.toString().toLowerCase();
-    }
+  public String getType() {
+    return type.toString().toLowerCase();
+  }
 
-    public int getCarriedWeight(){
-        measureInventory();
-        return carriedWeight;
-    }
+  public int getCarriedWeight() {
+    measureInventory();
+    return carriedWeight;
+  }
 
-    public boolean isStunned() {
-        return stunned;
-    }
+  public boolean isStunned() {
+    return stunned;
+  }
 
-    public void setStunned(boolean b) {
-        stunned = b;
-    }
+  public void setStunned(boolean b) {
+    stunned = b;
+  }
 }
