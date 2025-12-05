@@ -20,6 +20,14 @@ public abstract class Penguin {
     this.inventory = new ArrayList<>();
   }
 
+  public Penguin(PenguinType penguinType) {
+        if (penguinType != null) {
+            this.type = penguinType;
+        }
+    this.position = new Position();
+        this.inventory = new ArrayList<>();
+    }
+
   public void removeLightestFood() {
     if (!inventory.isEmpty()) {
       int min = Integer.MAX_VALUE;
