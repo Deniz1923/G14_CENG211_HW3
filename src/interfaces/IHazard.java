@@ -1,3 +1,3 @@
 package interfaces;
 
-public class IHazard {}
+public interface IHazard extends ITerrainObject {}

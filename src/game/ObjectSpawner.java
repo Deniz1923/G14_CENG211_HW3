@@ -1,14 +1,11 @@
 package game;
 
-import enums.FoodType;
-import enums.PenguinType;
 import interfaces.ITerrainObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import models.Food;
 import models.Position;
-import models.hazards.Hazard;
 import models.penguins.EmperorPenguin;
 import models.penguins.KingPenguin;
 import models.penguins.Penguin;
@@ -102,17 +99,12 @@ public class ObjectSpawner {
   }
 
   private Penguin generateRandomPenguin(Position pos) {
-    // enum .values()
-    PenguinType[] types = PenguinType.values();
-    PenguinType selected = types[random.nextInt(types.length)];
 
-    return switch (selected) {
+    return switch (RandUtil.getRandomPenguin()) {
       case ROYAL -> new RoyalPenguin(pos);
-      // Assuming other constructors exist similarly
       case EMPEROR -> new EmperorPenguin(pos);
       case KING -> new KingPenguin(pos);
       case ROCKHOPPER -> new RockhopperPenguin(pos);
-      default -> new RoyalPenguin(pos);
     };
   }
 
@@ -128,9 +120,7 @@ public class ObjectSpawner {
   }
 
   private Food generateRandomFood(Position position) {
-    FoodType[] types = FoodType.values();
-    FoodType selectedType = types[random.nextInt(types.length)];
 
-    return new Food(selectedType, position, RandUtil.getFoodWeight());
+    return new Food(RandUtil.getRandomFood(), position, RandUtil.getFoodWeight());
   }
 }

@@ -1,11 +1,11 @@
 package models.hazards;
 
 import game.TerrainGrid;
-import interfaces.ITerrainObject;
+import interfaces.IHazard;
 import models.Position;
 import models.penguins.Penguin;
 
-public abstract class Hazard implements ITerrainObject {
+public abstract class Hazard implements IHazard {
   protected Position position;
   protected boolean canSlide;
 

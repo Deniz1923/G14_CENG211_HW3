@@ -11,6 +11,7 @@ public class Food implements ITerrainObject {
   public Food(FoodType type, Position position, int weight) {
     this.type = type;
     this.weight = weight;
+    this.position = position;
   }
 
   public FoodType getType() {

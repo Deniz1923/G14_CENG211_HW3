@@ -1,8 +1,8 @@
 package game;
 
 public class IcyTerrain {
+  private final InputMaster inputMaster = new InputMaster();
   private TerrainGrid gameGrid = new TerrainGrid();
-  private InputMaster inputMaster = new InputMaster();
 
   public TerrainGrid getGameGrid() {
     return gameGrid;
