@@ -50,7 +50,7 @@ public abstract class Penguin implements ITerrainObject {
     return sum;
   }
 
-  abstract void ability1();
+  abstract void specialAbility();
 
   public void pickupFood(Food food) {
     if (food != null) {
