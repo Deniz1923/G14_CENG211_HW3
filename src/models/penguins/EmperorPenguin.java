@@ -9,11 +9,10 @@ public class EmperorPenguin extends Penguin {
     super(PenguinType.EMPEROR, position);
   }
 
-  int measureInventory() {
-
-    return 0;
-  }
-
+  /**
+   * When sliding they can choose to stop at the third square they slide into. If the direction they
+   * choose has less than three free squares, this ability is still considered used.
+   */
   @Override
-  void ability1() {}
+  void specialAbility() {}
 }
