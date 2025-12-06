@@ -29,5 +29,4 @@ public class Food {
   public void setPosition(Position position) {
     this.position = position;
   }
-
 }
