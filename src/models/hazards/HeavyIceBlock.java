@@ -1,12 +1,13 @@
 package models.hazards;
 
+import enums.HazardType;
 import game.TerrainGrid;
 import models.penguins.Penguin;
 
 public class HeavyIceBlock extends Hazard {
 
   public HeavyIceBlock() {
-    super(false);
+    super(HazardType.HEAVY_ICE_BLOCK, false);
   }
 
   @Override

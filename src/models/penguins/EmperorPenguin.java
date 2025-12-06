@@ -3,18 +3,15 @@ package models.penguins;
 import enums.PenguinType;
 
 public class EmperorPenguin extends Penguin {
-  int carriedWeight = 0;
-  private String type;
 
   public EmperorPenguin() {
     super(PenguinType.EMPEROR);
   }
 
-  int measureInventory() {
-
-    return 0;
-  }
-
+  /**
+   * When sliding they can choose to stop at the third square they slide into. If the direction they
+   * choose has less than three free squares, this ability is still considered used.
+   */
   @Override
-  void ability1() {}
+  void specialAbility() {}
 }

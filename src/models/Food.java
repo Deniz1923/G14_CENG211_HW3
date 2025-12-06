@@ -1,17 +1,16 @@
 package models;
 
 import enums.FoodType;
-import java.util.Random;
+import game.RandUtil;
 
 public class Food {
-  Random random = new Random();
   private FoodType type;
   private int weight;
   private Position position;
 
   public Food(FoodType type) {
     this.type = type;
-    weight = random.nextInt(1, 6);
+    weight = RandUtil.getFoodWeight();
   }
 
   public FoodType getType() {

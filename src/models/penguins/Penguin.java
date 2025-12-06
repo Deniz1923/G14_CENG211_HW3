@@ -52,7 +52,7 @@ public abstract class Penguin {
     return sum;
   }
 
-  abstract void ability1();
+  abstract void specialAbility();
 
   public void pickupFood(Food food) {
     if (food != null) {
@@ -79,5 +79,13 @@ public abstract class Penguin {
 
   public void setStunned(boolean b) {
     stunned = b;
+  }
+
+  public Position getPosition() {
+    return position;
+  }
+
+  public void setPosition(Position position) {
+    this.position = position;
   }
 }
