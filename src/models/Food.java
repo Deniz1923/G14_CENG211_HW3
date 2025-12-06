@@ -1,15 +1,17 @@
 package models;
 
 import enums.FoodType;
+import interfaces.ITerrainObject;
+
 import java.util.Random;
 
-public class Food {
+public class Food implements ITerrainObject {
   Random random = new Random();
   private FoodType type;
   private int weight;
   private Position position;
 
-  public Food(FoodType type) {
+  public Food(FoodType type, Position position) {
     this.type = type;
     weight = random.nextInt(1, 6);
   }
@@ -28,5 +30,10 @@ public class Food {
 
   public void setPosition(Position position) {
     this.position = position;
+  }
+
+  @Override
+  public String getSymbol() {
+    return "";
   }
 }

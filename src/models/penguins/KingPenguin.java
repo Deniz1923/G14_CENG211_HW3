@@ -1,12 +1,13 @@
 package models.penguins;
 
 import enums.PenguinType;
+import models.Position;
 
 public class KingPenguin extends Penguin {
   int carriedWeight = 0;
 
-  public KingPenguin() {
-    super(PenguinType.EMPEROR);
+  public KingPenguin(Position position) {
+    super(PenguinType.KING,position);
   }
 
   private int measureInventory() {

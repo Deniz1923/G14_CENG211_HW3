@@ -1,12 +1,13 @@
 package models.hazards;
 
 import game.TerrainGrid;
+import models.Position;
 import models.penguins.Penguin;
 
 public class HeavyIceBlock extends Hazard {
 
-  public HeavyIceBlock() {
-    super(false);
+  public HeavyIceBlock(Position position) {
+    super(position,false);
   }
 
   @Override

@@ -2,10 +2,12 @@ package models.penguins;
 
 import enums.PenguinType;
 import java.util.ArrayList;
+
+import interfaces.ITerrainObject;
 import models.Food;
 import models.Position;
 
-public abstract class Penguin {
+public abstract class Penguin implements ITerrainObject {
   private final ArrayList<Food> inventory;
   private PenguinType type;
   private Position position;
@@ -21,11 +23,7 @@ public abstract class Penguin {
   }
 
   public Penguin(PenguinType penguinType) {
-    if (penguinType != null) {
-      this.type = penguinType;
-    }
-    this.position = new Position();
-    this.inventory = new ArrayList<>();
+    this(penguinType, new Position());
   }
 
   public void removeLightestFood() {
@@ -79,5 +77,18 @@ public abstract class Penguin {
 
   public void setStunned(boolean b) {
     stunned = b;
+  }
+
+  public Position getPosition() {
+    //deep copy
+    return position.getPosition();
+  }
+
+  public void setPosition(Position position) {
+    this.position = position;
+  }
+
+  public String getSymbol() {
+      return "P0/change Penguin class getSymbol()";
   }
 }
