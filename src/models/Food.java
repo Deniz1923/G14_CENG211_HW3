@@ -3,17 +3,14 @@ package models;
 import enums.FoodType;
 import interfaces.ITerrainObject;
 
-import java.util.Random;
-
 public class Food implements ITerrainObject {
-  Random random = new Random();
-  private FoodType type;
-  private int weight;
+  private final FoodType type;
+  private final int weight;
   private Position position;
 
-  public Food(FoodType type, Position position) {
+  public Food(FoodType type, Position position, int weight) {
     this.type = type;
-    weight = random.nextInt(1, 6);
+    this.weight = weight;
   }
 
   public FoodType getType() {

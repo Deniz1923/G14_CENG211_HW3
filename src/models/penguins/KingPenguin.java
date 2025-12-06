@@ -6,7 +6,7 @@ import models.Position;
 public class KingPenguin extends Penguin {
 
   public KingPenguin(Position position) {
-    super(PenguinType.KING,position);
+    super(PenguinType.KING, position);
   }
 
   private int measureInventory() {

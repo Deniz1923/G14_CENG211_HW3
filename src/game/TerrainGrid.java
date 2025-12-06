@@ -15,10 +15,12 @@ public class TerrainGrid {
   public void setTerrainGrid(ITerrainObject[][] terrainGrid) {
     this.terrainGrid = terrainGrid;
   }
-  public void placeObject(Position position, ITerrainObject object){
-      terrainGrid[position.getX()][position.getY()] = object;
+
+  public void placeObject(Position position, ITerrainObject object) {
+    terrainGrid[position.getX()][position.getY()] = object;
   }
-  public ITerrainObject getObjectAt(Position position){
+
+  public ITerrainObject getObjectAt(Position position) {
     if (position == null) {
       return null;
     }

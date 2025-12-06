@@ -1,9 +1,8 @@
 package models.penguins;
 
 import enums.PenguinType;
-import java.util.ArrayList;
-
 import interfaces.ITerrainObject;
+import java.util.ArrayList;
 import models.Food;
 import models.Position;
 
@@ -80,7 +79,7 @@ public abstract class Penguin implements ITerrainObject {
   }
 
   public Position getPosition() {
-    //deep copy
+    // deep copy
     return position.getPosition();
   }
 
@@ -89,6 +88,6 @@ public abstract class Penguin implements ITerrainObject {
   }
 
   public String getSymbol() {
-      return "P0/change Penguin class getSymbol()";
+    return "P0/change Penguin class getSymbol()";
   }
 }

@@ -29,7 +29,8 @@ public abstract class Hazard implements ITerrainObject {
   }
 
   public abstract void onCollision(Penguin penguin, TerrainGrid grid);
-  public String getSymbol(){
+
+  public String getSymbol() {
     return "HZ";
   }
 }

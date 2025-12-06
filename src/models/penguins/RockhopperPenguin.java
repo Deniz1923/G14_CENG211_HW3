@@ -5,7 +5,7 @@ import models.Position;
 
 public class RockhopperPenguin extends Penguin {
   public RockhopperPenguin(Position position) {
-    super(PenguinType.ROCKHOPPER,position);
+    super(PenguinType.ROCKHOPPER, position);
   }
 
   /**

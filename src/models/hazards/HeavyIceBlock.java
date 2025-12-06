@@ -7,7 +7,7 @@ import models.penguins.Penguin;
 public class HeavyIceBlock extends Hazard {
 
   public HeavyIceBlock(Position position) {
-    super(position,false);
+    super(position, false);
   }
 
   @Override

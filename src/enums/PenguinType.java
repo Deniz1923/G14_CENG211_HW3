@@ -5,7 +5,7 @@ public enum PenguinType {
   KING("KI"),
   ROCKHOPPER("RH"),
   ROYAL("RO");
-  //notations won't be used since penguins are displayed as P1,P2,P3
+  // notations won't be used since penguins are displayed as P1,P2,P3
   private final String notation;
 
   PenguinType(String notation) {
