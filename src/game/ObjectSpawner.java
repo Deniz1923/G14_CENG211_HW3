@@ -3,7 +3,6 @@ package game;
 import interfaces.ITerrainObject;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import models.Food;
 import models.Position;
 import models.penguins.EmperorPenguin;
@@ -13,7 +12,6 @@ import models.penguins.RockhopperPenguin;
 import models.penguins.RoyalPenguin;
 
 public class ObjectSpawner {
-  private final Random random = new Random();
   private final int GRID_SIZE = 10;
   private final int PENGUIN_COUNT = 3;
   private final int HAZARD_COUNT = 15;
@@ -68,37 +66,39 @@ public class ObjectSpawner {
     }
   }
 
+  // IDE added yield, It is supposed to be identical
   private Position getRandomEdgePosition() {
-    int side = random.nextInt(4);
+    int side = RandUtil.getRandomInt(4);
     int x = 0;
-    int y = 0;
-    switch (side) {
-      // top edge
-      case 0:
-        x = random.nextInt(GRID_SIZE);
-        y = 0;
-        break;
-      // bottom edge
-      case 1:
-        x = random.nextInt(GRID_SIZE);
-        y = GRID_SIZE - 1; // 9 in this case
-        break;
-      // left edge
-      case 2:
-        x = 0;
-        y = random.nextInt(GRID_SIZE);
-        break;
-      // right edge
-      case 3:
-        x = GRID_SIZE - 1;
-        y = random.nextInt(GRID_SIZE);
-        break;
-    }
+    int y =
+        switch (side) {
+          // top edge
+          case 0 -> {
+            x = RandUtil.getRandomInt(GRID_SIZE);
+            yield 0;
+          }
+          // bottom edge
+          case 1 -> {
+            x = RandUtil.getRandomInt(GRID_SIZE);
+            yield GRID_SIZE - 1;
+          }
+          // left edge
+          case 2 -> {
+            x = 0;
+            yield RandUtil.getRandomInt(GRID_SIZE);
+          }
+          // right edge
+          case 3 -> {
+            x = GRID_SIZE - 1;
+            yield RandUtil.getRandomInt(GRID_SIZE);
+          }
+          default -> 0;
+        };
     return new Position(x, y);
   }
 
   private Position getRandomPosition() {
-    return new Position(random.nextInt(GRID_SIZE), random.nextInt(GRID_SIZE));
+    return new Position(RandUtil.getRandomInt(GRID_SIZE), RandUtil.getRandomInt(GRID_SIZE));
   }
 
   private Penguin generateRandomPenguin(Position pos) {

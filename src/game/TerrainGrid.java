@@ -20,7 +20,7 @@ public class TerrainGrid {
     if (position == null) {
       throw new IllegalArgumentException("Cannot place object at position NULL");
     }
-    if (isValidPosition(position)) {
+    if (!isValidPosition(position)) {
       throw new IllegalArgumentException(
           "Position " + position.displayPosition() + " is not a valid position.");
     }
@@ -28,7 +28,7 @@ public class TerrainGrid {
   }
 
   public ITerrainObject getObjectAt(Position position) {
-    if (position == null || isValidPosition(position)) {
+    if (position == null || !isValidPosition(position)) {
       return null;
     }
     return terrainGrid[position.getY()][position.getX()];
@@ -44,6 +44,6 @@ public class TerrainGrid {
   private boolean isValidPosition(Position position) {
     int x = position.getX();
     int y = position.getY();
-    return x < 0 || x >= GRID_SIZE || y < 0 || y >= GRID_SIZE;
+    return x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE;
   }
 }

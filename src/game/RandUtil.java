@@ -35,4 +35,8 @@ public class RandUtil {
   public static HazardType getRandomHazard() {
     return HAZARD_TYPES[random.nextInt(HAZARD_TYPES.length)];
   }
+
+  public static int getRandomInt(int upper_bound) {
+    return random.nextInt(upper_bound);
+  }
 }

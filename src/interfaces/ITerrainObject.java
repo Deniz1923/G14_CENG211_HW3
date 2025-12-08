@@ -7,5 +7,9 @@ public interface ITerrainObject {
 
   void setPosition(Position position);
 
+  /**
+   * Return the Notation of the ITerrainObject.<br>
+   * If it is a Penguin, returns penguinID according to the specification.
+   */
   String getNotation();
 }

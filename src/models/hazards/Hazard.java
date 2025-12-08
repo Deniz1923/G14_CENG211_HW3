@@ -1,17 +1,26 @@
 package models.hazards;
 
+import enums.HazardType;
 import game.TerrainGrid;
 import interfaces.IHazard;
 import models.Position;
 import models.penguins.Penguin;
 
 public abstract class Hazard implements IHazard {
+  protected final boolean canSlide;
+  protected final HazardType hazardType;
   protected Position position;
-  protected boolean canSlide;
 
-  public Hazard(Position position, boolean canSlide) {
+  public Hazard(Position position, boolean canSlide, HazardType hazardType) {
+    if (position == null) {
+      throw new IllegalArgumentException("Hazard position cannot be null");
+    }
+    if (hazardType == null) {
+      throw new IllegalArgumentException("HazardType cannot be null");
+    }
     this.position = position;
     this.canSlide = canSlide;
+    this.hazardType = hazardType;
   }
 
   @Override
@@ -26,6 +35,11 @@ public abstract class Hazard implements IHazard {
 
   public boolean canSlide() {
     return canSlide;
+  }
+
+  @Override
+  public String getNotation() {
+    return hazardType.getNotation();
   }
 
   public abstract void onCollision(Penguin penguin, TerrainGrid grid);
