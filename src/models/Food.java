@@ -9,7 +9,7 @@ public class Food implements ITerrainObject {
   private Position position;
 
   public Food(FoodType type, Position position, int weight) {
-    if(type == null){
+    if (type == null) {
       throw new IllegalArgumentException("FoodType cannot be NULL.");
     }
     this.type = type;
@@ -34,7 +34,7 @@ public class Food implements ITerrainObject {
   }
 
   @Override
-  public String getSymbol() {
+  public String getNotation() {
     return type.getNotation();
   }
 }

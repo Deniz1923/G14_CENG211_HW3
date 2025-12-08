@@ -7,5 +7,5 @@ public interface ITerrainObject {
 
   void setPosition(Position position);
 
-  String getSymbol();
+  String getNotation();
 }

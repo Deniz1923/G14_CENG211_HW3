@@ -13,7 +13,7 @@ public class SeaLion extends Hazard {
   public void onCollision(Penguin penguin, TerrainGrid grid) {}
 
   @Override
-  public String getSymbol(){
+  public String getNotation() {
     return "SL";
   }
 }

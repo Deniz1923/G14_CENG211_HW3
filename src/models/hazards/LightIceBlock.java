@@ -16,7 +16,7 @@ public class LightIceBlock extends Hazard {
   }
 
   @Override
-  public String getSymbol() {
+  public String getNotation() {
     return "LB";
   }
 }

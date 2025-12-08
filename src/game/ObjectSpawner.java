@@ -35,7 +35,7 @@ public class ObjectSpawner {
       if (grid.getObjectAt(position) == null) {
         Penguin penguin = generateRandomPenguin(position);
 
-        penguin.setPenguinID("P" + (penguinsSpawned+1));
+        penguin.setPenguinID("P" + (penguinsSpawned + 1));
 
         grid.placeObject(position, penguin);
         penguinList.add(penguin);

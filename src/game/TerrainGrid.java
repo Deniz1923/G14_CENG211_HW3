@@ -17,11 +17,12 @@ public class TerrainGrid {
   }
 
   public void placeObject(Position position, ITerrainObject object) {
-    if(position == null){
+    if (position == null) {
       throw new IllegalArgumentException("Cannot place object at position NULL");
     }
-    if(isValidPosition(position)){
-      throw new IllegalArgumentException("Position " + position.displayPosition() + " is not a valid position.");
+    if (isValidPosition(position)) {
+      throw new IllegalArgumentException(
+          "Position " + position.displayPosition() + " is not a valid position.");
     }
     terrainGrid[position.getY()][position.getX()] = object;
   }
@@ -34,14 +35,12 @@ public class TerrainGrid {
   }
 
   public void removeObject(Position position) {
-    if(position != null && isValidPosition(position)){
+    if (position != null && isValidPosition(position)) {
       terrainGrid[position.getY()][position.getX()] = null;
     }
   }
 
-  /**
-   * Helper method to validate boundaries.
-   */
+  /** Helper method to validate boundaries. */
   private boolean isValidPosition(Position position) {
     int x = position.getX();
     int y = position.getY();

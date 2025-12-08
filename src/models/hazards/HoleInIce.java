@@ -15,7 +15,7 @@ public class HoleInIce extends Hazard {
   }
 
   @Override
-  public String getSymbol() {
-    return "HB";
+  public String getNotation() {
+    return "HI";
   }
 }

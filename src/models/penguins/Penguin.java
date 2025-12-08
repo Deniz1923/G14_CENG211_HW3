@@ -1,5 +1,7 @@
 package models.penguins;
 
+import static game.TerrainGrid.GRID_SIZE;
+
 import enums.Direction;
 import enums.PenguinType;
 import game.TerrainGrid;
@@ -7,8 +9,6 @@ import interfaces.ITerrainObject;
 import java.util.ArrayList;
 import models.Food;
 import models.Position;
-
-import static game.TerrainGrid.GRID_SIZE;
 
 public abstract class Penguin implements ITerrainObject {
   private final ArrayList<Food> inventory;
@@ -83,7 +83,7 @@ public abstract class Penguin implements ITerrainObject {
     if(direction == null || grid == null){
       return;
     }
-    System.out.println(getSymbol() + " starts sliding " + direction + "!");
+    System.out.println(getNotation() + " starts sliding " + direction + "!");
 
     boolean isMoving = true;
 
@@ -112,7 +112,7 @@ public abstract class Penguin implements ITerrainObject {
       //Second step, collision checks, move legality
       //Falling into water case
       if(nextX < 0 || nextY < 0 || nextY > GRID_SIZE || nextX > GRID_SIZE){
-        System.out.println(getSymbol() + " fell into the water!");
+        System.out.println(getNotation() + " fell into the water!");
 
         grid.removeObject(getPosition()); //empty the penguin's before moving slot
         this.setPosition(null);
@@ -125,7 +125,7 @@ public abstract class Penguin implements ITerrainObject {
       if(obstacle != null){
 
         if(obstacle instanceof Food){
-          System.out.println(getSymbol() + " collected food!");
+          System.out.println(getNotation() + " collected food!");
           grid.removeObject(nextPos);
 
           pickupFood((Food) obstacle); // already checked so not a problem
@@ -174,7 +174,7 @@ public abstract class Penguin implements ITerrainObject {
 
   }
   @Override
-  public String getSymbol() {
+  public String getNotation() {
     // Returns P1, P2, or P3
     return penguinID;
   }
