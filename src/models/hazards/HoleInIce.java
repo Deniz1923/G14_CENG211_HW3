@@ -13,5 +13,6 @@ public class HoleInIce extends Hazard {
   @Override
   public void onCollision(Penguin penguin, TerrainGrid grid) {
     penguin.setStunned(true); // ölüyo işte ama stunned yazdım şmidilik
+    grid.removeObject(penguin.getPosition());
   }
 }

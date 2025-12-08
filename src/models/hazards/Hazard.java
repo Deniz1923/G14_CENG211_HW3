@@ -7,9 +7,9 @@ import models.Position;
 import models.penguins.Penguin;
 
 public abstract class Hazard implements IHazard {
+  protected Position position;
   protected final boolean canSlide;
   protected final HazardType hazardType;
-  protected Position position;
 
   public Hazard(Position position, boolean canSlide, HazardType hazardType) {
     if (position == null) {
