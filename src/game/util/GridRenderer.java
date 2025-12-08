@@ -1,5 +1,6 @@
-package game;
+package game.util;
 
+import game.TerrainGrid;
 import interfaces.ITerrainObject;
 import models.Position;
 

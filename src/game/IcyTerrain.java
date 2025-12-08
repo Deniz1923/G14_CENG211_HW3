@@ -1,5 +1,8 @@
 package game;
 
+import game.util.GridRenderer;
+import game.util.InputMaster;
+
 public class IcyTerrain {
   private final InputMaster inputMaster;
   private final GridRenderer renderer;

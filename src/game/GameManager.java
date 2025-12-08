@@ -2,6 +2,9 @@ package game;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import game.util.GridRenderer;
+import game.util.InputMaster;
 import models.penguins.Penguin;
 
 /**

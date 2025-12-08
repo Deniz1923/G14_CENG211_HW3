@@ -1,5 +1,6 @@
 package game;
 
+import game.util.RandUtil;
 import interfaces.ITerrainObject;
 import java.util.ArrayList;
 import java.util.List;
