@@ -6,16 +6,39 @@ import models.Position;
 import models.penguins.Penguin;
 
 public class HoleInIce extends Hazard {
-  public HoleInIce(Position position) {
-    super(position, false, HazardType.HOLE_IN_ICE);
-  }
+    private boolean isPlugged = false;
 
-  @Override
-  public void onCollision(Penguin penguin, TerrainGrid grid) {
-    // FIX: Remove stunned setting - penguin falls in and is eliminated
-    // Setting position to null indicates elimination
-    System.out.println(penguin.getNotation() + " fell through the hole in the ice!");
-    grid.removeObject(penguin.getPosition());
-    penguin.setPosition(null);
-  }
+    public HoleInIce(Position position) {
+        super(position, false, HazardType.HOLE_IN_ICE);
+    }
+
+    @Override
+    public void onCollision(Penguin penguin, TerrainGrid grid) {
+        if (isPlugged) {
+            // Penguin can pass through plugged hole
+            return;
+        }
+
+        System.out.println(penguin.getNotation() + " falls into " + getNotation() + "!");
+        grid.removeObject(penguin.getPosition());
+        penguin.setPosition(null);
+    }
+
+    public void plug() {
+        isPlugged = true;
+    }
+
+    public boolean isPlugged() {
+        return isPlugged;
+    }
+
+    @Override
+    public String getNotation() {
+        return isPlugged ? "PH" : "HI";
+    }
+
+    @Override
+    public String getSymbol() {
+        return isPlugged ? "PH" : "HI";
+    }
 }

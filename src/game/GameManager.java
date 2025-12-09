@@ -13,6 +13,8 @@ import java.util.List;
 import models.Food;
 import models.Position;
 import models.penguins.Penguin;
+import models.penguins.RockhopperPenguin;
+import models.penguins.RoyalPenguin;
 
 /**
  * Manages the game flow, turns, and player interactions.
@@ -23,7 +25,6 @@ public class GameManager {
     private final GridRenderer renderer;
     private final InputMaster inputMaster;
     private final List<Penguin> penguins;
-    private Penguin playerPenguin;
 
     public GameManager(TerrainGrid grid, GridRenderer renderer, InputMaster inputMaster) {
         this.grid = grid;
@@ -32,82 +33,100 @@ public class GameManager {
         this.penguins = new ArrayList<>();
     }
 
-    public void gameLoop(){
-        //sorts the arraylist from 1 to 3
+    /**
+     * Main game loop - runs the entire game from start to finish
+     */
+    public void gameLoop() {
+        // Initialize penguins list from grid
         sortPenguins();
-        //randomly selects player penguin
+
+        // Randomly select player penguin
         selectPlayerPenguin();
-        //main game loop
-        // FIX: Changed from < to <= to run exactly 4 turns
-        for(int turn = 1; turn <= MAX_TURNS; turn++){
+
+        // Main game loop - 4 turns
+        for (int turn = 1; turn <= MAX_TURNS; turn++) {
             System.out.println("\n***Turn " + turn + "***");
 
-            for(Penguin p : penguins){
-                //Skip if eliminated
-                if(p.getPosition() == null){
+            // Each penguin takes their turn
+            for (Penguin p : penguins) {
+                // Skip if penguin has been eliminated
+                if (p.getPosition() == null) {
                     continue;
                 }
 
-                if(p.isStunned()){
-                    System.out.println(p.getNotation() + " is stunned and skips this round!");
+                // Skip if penguin is stunned
+                if (p.isStunned()) {
+                    System.out.println("\n*** Turn " + turn + " - " + p.getNotation() + ":");
+                    System.out.println(p.getNotation() + " is stunned and skips this turn!");
                     p.setStunned(false);
                     continue;
                 }
-                processTurn(p);
-                //Render grid after every turn
+
+                // Process the penguin's turn
+                processTurn(p, turn);
+
+                // Render grid after each penguin's move
+                System.out.println("\nNew state of the grid:");
                 renderer.renderState(grid);
             }
         }
-        System.out.println("***** GAME OVER *****");
+
+        // Game over - show results
+        System.out.println("\n***** GAME OVER *****");
         calculateScore();
     }
 
-    private void selectPlayerPenguin(){
-        // FIX: Changed from getRandomInt(4)+1 to getRandomInt(3)
-        // List has 3 penguins with indices 0-2
-        int temp = RandUtil.getRandomInt(3);
-        penguins.get(temp).setPlayer(true);
+    /**
+     * Randomly selects one penguin to be controlled by the player
+     */
+    private void selectPlayerPenguin() {
+        if (penguins.isEmpty()) {
+            return;
+        }
+
+        // Random index between 0 and penguins.size()-1
+        int randomIndex = RandUtil.getRandomInt(penguins.size());
+        penguins.get(randomIndex).setPlayer(true);
+
+        System.out.println("\n" + penguins.get(randomIndex).getNotation() + " is YOUR PENGUIN!");
     }
 
+    /**
+     * Calculates and displays final scores
+     */
     private void calculateScore() {
         System.out.println("***** SCOREBOARD FOR THE PENGUINS *****");
+
+        // Sort penguins by carried weight (descending order)
         penguins.sort((p1, p2) -> Integer.compare(p2.getCarriedWeight(), p1.getCarriedWeight()));
-        for(int i = 0; i < penguins.size() ; i++){
+
+        for (int i = 0; i < penguins.size(); i++) {
             Penguin p = penguins.get(i);
             int rank = i + 1;
-            String suffix = "";
+            String suffix = getSuffix(rank);
 
-            //Generate suffix (1st,2nd,3rd,th)
-            switch(rank){
-                case 1 -> suffix = "st";
-                case 2 -> suffix = "nd";
-                case 3 -> suffix = "rd";
-                default -> suffix = "th";
-            }
+            // Build header
             String header = p.getNotation();
-            if(p.isPlayer()){
+            if (p.isPlayer()) {
                 header += " (Your Penguin)";
             }
 
             System.out.println("* " + rank + suffix + " place: " + header);
 
-
+            // Display food items
             StringBuilder foodInfo = new StringBuilder();
-            List<Food> items = p.getInventory(); // inventory is arraylist
+            List<Food> items = p.getInventory();
 
-            if(items.isEmpty()){
+            if (items.isEmpty()) {
                 foodInfo.append("None");
-            }
-            else{
+            } else {
                 for (int j = 0; j < items.size(); j++) {
                     Food f = items.get(j);
-                    // format: "Kr (5 units)"
                     foodInfo.append(f.getNotation())
                             .append(" (")
                             .append(f.getWeight())
                             .append(" units)");
 
-                    // Add comma if not the last item
                     if (j < items.size() - 1) {
                         foodInfo.append(", ");
                     }
@@ -116,43 +135,147 @@ public class GameManager {
 
             System.out.println("  |---> Food Items: " + foodInfo.toString());
             System.out.println("  |---> Total weight: " + p.measureInventory() + " units");
-
         }
     }
 
-    private void processTurn(Penguin p){
-        System.out.println(p.getNotation() + " (" + p.getType() + ") is preparing to move.");
+    /**
+     * Returns the appropriate suffix for rankings (1st, 2nd, 3rd, etc.)
+     */
+    private String getSuffix(int rank) {
+        return switch (rank) {
+            case 1 -> "st";
+            case 2 -> "nd";
+            case 3 -> "rd";
+            default -> "th";
+        };
+    }
 
-        if(p.isPlayer()){
-            System.out.println("YOUR PENGUIN");
+    /**
+     * Processes a single penguin's turn
+     */
+    private void processTurn(Penguin p, int turnNumber) {
+        System.out.println("\n*** Turn " + turnNumber + " - " + p.getNotation() + ":");
+        System.out.println(p.getNotation() + " (" + capitalizeFirst(p.getType()) + " Penguin) is preparing to move.");
 
-            boolean useAbility = inputMaster.getYesNoInput("Will " + p.getNotation() + " use its special action? Answer with Y or N: ");
-            if(useAbility){
-                p.specialAbility();
-                //..................
+        if (p.isPlayer()) {
+            // Player-controlled penguin
+            handlePlayerTurn(p);
+        } else {
+            // AI-controlled penguin
+            handleAITurn(p);
+        }
+    }
+
+    /**
+     * Handles the player's turn with input prompts
+     */
+    private void handlePlayerTurn(Penguin p) {
+        System.out.println("YOUR PENGUIN");
+
+        // Ask if player wants to use special ability
+        boolean useAbility = inputMaster.getYesNoInput("Will " + p.getNotation() + " use its special action? Answer with Y or N: ");
+
+        if (useAbility) {
+            System.out.println(p.getNotation() + " chooses to USE its special action.");
+            p.specialAbility();
+
+            // Special handling for RoyalPenguin - needs direction for special move
+            if (p instanceof RoyalPenguin) {
+                RoyalPenguin royal = (RoyalPenguin) p;
+                Direction specialDir = inputMaster.getDirectionInput("Which direction for the special move? Answer with U (Up), D (Down), L (Left), R (Right): ");
+                royal.performSpecialMove(grid, specialDir);
+
+                // Check if penguin was eliminated during special move
+                if (p.getPosition() == null) {
+                    System.out.println("*** " + p.getNotation() + " IS REMOVED FROM THE GAME!");
+                    return;
+                }
             }
-            // FIX: Changed hardcoded "P2" to p.getNotation()
-            Direction direction = inputMaster.getDirectionInput("Which direction will " + p.getNotation() + " move? Answer with U (Up), D (Down), L (Left), R (Right): ");
-            p.slide(grid, direction);
+        } else {
+            System.out.println(p.getNotation() + " does NOT use its special action.");
         }
-        //logic of non-player penguins
-        else{
-            Direction direction = RandUtil.getRandomDirection();
-            System.out.println(p.getNotation() + " chooses to move " + direction);
-            p.slide(grid, direction);
+
+        // Ask for movement direction
+        Direction direction = inputMaster.getDirectionInput("Which direction will " + p.getNotation() + " move? Answer with U (Up), D (Down), L (Left), R (Right): ");
+        p.slide(grid, direction);
+
+        // Check if penguin was eliminated
+        if (p.getPosition() == null) {
+            System.out.println("*** " + p.getNotation() + " IS REMOVED FROM THE GAME!");
         }
     }
 
-    private void sortPenguins(){
+    /**
+     * Handles AI penguin turn with random decisions
+     */
+    private void handleAITurn(Penguin p) {
+        // Determine if AI will use special ability
+        boolean useAbility = false;
+
+        // RockhopperPenguin automatically uses ability when moving toward hazard
+        // For others, 30% chance
+        if (!(p instanceof RockhopperPenguin)) {
+            useAbility = RandUtil.getRandomInt(10) < 3; // 30% chance (0-2 out of 0-9)
+        }
+
+        if (useAbility && !p.isAbilityUsed()) {
+            System.out.println(p.getNotation() + " chooses to USE its special action.");
+            p.specialAbility();
+
+            // Special handling for RoyalPenguin
+            if (p instanceof RoyalPenguin) {
+                RoyalPenguin royal = (RoyalPenguin) p;
+                Direction specialDir = RandUtil.getRandomDirection();
+                royal.performSpecialMove(grid, specialDir);
+
+                // Check if penguin was eliminated
+                if (p.getPosition() == null) {
+                    System.out.println("*** " + p.getNotation() + " IS REMOVED FROM THE GAME!");
+                    return;
+                }
+            }
+        } else {
+            System.out.println(p.getNotation() + " does NOT use its special action.");
+        }
+
+        // Choose random direction
+        Direction direction = RandUtil.getRandomDirection();
+        System.out.println(p.getNotation() + " chooses to move " + direction + ".");
+        p.slide(grid, direction);
+
+        // Check if penguin was eliminated
+        if (p.getPosition() == null) {
+            System.out.println("*** " + p.getNotation() + " IS REMOVED FROM THE GAME!");
+        }
+    }
+
+    /**
+     * Collects all penguins from the grid and sorts them by notation (P1, P2, P3)
+     */
+    private void sortPenguins() {
         penguins.clear();
-        for(int y = 0; y < GRID_SIZE; y++){
-            for(int x = 0; x < GRID_SIZE; x++){
-                ITerrainObject object = grid.getObjectAt(new Position(x,y));
-                if(object instanceof Penguin){
+
+        // Scan entire grid for penguins
+        for (int y = 0; y < GRID_SIZE; y++) {
+            for (int x = 0; x < GRID_SIZE; x++) {
+                ITerrainObject object = grid.getObjectAt(new Position(x, y));
+                if (object instanceof Penguin) {
                     penguins.add((Penguin) object);
                 }
             }
         }
+
+        // Sort by notation (P1, P2, P3)
         penguins.sort(Comparator.comparing(Penguin::getNotation));
+    }
+
+    /**
+     * Capitalizes the first letter of a string
+     */
+    private String capitalizeFirst(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 }

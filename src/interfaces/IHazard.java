@@ -8,4 +8,6 @@ public interface IHazard extends ITerrainObject {
   void onCollision(Penguin penguin, TerrainGrid grid);
 
   boolean canSlide();
+
+  String getSymbol();
 }

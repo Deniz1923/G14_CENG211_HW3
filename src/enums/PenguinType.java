@@ -1,18 +1,23 @@
 package enums;
 
+import models.penguins.EmperorPenguin;
+import models.penguins.KingPenguin;
+import models.penguins.RockhopperPenguin;
+import models.penguins.RoyalPenguin;
+
+import java.util.Random;
+
 public enum PenguinType {
-  EMPEROR("EM"),
-  KING("KI"),
-  ROCKHOPPER("RH"),
-  ROYAL("RO");
-  // notations won't be used since penguins are displayed as P1,P2,P3
-  private final String notation;
+    EMPEROR,
+    KING,
+    ROCKHOPPER,
+    ROYAL;
 
-  PenguinType(String notation) {
-    this.notation = notation;
-  }
+    private static final Random RANDOM = new Random();
 
-  public String getNotation() {
-    return notation;
-  }
+    public static PenguinType getRandomType() {
+        PenguinType[] types = values();
+        return types[RANDOM.nextInt(types.length)];
+    }
+
 }
