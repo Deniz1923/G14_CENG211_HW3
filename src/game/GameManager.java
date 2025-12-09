@@ -1,19 +1,18 @@
 package game;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import static game.TerrainGrid.GRID_SIZE;
 
 import enums.Direction;
 import game.util.GridRenderer;
 import game.util.InputMaster;
 import game.util.RandUtil;
 import interfaces.ITerrainObject;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import models.Food;
 import models.Position;
 import models.penguins.Penguin;
-
-import static game.TerrainGrid.GRID_SIZE;
 
 /**
  * Manages the game flow, turns, and player interactions.
@@ -39,15 +38,16 @@ public class GameManager {
         //randomly selects player penguin
         selectPlayerPenguin();
         //main game loop
-        for(int turn = 1; turn < MAX_TURNS; turn++){
-            System.out.print("\n***Turn " + turn);
+        // FIX: Changed from < to <= to run exactly 4 turns
+        for(int turn = 1; turn <= MAX_TURNS; turn++){
+            System.out.println("\n***Turn " + turn + "***");
 
             for(Penguin p : penguins){
                 //Skip if eliminated
                 if(p.getPosition() == null){
                     continue;
                 }
-                
+
                 if(p.isStunned()){
                     System.out.println(p.getNotation() + " is stunned and skips this round!");
                     p.setStunned(false);
@@ -61,8 +61,11 @@ public class GameManager {
         System.out.println("***** GAME OVER *****");
         calculateScore();
     }
+
     private void selectPlayerPenguin(){
-        int temp = RandUtil.getRandomInt(4) +1;
+        // FIX: Changed from getRandomInt(4)+1 to getRandomInt(3)
+        // List has 3 penguins with indices 0-2
+        int temp = RandUtil.getRandomInt(3);
         penguins.get(temp).setPlayer(true);
     }
 
@@ -128,7 +131,8 @@ public class GameManager {
                 p.specialAbility();
                 //..................
             }
-            Direction direction = inputMaster.getDirectionInput("Which direction will P2 move? Answer with U (Up), D (Down), L (Left), R (Right): ");
+            // FIX: Changed hardcoded "P2" to p.getNotation()
+            Direction direction = inputMaster.getDirectionInput("Which direction will " + p.getNotation() + " move? Answer with U (Up), D (Down), L (Left), R (Right): ");
             p.slide(grid, direction);
         }
         //logic of non-player penguins
@@ -138,6 +142,7 @@ public class GameManager {
             p.slide(grid, direction);
         }
     }
+
     private void sortPenguins(){
         penguins.clear();
         for(int y = 0; y < GRID_SIZE; y++){

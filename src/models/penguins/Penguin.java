@@ -5,6 +5,7 @@ import static game.TerrainGrid.GRID_SIZE;
 import enums.Direction;
 import enums.PenguinType;
 import game.TerrainGrid;
+import interfaces.IHazard;
 import interfaces.ITerrainObject;
 import java.util.ArrayList;
 import models.Food;
@@ -90,8 +91,8 @@ public abstract class Penguin implements ITerrainObject {
 
     while (isMoving) {
       // First step, calculate next coordinate
-      int nextY = getPosition().getY();
-      int nextX = getPosition().getX();
+      int nextY = position.getY();
+      int nextX = position.getX();
 
       switch (direction) {
         case UP:
@@ -107,32 +108,60 @@ public abstract class Penguin implements ITerrainObject {
           nextX++;
           break;
       }
-      // x,y format in here to be simple looking
+
       Position nextPos = new Position(nextX, nextY);
 
       // Second step, collision checks, move legality
-      // Falling into water case
-      if (nextX < 0 || nextY < 0 || nextY > GRID_SIZE || nextX > GRID_SIZE) {
+      // FIX: Changed from > to >= for proper boundary checking
+      // Grid is 0-9, so index 10 is out of bounds
+      if (nextX < 0 || nextY < 0 || nextY >= GRID_SIZE || nextX >= GRID_SIZE) {
         System.out.println(getNotation() + " fell into the water!");
-
-        grid.removeObject(getPosition()); // empty the penguin's before moving slot
-        this.setPosition(null);
-
+        grid.removeObject(position);
+        this.position = null;
         isMoving = false;
         break;
       }
+
       ITerrainObject obstacle = grid.getObjectAt(nextPos);
 
-      if (obstacle != null) {
+      // FIX: Complete slide logic implementation
+      if (obstacle == null) {
+        // Empty space - continue sliding
+        updatePositionOnGrid(grid, nextPos);
+      } else if (obstacle instanceof Food) {
+        // Food - collect and stop
+        System.out.println(getNotation() + " collected food!");
+        grid.removeObject(nextPos);
+        pickupFood((Food) obstacle);
+        updatePositionOnGrid(grid, nextPos);
+        isMoving = false;
+      } else if (obstacle instanceof Penguin) {
+        // Another penguin - stop before collision
+        System.out.println(getNotation() + " stopped before hitting another penguin!");
+        isMoving = false;
+      } else if (obstacle instanceof IHazard) {
+        IHazard hazard = (IHazard) obstacle;
 
-        if (obstacle instanceof Food) {
-          System.out.println(getNotation() + " collected food!");
-          grid.removeObject(nextPos);
+        if (hazard.canSlide()) {
+          // Light Ice Block or Sea Lion - slide through and trigger collision
+          System.out.println(getNotation() + " collided with " + hazard.getNotation() + "!");
+          hazard.onCollision(this, grid);
 
-          pickupFood((Food) obstacle); // already checked so not a problem
-          updatePositionOnGrid(grid, nextPos);
+          // Check if penguin is still alive after collision
+          if (this.position == null) {
+            isMoving = false;
+          } else {
+            updatePositionOnGrid(grid, nextPos);
+          }
+        } else {
+          // Heavy Ice Block or Hole in Ice - stop and trigger collision
+          System.out.println(getNotation() + " hit " + hazard.getNotation() + "!");
+          hazard.onCollision(this, grid);
           isMoving = false;
         }
+      } else {
+        // Unknown obstacle - stop to be safe
+        isMoving = false;
       }
     }
   }
@@ -155,8 +184,10 @@ public abstract class Penguin implements ITerrainObject {
   }
 
   public Position getPosition() {
-    // deep copy inside Position class
-    return position.getPosition();
+    if (position == null) {
+      return null;
+    }
+    return new Position(position);
   }
 
   public void setPosition(Position position) {
@@ -164,29 +195,25 @@ public abstract class Penguin implements ITerrainObject {
   }
 
   private void updatePositionOnGrid(TerrainGrid grid, Position newPosition) {
-
     grid.removeObject(position);
-
-    this.setPosition(newPosition);
-
-    grid.placeObject(newPosition, this); // this : penguin
+    this.position = newPosition;
+    grid.placeObject(newPosition, this);
   }
 
   @Override
   public String getNotation() {
-    // Returns P1, P2, or P3
     return penguinID;
   }
 
-    public boolean isPlayer() {
-        return isPlayer;
-    }
+  public boolean isPlayer() {
+    return isPlayer;
+  }
 
-    public void setPlayer(boolean player) {
-        isPlayer = player;
-    }
+  public void setPlayer(boolean player) {
+    isPlayer = player;
+  }
 
-  public java.util.ArrayList<Food> getInventory() {
+  public ArrayList<Food> getInventory() {
     return inventory;
   }
 }

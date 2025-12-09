@@ -1,7 +1,6 @@
 package game.util;
 
 import enums.Direction;
-
 import java.util.Scanner;
 
 /**

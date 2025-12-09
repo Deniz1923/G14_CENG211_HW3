@@ -2,7 +2,6 @@ package game;
 
 import game.util.GridRenderer;
 import game.util.InputMaster;
-
 import java.util.logging.Logger;
 
 public class IcyTerrain {
