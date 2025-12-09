@@ -17,6 +17,7 @@ public abstract class Penguin implements ITerrainObject {
   private int carriedWeight = 0;
   private boolean stunned = false;
   private String penguinID = "??";
+  private boolean isPlayer = false;
 
   public Penguin(PenguinType penguinType, Position position) {
     if (penguinType == null) {
@@ -61,7 +62,7 @@ public abstract class Penguin implements ITerrainObject {
   }
 
   // measure the weight of each food in the inventory
-  private int measureInventory() {
+  public int measureInventory() {
     int sum = 0;
     for (Food food : inventory) {
       sum += food.getWeight();
@@ -70,7 +71,7 @@ public abstract class Penguin implements ITerrainObject {
     return sum;
   }
 
-  abstract void specialAbility();
+  public abstract void specialAbility();
 
   public void pickupFood(Food food) {
     if (food != null) {
@@ -175,5 +176,17 @@ public abstract class Penguin implements ITerrainObject {
   public String getNotation() {
     // Returns P1, P2, or P3
     return penguinID;
+  }
+
+    public boolean isPlayer() {
+        return isPlayer;
+    }
+
+    public void setPlayer(boolean player) {
+        isPlayer = player;
+    }
+
+  public java.util.ArrayList<Food> getInventory() {
+    return inventory;
   }
 }

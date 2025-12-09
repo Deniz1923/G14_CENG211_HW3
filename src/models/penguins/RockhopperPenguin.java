@@ -15,5 +15,5 @@ public class RockhopperPenguin extends Penguin {
    * to jump and collide with the hazard, nevertheless.
    */
   @Override
-  void specialAbility() {}
+  public void specialAbility() {}
 }

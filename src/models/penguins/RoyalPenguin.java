@@ -15,5 +15,5 @@ public class RoyalPenguin extends Penguin {
    * fall into water while using this ability (or other similar accidents).
    */
   @Override
-  void specialAbility() {}
+  public void specialAbility() {}
 }

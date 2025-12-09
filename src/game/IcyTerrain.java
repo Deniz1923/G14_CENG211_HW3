@@ -3,7 +3,10 @@ package game;
 import game.util.GridRenderer;
 import game.util.InputMaster;
 
+import java.util.logging.Logger;
+
 public class IcyTerrain {
+  private static final Logger LOGGER = Logger.getLogger(IcyTerrain.class.getName());
   private final InputMaster inputMaster;
   private final GridRenderer renderer;
   private final ObjectSpawner spawner;
@@ -30,6 +33,9 @@ public class IcyTerrain {
       // 2. Render the initial state
       System.out.println(" The initial icy terrain grid:");
       renderer.renderState(gameGrid);
+
+      GameManager gameManager = new GameManager(gameGrid,renderer,inputMaster);
+      gameManager.gameLoop();
 
     } catch (IllegalArgumentException e) {
       System.out.println("Game initialization failed.");

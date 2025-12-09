@@ -14,5 +14,5 @@ public class EmperorPenguin extends Penguin {
    * choose has less than three free squares, this ability is still considered used.
    */
   @Override
-  void specialAbility() {}
+  public void specialAbility() {}
 }
