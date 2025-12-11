@@ -9,5 +9,4 @@ public interface IHazard extends ITerrainObject {
 
   boolean canSlide();
 
-  String getSymbol();
 }

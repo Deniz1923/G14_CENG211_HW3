@@ -17,8 +17,4 @@ public class LightIceBlock extends Hazard {
         penguin.setStunned(true);
     }
 
-    @Override
-    public String getSymbol() {
-        return "LB";
-    }
 }

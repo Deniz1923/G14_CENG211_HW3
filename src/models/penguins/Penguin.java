@@ -299,8 +299,4 @@ public abstract class Penguin implements ITerrainObject {
         return penguinID;
     }
 
-    @Override
-    public String getSymbol() {
-        return penguinID;
-    }
 }

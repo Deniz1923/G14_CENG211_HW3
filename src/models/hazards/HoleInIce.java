@@ -37,8 +37,4 @@ public class HoleInIce extends Hazard {
         return isPlugged ? "PH" : "HI";
     }
 
-    @Override
-    public String getSymbol() {
-        return isPlugged ? "PH" : "HI";
-    }
 }

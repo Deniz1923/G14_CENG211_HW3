@@ -1,10 +1,7 @@
 package models.hazards;
 
-import enums.Direction;
 import enums.HazardType;
 import game.TerrainGrid;
-import interfaces.ITerrainObject;
-import models.Food;
 import models.Position;
 import models.penguins.Penguin;
 
@@ -22,8 +19,4 @@ public class SeaLion extends Hazard {
         // SeaLion will start sliding in the original direction
     }
 
-    @Override
-    public String getSymbol() {
-        return "SL";
-    }
 }

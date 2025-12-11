@@ -17,8 +17,4 @@ public class HeavyIceBlock extends Hazard {
     penguin.removeLightestFood();
   }
 
-  @Override
-  public String getSymbol() {
-    return "HB";
-  }
 }

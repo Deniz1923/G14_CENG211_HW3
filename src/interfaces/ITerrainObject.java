@@ -13,5 +13,4 @@ public interface ITerrainObject {
    */
   String getNotation();
 
-  String getSymbol();
 }

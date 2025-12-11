@@ -44,7 +44,4 @@ public abstract class Hazard implements IHazard {
 
   public abstract void onCollision(Penguin penguin, TerrainGrid grid);
 
-    public String getSymbol() {
-        return null;
-    }
 }
