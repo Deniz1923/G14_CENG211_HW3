@@ -133,7 +133,7 @@ public class GameManager {
                 }
             }
 
-            System.out.println("  |---> Food Items: " + foodInfo.toString());
+            System.out.println("  |---> Food Items: " + foodInfo);
             System.out.println("  |---> Total weight: " + p.measureInventory() + " units");
         }
     }
@@ -180,8 +180,7 @@ public class GameManager {
             p.specialAbility();
 
             // Special handling for RoyalPenguin - needs direction for special move
-            if (p instanceof RoyalPenguin) {
-                RoyalPenguin royal = (RoyalPenguin) p;
+            if (p instanceof RoyalPenguin royal) {
                 Direction specialDir = inputMaster.getDirectionInput("Which direction for the special move? Answer with U (Up), D (Down), L (Left), R (Right): ");
                 royal.performSpecialMove(grid, specialDir);
 
@@ -223,8 +222,7 @@ public class GameManager {
             p.specialAbility();
 
             // Special handling for RoyalPenguin
-            if (p instanceof RoyalPenguin) {
-                RoyalPenguin royal = (RoyalPenguin) p;
+            if (p instanceof RoyalPenguin royal) {
                 Direction specialDir = RandUtil.getRandomDirection();
                 royal.performSpecialMove(grid, specialDir);
 

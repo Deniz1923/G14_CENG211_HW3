@@ -149,9 +149,8 @@ public abstract class Penguin implements ITerrainObject {
 
                 // Penguin slides in opposite direction
                 slide(grid, oppositeDir);
-            } else if (obstacle instanceof IHazard) {
+            } else if (obstacle instanceof IHazard hazard) {
                 // Collision with other hazards
-                IHazard hazard = (IHazard) obstacle;
                 System.out.println(getNotation() + " collides with " + hazard.getNotation() + "!");
 
                 hazard.onCollision(this, grid);

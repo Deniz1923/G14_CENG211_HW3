@@ -85,8 +85,7 @@ public class ObjectSpawner {
           }
           // left edge
           case 2 -> {
-            x = 0;
-            yield RandUtil.getRandomInt(GRID_SIZE);
+              yield RandUtil.getRandomInt(GRID_SIZE);
           }
           // right edge
           case 3 -> {

@@ -4,5 +4,5 @@ public enum PenguinType {
     EMPEROR,
     KING,
     ROCKHOPPER,
-    ROYAL;
+    ROYAL
 }

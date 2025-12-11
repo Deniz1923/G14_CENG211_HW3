@@ -3,7 +3,6 @@ package models.penguins;
 import enums.Direction;
 import enums.PenguinType;
 import game.TerrainGrid;
-import game.util.InputMaster;
 import interfaces.ITerrainObject;
 import models.Food;
 import models.Position;
