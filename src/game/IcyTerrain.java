@@ -3,6 +3,8 @@ package game;
 import game.util.GridRenderer;
 import game.util.InputMaster;
 import models.penguins.Penguin;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Main game controller that initializes and manages the Sliding Penguins game.
@@ -21,41 +23,32 @@ import models.penguins.Penguin;
  * This class also handles error management and provides graceful
  * failure messages if initialization fails.
  *
- * @author CENG211 Group 14
+ * @author CENG211 Group
  * @version 1.0
  * @since 2025-12-08
  */
 public class IcyTerrain {
-    /**
-     * Handles user input from console
-     */
+    private static final Logger LOGGER = Logger.getLogger(IcyTerrain.class.getName());
+
+    /** Handles user input from console */
     private final InputMaster inputMaster;
 
-    /**
-     * Renders the grid to console display
-     */
+    /** Renders the grid to console display */
     private final GridRenderer renderer;
 
-    /**
-     * Spawns penguins, hazards, and food on the grid
-     */
+    /** Spawns penguins, hazards, and food on the grid */
     private final ObjectSpawner spawner;
 
-    /**
-     * The 10x10 game grid containing all objects
-     */
+    /** The 10x10 game grid containing all objects */
     private TerrainGrid gameGrid;
 
-    /**
-     * Manages game flow and turn processing
-     */
+    /** Manages game flow and turn processing */
     private GameManager gameManager;
 
     /**
      * Constructs an IcyTerrain and initializes the game.
      * This constructor automatically starts the complete game initialization
      * process, including grid creation, object spawning, and game execution.
-     * <p>
      * If any errors occur during initialization, they are caught and
      * displayed with appropriate error messages.
      */
@@ -113,8 +106,8 @@ public class IcyTerrain {
         } catch (Exception e) {
             // General exception handling
             System.out.println("An exception has occurred during game initialization.");
-            System.err.println("Error details: " + e.getMessage());
-            e.printStackTrace();
+            // Replaced printStackTrace with Logger
+            LOGGER.log(Level.SEVERE, "Unexpected error during game initialization", e);
         }
     }
 
@@ -155,7 +148,7 @@ public class IcyTerrain {
     /**
      * Gets the current game grid.
      * Used primarily for testing or external grid access.
-     *
+     * <p>
      * @return The TerrainGrid instance
      */
     public TerrainGrid getGameGrid() {
@@ -192,7 +185,7 @@ public class IcyTerrain {
             try {
                 inputMaster.close();
             } catch (Exception e) {
-                System.err.println("Error closing input master: " + e.getMessage());
+                LOGGER.log(Level.WARNING, "Error closing input master", e);
             }
         }
     }
