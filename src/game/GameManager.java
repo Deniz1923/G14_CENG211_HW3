@@ -40,7 +40,7 @@ import static game.TerrainGrid.GRID_SIZE;
  * 6. Execute slide in chosen direction
  * 7. Render updated grid state
  *
- * @author CENG211 Group
+ * @author CENG211 14. Group
  * @version 1.0
  * @since 2025-12-08
  */
@@ -524,17 +524,17 @@ public class GameManager {
                 case null -> {
                     continue;
                 }
-                case Food food -> {
+                case Food _ -> {
                     continue;
                 }
 
                 // If it's a hazard (and not a plugged hole, handled generally as hazard here)
-                case IHazard iHazard -> {
+                case IHazard _ -> {
                     return true;
                 }
 
                 // Penguins are not hazards for jumping purposes
-                case Penguin penguin -> {
+                case Penguin _ -> {
                     return false;
                 }
                 default -> {

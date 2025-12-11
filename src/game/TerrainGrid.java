@@ -115,7 +115,7 @@ public class TerrainGrid {
      * @return The terrain object at that position, or null if empty/invalid
      */
     public ITerrainObject getObjectAt(Position position) {
-        if (position == null || !isValidPosition(position)) {
+        if (!isValidPosition(position)) {
             return null;
         }
 
@@ -135,7 +135,7 @@ public class TerrainGrid {
      * @param position The position to clear
      */
     public void removeObject(Position position) {
-        if (position != null && isValidPosition(position)) {
+        if (isValidPosition(position)) {
             try {
                 terrainGrid[position.getY()][position.getX()] = null;
             } catch (ArrayIndexOutOfBoundsException e) {
