@@ -29,9 +29,9 @@ import game.IcyTerrain;
  * - Falling into water eliminates penguin but keeps collected food
  * - Each penguin's special ability can be used once per game
  *
- * IMPORTANT: This application requires console input for player
- * interaction. Run in a terminal or IDE console that supports System.in.
- *
+ * <p>
+ * Note: This application requires a console environment supporting {@code System.in}.
+ * </p>
  * @author CENG211 Group
  * @version 1.0
  * @since 2025-12-08
@@ -78,8 +78,7 @@ public class SlidingPuzzleApp {
             e.printStackTrace();
 
         } finally {
-            // ALWAYS close the input master to release resources
-            // This is critical for proper cleanup
+            // Ensure the input scanner is closed to prevent resource leaks
             if (terrain != null) {
                 try {
                     terrain.closeInputMaster();

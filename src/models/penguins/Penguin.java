@@ -28,7 +28,7 @@ import static game.TerrainGrid.GRID_SIZE;
  *   <li>RockhopperPenguin - Can jump over one hazard in their path</li>
  * </ul>
  *
- * <p>Game mechanics:</p>
+ * <p><b>Game mechanics:</b></p>
  * <ul>
  *   <li>Penguins slide continuously until hitting an object or edge</li>
  *   <li>Food is automatically collected when reached (penguin stops)</li>

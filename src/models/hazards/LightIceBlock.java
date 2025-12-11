@@ -11,15 +11,13 @@ import models.penguins.Penguin;
  * the colliding object stops and the LightIceBlock starts sliding in the
  * transmitted direction. The penguin is stunned and skips their next turn.
  *
- * <p>Characteristics:</p>
- * <ul>
- *   <li>Can slide (canSlide = true)</li>
- *   <li>Stuns colliding penguin (they skip next turn)</li>
- *   <li>Starts sliding when hit by penguin or sliding hazard</li>
- *   <li>Can fall off the edges of the grid</li>
- *   <li>Can destroy food items in its path</li>
- *   <li>Can plug holes when falling into them</li>
- * </ul>
+ * <p>Characteristics:
+ *   <p>Can slide (canSlide = true)
+ *   <p>Stuns colliding penguin (they skip next turn)
+ *   <p>Starts sliding when hit by penguin or sliding hazard
+ *   <p>Can fall off the edges of the grid
+ *   <p>Can destroy food items in its path
+ *   <p>Can plug holes when falling into them
  *
  * @author CENG211 14. Group
  * @version 1.0

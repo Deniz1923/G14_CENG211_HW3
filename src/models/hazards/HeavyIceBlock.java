@@ -10,13 +10,11 @@ import models.penguins.Penguin;
  * When a penguin collides with a HeavyIceBlock, they stop immediately
  * and lose the lightest food item from their inventory as a penalty.
  *
- * <p>Characteristics:</p>
- * <ul>
- *   <li>Cannot slide (canSlide = false)</li>
- *   <li>Acts as an immovable obstacle</li>
- *   <li>Removes lightest food from colliding penguin</li>
- *   <li>If penguin carries no food, no penalty is applied</li>
- * </ul>
+ * <p>Characteristics:
+ *   <p>Cannot slide (canSlide = false)
+ *   <p>Acts as an immovable obstacle
+ *   <p>Removes lightest food from colliding penguin
+ *   <p>If penguin carries no food, no penalty is applied
  *
  * @author CENG211 14. Group
  * @version 1.0
@@ -27,7 +25,6 @@ public class HeavyIceBlock extends Hazard {
     /**
      * Constructs a HeavyIceBlock at the specified position.
      * Heavy ice blocks are immovable obstacles on the terrain.
-     *
      * @param position The position where this heavy ice block is placed
      * @throws IllegalArgumentException if position is null
      */
@@ -39,10 +36,8 @@ public class HeavyIceBlock extends Hazard {
      * Handles collision with a penguin.
      * The penguin stops at their current position and loses their lightest
      * food item. If the penguin has no food, they are unaffected.
-     *
      * <p>The penalty system ensures that penguins must be strategic about
      * which paths they take to avoid losing valuable food.</p>
-     *
      * @param penguin The penguin that collided with this heavy ice block
      * @param grid    The terrain grid (not used in this implementation)
      * @throws IllegalArgumentException if penguin is null
@@ -71,7 +66,6 @@ public class HeavyIceBlock extends Hazard {
 
     /**
      * Returns a string representation of this heavy ice block.
-     *
      * @return A descriptive string including position information
      */
     @Override

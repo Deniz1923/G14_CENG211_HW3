@@ -11,13 +11,11 @@ import models.penguins.Penguin;
  * Hazards are obstacles that can affect penguins in various ways, including
  * stunning them, removing food, or eliminating them from the game.
  *
- * <p>There are four types of hazards:</p>
- * <ul>
- *   <li>LightIceBlock - Can slide, stuns penguins on collision</li>
- *   <li>HeavyIceBlock - Cannot move, removes lightest food from penguin</li>
- *   <li>SeaLion - Can slide, bounces penguins in opposite direction</li>
- *   <li>HoleInIce - Cannot move, eliminates anything that falls in</li>
- * </ul>
+ * <p>There are four types of hazards:
+ *   <p>LightIceBlock - Can slide, stuns penguins on collision
+ *   <p>HeavyIceBlock - Cannot move, removes lightest food from penguin
+ *   <p>SeaLion - Can slide, bounces penguins in opposite direction
+ *   <p>HoleInIce - Cannot move, eliminates anything that falls in
  *
  * <p>Some hazards can slide on ice (canSlide = true), while others remain
  * stationary. Sliding hazards can be pushed by penguins or other sliding objects.</p>
@@ -110,10 +108,10 @@ public abstract class Hazard implements IHazard {
      * Returns the notation used to display this hazard on the grid.
      * The notation is a 2-letter abbreviation:
      * <ul>
-     *   <li>LB - LightIceBlock</li>
-     *   <li>HB - HeavyIceBlock</li>
-     *   <li>SL - SeaLion</li>
-     *   <li>HI - HoleInIce (or PH when plugged)</li>
+     *   <p>LB - LightIceBlock
+     *   <p>HB - HeavyIceBlock
+     *   <p>SL - SeaLion
+     *   <p>HI - HoleInIce (or PH when plugged)
      * </ul>
      *
      * @return The hazard type's notation string
@@ -127,10 +125,10 @@ public abstract class Hazard implements IHazard {
      * Handles collision between a penguin and this hazard.
      * Each hazard type has different effects on collision:
      * <ul>
-     *   <li>LightIceBlock - Stuns the penguin</li>
-     *   <li>HeavyIceBlock - Removes penguin's lightest food</li>
-     *   <li>SeaLion - Bounces penguin in opposite direction</li>
-     *   <li>HoleInIce - Eliminates the penguin from the game</li>
+     *   <p>LightIceBlock - Stuns the penguin
+     *   <p>HeavyIceBlock - Removes penguin's lightest food
+     *   <p>SeaLion - Bounces penguin in opposite direction
+     *   <p>HoleInIce - Eliminates the penguin from the game
      * </ul>
      *
      * @param penguin The penguin that collided with this hazard
