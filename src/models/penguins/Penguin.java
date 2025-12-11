@@ -422,7 +422,7 @@ public abstract class Penguin implements ITerrainObject {
      * @return The penguin type as a string ("king", "emperor", "royal", "rockhopper")
      */
     public String getType() {
-        return type.toString().toLowerCase();
+        return type.getDisplayName();
     }
 
     /**
