@@ -2,6 +2,7 @@ package game;
 
 import game.util.GridRenderer;
 import game.util.InputMaster;
+import models.penguins.Penguin;
 
 /**
  * Main game controller that initializes and manages the Sliding Penguins game.
@@ -114,58 +115,36 @@ public class IcyTerrain {
     }
 
     /**
-     * Displays information about all penguins on the terrain.
-     * Scans the grid and prints each penguin's ID and type name.
-     *
-     * <p>Output format:</p>
-     * <pre>
-     * These are the penguins on the icy terrain:
-     * - Penguin 1 (P1): Emperor Penguin
-     * - Penguin 2 (P2): King Penguin
-     * - Penguin 3 (P3): Royal Penguin
-     * </pre>
-     *
-     * <p>The type names are converted to human-readable format:
-     * emperor → Emperor Penguin, king → King Penguin, etc.</p>
+     * Scans the grid for penguins, sorts them by ID (P1, P2, P3), and displays their info.
      */
     private void displayPenguinInfo() {
-        try {
-            System.out.println("These are the penguins on the icy terrain:");
+        System.out.println("These are the penguins on the icy terrain:");
 
-            // Scan entire grid for penguins
-            for (int y = 0; y < TerrainGrid.GRID_SIZE; y++) {
-                for (int x = 0; x < TerrainGrid.GRID_SIZE; x++) {
-                    var obj = gameGrid.getObjectAt(new models.Position(x, y));
+        java.util.List<Penguin> foundPenguins = new java.util.ArrayList<>();
 
-                    if (obj instanceof models.penguins.Penguin) {
-                        models.penguins.Penguin p = (models.penguins.Penguin) obj;
-
-                        // Determine penguin type by class instance
-                        String typeName;
-                        if (p instanceof models.penguins.EmperorPenguin) {
-                            typeName = "Emperor Penguin";
-                        } else if (p instanceof models.penguins.KingPenguin) {
-                            typeName = "King Penguin";
-                        } else if (p instanceof models.penguins.RoyalPenguin) {
-                            typeName = "Royal Penguin";
-                        } else if (p instanceof models.penguins.RockhopperPenguin) {
-                            typeName = "Rockhopper Penguin";
-                        } else {
-                            typeName = "Unknown Penguin";
-                            System.err.println("Warning: Unknown penguin type detected: " +
-                                    p.getClass().getSimpleName());
-                        }
-
-                        // Extract number from notation (P1 → 1)
-                        String penguinNumber = p.getNotation().substring(1);
-
-                        System.out.println("- Penguin " + penguinNumber +
-                                " (" + p.getNotation() + "): " + typeName);
-                    }
+        // 1. Collect all penguins from the grid
+        for (int y = 0; y < TerrainGrid.GRID_SIZE; y++) {
+            for (int x = 0; x < TerrainGrid.GRID_SIZE; x++) {
+                var obj = gameGrid.getObjectAt(new models.Position(x, y));
+                if (obj instanceof Penguin p) {
+                    foundPenguins.add(p);
                 }
             }
-        } catch (Exception e) {
-            System.err.println("Error displaying penguin info: " + e.getMessage());
+        }
+
+        // 2. Sort them by ID (Notation) to ensure P1, P2, P3 order
+        foundPenguins.sort(java.util.Comparator.comparing(Penguin::getNotation));
+
+        // 3. Print them in order
+        for (Penguin p : foundPenguins) {
+            String typeName = switch (p.getType()) {
+                case "Emperor" -> "Emperor Penguin";
+                case "King" -> "King Penguin";
+                case "Royal" -> "Royal Penguin";
+                case "Rockhopper" -> "Rockhopper Penguin";
+                default -> p.getType() + " Penguin";
+            };
+            System.out.println("- Penguin " + p.getNotation().substring(1) + " (" + p.getNotation() + "): " + typeName);
         }
     }
 
