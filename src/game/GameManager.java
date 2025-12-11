@@ -42,34 +42,24 @@ public class GameManager {
 
     // Main game loop - 4 turns
     for (int turn = 1; turn <= MAX_TURNS; turn++) {
-      System.out.println("\n***Turn " + turn + "***");
-
-      // Each penguin takes their turn
+      System.out.println("\n*** Turn " + turn + " ***");
       for (Penguin p : penguins) {
-        // Skip if penguin has been eliminated
-        if (p.getPosition() == null) {
-          continue;
-        }
-
-        // Skip if penguin is stunned
+        if (p.getPosition() == null) continue; // Eliminated
         if (p.isStunned()) {
-          System.out.println("\n*** Turn " + turn + " - " + p.getNotation() + ":");
-          System.out.println(p.getNotation() + " is stunned and skips this turn!");
+          System.out.println("\n*** Turn " + turn + " - " + p.getNotation() + ": Stunned!");
           p.setStunned(false);
           continue;
         }
 
-        // Process the penguin's turn
-        processTurn(p, turn);
+        System.out.println("\n*** Turn " + turn + " - " + p.getNotation() + ":");
+        if (p.isPlayer()) handlePlayerTurn(p);
+        else handleAITurn(p);
 
-        // Render grid after each penguin's move
-        System.out.println("\nNew state of the grid:");
+        System.out.println("New state of the grid:");
         renderer.renderState(grid);
-        sleep(2);
+        sleep(1); // Reduced from 2s to 1s
       }
     }
-
-    // Game over - show results
     System.out.println("\n***** GAME OVER *****");
     calculateScore();
   }
