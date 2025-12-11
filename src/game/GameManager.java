@@ -23,25 +23,21 @@ import models.penguins.RoyalPenguin;
  * This is the central controller that orchestrates the entire game,
  * handling turn management, player input, AI decisions, and scoring.
  *
- * <p>Game structure:</p>
- * <ul>
- *   <li>4 turns total (MAX_TURNS = 4)</li>
- *   <li>3 penguins compete (sorted by ID: P1, P2, P3)</li>
- *   <li>One penguin is randomly assigned to the player</li>
- *   <li>Each turn: P1 → P2 → P3 → (repeat)</li>
- *   <li>Winner determined by total food weight at end</li>
- * </ul>
+ * Game structure:
+ * - 4 turns total (MAX_TURNS = 4)
+ * - 3 penguins compete (sorted by ID: P1, P2, P3)
+ * - One penguin is randomly assigned to the player
+ * - Each turn: P1 -> P2 -> P3 -> (repeat)
+ * - Winner determined by total food weight at end
  *
- * <p>Turn sequence for each penguin:</p>
- * <ol>
- *   <li>Check if penguin is eliminated (position == null) - skip if yes</li>
- *   <li>Check if penguin is stunned - skip turn and clear stun flag</li>
- *   <li>Ask to use special ability (player) or decide randomly (AI)</li>
- *   <li>Execute special ability if chosen</li>
- *   <li>Ask for movement direction (player) or choose randomly (AI)</li>
- *   <li>Execute slide in chosen direction</li>
- *   <li>Render updated grid state</li>
- * </ol>
+ * Turn sequence for each penguin:
+ * 1. Check if penguin is eliminated (position == null) - skip if yes
+ * 2. Check if penguin is stunned - skip turn and clear stun flag
+ * 3. Ask to use special ability (player) or decide randomly (AI)
+ * 4. Execute special ability if chosen
+ * 5. Ask for movement direction (player) or choose randomly (AI)
+ * 6. Execute slide in chosen direction
+ * 7. Render updated grid state
  *
  * @author CENG211 Group
  * @version 1.0
@@ -97,12 +93,10 @@ public class GameManager {
     /**
      * Main game loop - runs the entire game from start to finish.
      * This method orchestrates the complete game flow:
-     * <ol>
-     *   <li>Initialize penguins list from grid</li>
-     *   <li>Randomly select player penguin</li>
-     *   <li>Run 4 turns with each penguin taking their turn</li>
-     *   <li>Display final scoreboard</li>
-     * </ol>
+     * 1. Initialize penguins list from grid
+     * 2. Randomly select player penguin
+     * 3. Run 4 turns with each penguin taking their turn
+     * 4. Display final scoreboard
      */
     public void gameLoop() {
         try {
@@ -165,6 +159,7 @@ public class GameManager {
             int randomIndex = RandUtil.getRandomInt(penguins.size());
             Penguin selected = penguins.get(randomIndex);
             selected.setPlayer(true);
+            System.out.println("\n" + selected.getNotation() + " is YOUR PENGUIN!");
         } catch (Exception e) {
             System.err.println("Error selecting player penguin: " + e.getMessage());
         }
@@ -259,6 +254,10 @@ public class GameManager {
             turnHeader += ":";
             System.out.println(turnHeader);
 
+            // Print penguin type info
+            // Refactored: Uses Enum displayName via p.getType()
+            System.out.println(p.getNotation() + " (" + p.getType() + " Penguin) is preparing to move.");
+
             if (p.isPlayer()) {
                 // Player-controlled penguin
                 handlePlayerTurn(p);
@@ -276,18 +275,18 @@ public class GameManager {
      * Asks the player if they want to use special ability,
      * then asks for movement direction.
      *
-     * <p>Special handling for RoyalPenguin:</p>
-     * <ul>
-     *   <li>If ability is used, asks for special move direction</li>
-     *   <li>Executes special move before regular slide</li>
-     *   <li>Checks for elimination after special move</li>
-     * </ul>
+     * Special handling for RoyalPenguin:
+     * - If ability is used, asks for special move direction
+     * - Executes special move before regular slide
+     * - Checks for elimination after special move
      *
      * @param p The player's penguin
      */
     private void handlePlayerTurn(Penguin p) {
         boolean useAbility = false;
         try {
+            System.out.println("YOUR PENGUIN");
+
             // Ask if player wants to use special ability
             if(!p.isAbilityUsed()){
                 useAbility = inputMaster.getYesNoInput(
@@ -296,9 +295,10 @@ public class GameManager {
                 );
             }
 
-
             if (useAbility && !p.isAbilityUsed()) {
+                System.out.println(p.getNotation() + " chooses to USE its special action.");
                 p.specialAbility();
+                p.setAbilityUsed(true);
 
                 // Special handling for RoyalPenguin - needs direction for special move
                 if (p instanceof RoyalPenguin royal) {
@@ -428,7 +428,6 @@ public class GameManager {
             }
         } else {
             // Match PDF format for non-usage
-            // "P1 does NOT to use its special action." (PDF typo "does NOT to use" included or corrected to "does NOT use")
             // Rockhopper only prints this if it didn't trigger the auto-jump
             System.out.println(p.getNotation() + " does NOT use its special action.");
         }
@@ -442,8 +441,6 @@ public class GameManager {
             System.out.println("*** " + p.getNotation() + " IS REMOVED FROM THE GAME!");
         }
     }
-
-    // --- Helper Methods to be added to GameManager class ---
 
     /**
      * Enum to classify the result of a move simulation.
@@ -478,20 +475,24 @@ public class GameManager {
 
             ITerrainObject obj = grid.getObjectAt(new Position(cx, cy));
 
-            if (obj == null) {
-                continue; // Empty space, keep sliding
-            } else if (obj instanceof Food) {
-                return MoveOutcome.FOOD; // Found food!
-            } else if (obj instanceof HoleInIce hole) {
-                if (hole.isPlugged()) {
-                    continue; // Plugged hole acts as empty ice (pass through)
-                } else {
-                    return MoveOutcome.BAD_WATER_OR_HOLE; // Unplugged hole is fatal
+            switch (obj) {
+                case null -> {
+                    // Empty space: do nothing, loop will naturally repeat
                 }
-            } else {
-                // Hit a Wall (Hazard), IceBlock, SeaLion or another Penguin
-                // This is considered a "Safe Stop" compared to water
-                return MoveOutcome.SAFE_OBSTACLE;
+                case Food food -> {
+                    return MoveOutcome.FOOD; // Found food!
+                }
+                case HoleInIce hole -> {
+                    if (!hole.isPlugged()) {
+                        return MoveOutcome.BAD_WATER_OR_HOLE; // Unplugged hole is fatal
+                    }
+                    // If plugged: do nothing, loop repeats (treat as empty ice)
+                }
+                default -> {
+                    // Hit a Wall (Hazard), IceBlock, SeaLion or another Penguin
+                    // This is considered a "Safe Stop" compared to water
+                    return MoveOutcome.SAFE_OBSTACLE;
+                }
             }
         }
     }
@@ -518,13 +519,26 @@ public class GameManager {
 
             // Skip empty squares and food (Rockhopper doesn't jump over food usually,
             // rules say "prepare to jump over one hazard")
-            if (obj == null || obj instanceof Food) continue;
+            switch (obj) {
+                case null -> {
+                    continue;
+                }
+                case Food food -> {
+                    continue;
+                }
 
-            // If it's a hazard (and not a plugged hole, handled generally as hazard here)
-            if (obj instanceof IHazard) return true;
+                // If it's a hazard (and not a plugged hole, handled generally as hazard here)
+                case IHazard iHazard -> {
+                    return true;
+                }
 
-            // Penguins are not hazards for jumping purposes
-            if (obj instanceof Penguin) return false;
+                // Penguins are not hazards for jumping purposes
+                case Penguin penguin -> {
+                    return false;
+                }
+                default -> {
+                }
+            }
 
             return false;
         }
@@ -573,13 +587,11 @@ public class GameManager {
      * This ensures turns are processed in correct order regardless of
      * where penguins were spawned on the grid.
      *
-     * <p>Process:</p>
-     * <ol>
-     *   <li>Clear existing penguin list</li>
-     *   <li>Scan entire grid for penguins</li>
-     *   <li>Add found penguins to list</li>
-     *   <li>Sort by notation (P1 < P2 < P3)</li>
-     * </ol>
+     * Process:
+     * 1. Clear existing penguin list
+     * 2. Scan entire grid for penguins
+     * 3. Add found penguins to list
+     * 4. Sort by notation (P1 < P2 < P3)
      */
     private void sortPenguins() {
         try {

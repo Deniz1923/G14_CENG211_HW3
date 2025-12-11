@@ -17,16 +17,14 @@ import models.penguins.RoyalPenguin;
  * This class ensures proper distribution and placement of objects according to
  * game rules.
  *
- * <p>Spawning rules:</p>
- * <ul>
- *   <li>3 penguins - must be on edge squares, no overlapping</li>
- *   <li>15 hazards - randomly placed, cannot overlap with penguins</li>
- *   <li>20 food items - randomly placed, cannot overlap with penguins or hazards</li>
- * </ul>
+ * Spawning rules:
+ * - 3 penguins - must be on edge squares, no overlapping
+ * - 15 hazards - randomly placed, cannot overlap with penguins
+ * - 20 food items - randomly placed, cannot overlap with penguins or hazards
  *
- * <p>Each object type is spawned sequentially to ensure proper placement
+ * Each object type is spawned sequentially to ensure proper placement
  * without conflicts. The spawner continues attempting placements until
- * all required objects are successfully placed.</p>
+ * all required objects are successfully placed.
  *
  * @author CENG211 Group
  * @version 1.0
@@ -48,11 +46,9 @@ public class ObjectSpawner {
   /**
    * Spawns all game objects on the provided grid.
    * Objects are spawned in this order:
-   * <ol>
-   *   <li>Penguins (on edges)</li>
-   *   <li>Hazards (anywhere except penguin locations)</li>
-   *   <li>Food (anywhere except penguin and hazard locations)</li>
-   * </ol>
+   * 1. Penguins (on edges)
+   * 2. Hazards (anywhere except penguin locations)
+   * 3. Food (anywhere except penguin and hazard locations)
    *
    * @param grid The terrain grid to populate
    * @throws IllegalArgumentException if grid is null
@@ -79,24 +75,22 @@ public class ObjectSpawner {
    * Each penguin is assigned an ID (P1, P2, P3) and placed on an
    * unoccupied edge square of the grid.
    *
-   * <p>Edge squares are those where x=0, x=9, y=0, or y=9.</p>
+   * Edge squares are those where x=0, x=9, y=0, or y=9.
    *
-   * <p>Process:</p>
-   * <ol>
-   *   <li>Generate random edge position</li>
-   *   <li>Check if position is empty</li>
-   *   <li>Create random penguin type</li>
-   *   <li>Assign penguin ID (P1, P2, or P3)</li>
-   *   <li>Place penguin on grid</li>
-   *   <li>Repeat until all 3 penguins are placed</li>
-   * </ol>
+   * Process:
+   * 1. Generate random edge position
+   * 2. Check if position is empty
+   * 3. Create random penguin type
+   * 4. Assign penguin ID (P1, P2, or P3)
+   * 5. Place penguin on grid
+   * 6. Repeat until all 3 penguins are placed
    *
    * @param grid The terrain grid
    * @throws RuntimeException if unable to spawn all penguins after many attempts
    */
   private void spawnPenguins(TerrainGrid grid) {
     int penguinsSpawned = 0;
-    List<Penguin> penguinList = new ArrayList<>();
+    //List<Penguin> penguinList = new ArrayList<>();
     int attempts = 0;
     int maxAttempts = 1000; // Prevent infinite loops
 
@@ -120,7 +114,7 @@ public class ObjectSpawner {
 
           // Place on grid
           grid.placeObject(position, penguin);
-          penguinList.add(penguin);
+          //penguinList.add(penguin);
           penguinsSpawned++;
         }
       }
@@ -134,13 +128,11 @@ public class ObjectSpawner {
    * Spawns 15 hazards on random grid positions.
    * Hazards cannot be placed on squares already occupied by penguins.
    *
-   * <p>Each hazard is randomly assigned one of four types:</p>
-   * <ul>
-   *   <li>LightIceBlock - can slide, stuns penguins</li>
-   *   <li>HeavyIceBlock - immovable, removes food</li>
-   *   <li>SeaLion - can slide, bounces penguins</li>
-   *   <li>HoleInIce - immovable, eliminates penguins</li>
-   * </ul>
+   * Each hazard is randomly assigned one of four types:
+   * - LightIceBlock - can slide, stuns penguins
+   * - HeavyIceBlock - immovable, removes food
+   * - SeaLion - can slide, bounces penguins
+   * - HoleInIce - immovable, eliminates penguins
    *
    * @param grid The terrain grid
    * @throws RuntimeException if unable to spawn all hazards
@@ -177,11 +169,9 @@ public class ObjectSpawner {
    * Spawns 20 food items on random grid positions.
    * Food items cannot be placed on squares occupied by penguins or hazards.
    *
-   * <p>Each food item is randomly assigned:</p>
-   * <ul>
-   *   <li>Food type (Krill, Crustacean, Anchovy, Squid, Mackerel)</li>
-   *   <li>Weight (1-5 units, randomly determined)</li>
-   * </ul>
+   * Each food item is randomly assigned:
+   * - Food type (Krill, Crustacean, Anchovy, Squid, Mackerel)
+   * - Weight (1-5 units, randomly determined)
    *
    * @param grid The terrain grid
    * @throws RuntimeException if unable to spawn all food items
@@ -218,13 +208,11 @@ public class ObjectSpawner {
    * Generates a random edge position on the grid.
    * Edge positions are those where at least one coordinate is 0 or 9.
    *
-   * <p>Four possible edges:</p>
-   * <ul>
-   *   <li>Top edge: y=0, x=0-9</li>
-   *   <li>Bottom edge: y=9, x=0-9</li>
-   *   <li>Left edge: x=0, y=0-9</li>
-   *   <li>Right edge: x=9, y=0-9</li>
-   * </ul>
+   * Four possible edges:
+   * - Top edge: y=0, x=0-9
+   * - Bottom edge: y=9, x=0-9
+   * - Left edge: x=0, y=0-9
+   * - Right edge: x=9, y=0-9
    *
    * @return A random position on the grid edge
    */

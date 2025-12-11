@@ -8,22 +8,20 @@ import models.penguins.Penguin;
  * Main game controller that initializes and manages the Sliding Penguins game.
  * This class handles the complete game lifecycle from initialization to completion.
  *
- * <p>Initialization sequence:</p>
- * <ol>
- *   <li>Create input master for player interaction</li>
- *   <li>Create grid renderer for displaying game state</li>
- *   <li>Create object spawner for populating the grid</li>
- *   <li>Create the 10x10 terrain grid</li>
- *   <li>Spawn all game objects (penguins, hazards, food)</li>
- *   <li>Display initial grid state</li>
- *   <li>Show penguin information</li>
- *   <li>Start game manager and run game loop</li>
- * </ol>
+ * Initialization sequence:
+ * 1. Create input master for player interaction
+ * 2. Create grid renderer for displaying game state
+ * 3. Create object spawner for populating the grid
+ * 4. Create the 10x10 terrain grid
+ * 5. Spawn all game objects (penguins, hazards, food)
+ * 6. Display initial grid state
+ * 7. Show penguin information
+ * 8. Start game manager and run game loop
  *
- * <p>This class also handles error management and provides graceful
- * failure messages if initialization fails.</p>
+ * This class also handles error management and provides graceful
+ * failure messages if initialization fails.
  *
- * @author CENG211 Group
+ * @author CENG211 Group 14
  * @version 1.0
  * @since 2025-12-08
  */
@@ -48,8 +46,8 @@ public class IcyTerrain {
      * This constructor automatically starts the complete game initialization
      * process, including grid creation, object spawning, and game execution.
      *
-     * <p>If any errors occur during initialization, they are caught and
-     * displayed with appropriate error messages.</p>
+     * If any errors occur during initialization, they are caught and
+     * displayed with appropriate error messages.
      */
     public IcyTerrain() {
         this.inputMaster = new InputMaster();
@@ -63,19 +61,15 @@ public class IcyTerrain {
     /**
      * Initializes and runs the complete game sequence.
      * This method handles all stages of game setup and execution:
-     * <ol>
-     *   <li>Display welcome message</li>
-     *   <li>Spawn all game objects on the grid</li>
-     *   <li>Render initial grid state</li>
-     *   <li>Display penguin type information</li>
-     *   <li>Create game manager and start game loop</li>
-     * </ol>
+     * 1. Display welcome message
+     * 2. Spawn all game objects on the grid
+     * 3. Render initial grid state
+     * 4. Display penguin type information
+     * 5. Create game manager and start game loop
      *
-     * <p>Error handling:</p>
-     * <ul>
-     *   <li>IllegalArgumentException - Displays reason for initialization failure</li>
-     *   <li>General Exception - Displays error message and stack trace</li>
-     * </ul>
+     * Error handling:
+     * - IllegalArgumentException - Displays reason for initialization failure
+     * - General Exception - Displays error message and stack trace
      */
     private void initializeGame() {
         try {
@@ -179,11 +173,9 @@ public class IcyTerrain {
      * This MUST be called when the game ends to properly release
      * the System.in resource and prevent resource leaks.
      *
-     * <p>Call this in the main method after the game completes:</p>
-     * <pre>
+     * Call this in the main method after the game completes:
      * IcyTerrain terrain = new IcyTerrain();
      * terrain.closeInputMaster(); // Always close!
-     * </pre>
      */
     public void closeInputMaster() {
         if (inputMaster != null) {

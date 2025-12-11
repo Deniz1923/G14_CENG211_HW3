@@ -8,16 +8,14 @@ import models.Position;
  * The grid stores all game objects (penguins, hazards, and food items)
  * and provides methods to manipulate them safely.
  *
- * <p>Grid characteristics:</p>
- * <ul>
- *   <li>Fixed size of 10x10 squares</li>
- *   <li>Surrounded by water on all sides</li>
- *   <li>Each square can contain at most one object at a time</li>
- *   <li>Coordinates range from (0,0) to (9,9)</li>
- * </ul>
+ * Grid characteristics:
+ * - Fixed size of 10x10 squares
+ * - Surrounded by water on all sides
+ * - Each square can contain at most one object at a time
+ * - Coordinates range from (0,0) to (9,9)
  *
- * <p>The grid uses a 2D array to store ITerrainObjects, allowing
- * polymorphic handling of penguins, hazards, and food items.</p>
+ * The grid uses a 2D array to store ITerrainObjects, allowing
+ * polymorphic handling of penguins, hazards, and food items.
  *
  * @author CENG211 Group
  * @version 1.0
@@ -73,8 +71,8 @@ public class TerrainGrid {
    * Places an object at the specified position on the grid.
    * The position must be valid (within grid bounds).
    *
-   * <p>This method will overwrite any existing object at that position,
-   * so callers should check if the square is empty first if needed.</p>
+   * This method will overwrite any existing object at that position,
+   * so callers should check if the square is empty first if needed.
    *
    * @param position The position where the object should be placed
    * @param object The terrain object to place (penguin, hazard, or food)

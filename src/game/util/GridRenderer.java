@@ -174,17 +174,6 @@ public class GridRenderer {
   }
 
   /**
-   * Validates if a string will fit in a cell.
-   * Useful for checking symbols before rendering.
-   *
-   * @param s The string to check
-   * @return true if string fits within CELL_WIDTH, false otherwise
-   */
-  public boolean fitsInCell(String s) {
-    return s != null && s.length() <= CELL_WIDTH;
-  }
-
-  /**
    * Gets the cell width used by this renderer.
    *
    * @return The CELL_WIDTH constant (4 characters)

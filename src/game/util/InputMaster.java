@@ -140,9 +140,7 @@ public class InputMaster {
    */
   public void close() {
     try {
-      if (scanner != null) {
         scanner.close();
-      }
     } catch (Exception e) {
       System.err.println("Error closing scanner: " + e.getMessage());
     }
@@ -155,6 +153,6 @@ public class InputMaster {
    * @return true if scanner can still be used, false otherwise
    */
   public boolean isOpen() {
-    return scanner != null && scanner.hasNextLine();
+    return scanner.hasNextLine();
   }
 }
