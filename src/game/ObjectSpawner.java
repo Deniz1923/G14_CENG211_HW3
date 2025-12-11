@@ -20,7 +20,7 @@ import models.penguins.*;
  * without conflicts. The spawner continues attempting placements until
  * all required objects are successfully placed.
  *
- * @author CENG211 Group
+ * @author CENG211 14. Group
  * @version 1.0
  * @since 2025-12-08
  */

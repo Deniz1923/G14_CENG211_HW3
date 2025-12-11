@@ -354,7 +354,7 @@ public class GameManager {
     }
 
     /**
-     * Handles AI penguin turn with SMART decision making.
+     * Handles AI penguin turn with SMART decision-making.
      * Priorities: 1. Food, 2. Safe Hazard/Stop, 3. Water/Hole (Last Resort)
      */
     private void handleAITurn(Penguin p) {

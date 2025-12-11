@@ -4,7 +4,6 @@ import models.Position;
 
 /**
  * The common interface for all entities that can exist on the Icy Terrain Grid.
- *
  * This includes Penguins, Food Items, and Hazards. The Grid is composed primarily of objects
  * implementing this interface.
  */
