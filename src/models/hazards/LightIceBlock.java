@@ -7,14 +7,13 @@ import models.penguins.Penguin;
 
 public class LightIceBlock extends Hazard {
 
-    public LightIceBlock(Position position) {
-        super(position, true, HazardType.LIGHT_ICE_BLOCK);
-    }
+  public LightIceBlock(Position position) {
+    super(position, true, HazardType.LIGHT_ICE_BLOCK);
+  }
 
-    @Override
-    public void onCollision(Penguin penguin, TerrainGrid grid) {
-        System.out.println(penguin.getNotation() + " is stunned by hitting the ice block!");
-        penguin.setStunned(true);
-    }
-
+  @Override
+  public void onCollision(Penguin penguin, TerrainGrid grid) {
+    System.out.println(penguin.getNotation() + " is stunned by hitting the ice block!");
+    penguin.setStunned(true);
+  }
 }

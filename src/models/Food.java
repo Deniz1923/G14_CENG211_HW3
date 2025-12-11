@@ -27,7 +27,7 @@ public class Food implements ITerrainObject {
   }
 
   public void setPosition(Position position) {
-    if(position != null){
+    if (position != null) {
       this.position = position;
     }
   }

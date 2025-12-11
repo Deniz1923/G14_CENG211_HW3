@@ -13,11 +13,11 @@ import models.penguins.RockhopperPenguin;
 import models.penguins.RoyalPenguin;
 
 /**
- * Responsible for generating and placing initial game objects onto the terrain grid.
- * This includes penguins, hazards, and food items according to the game rules.
+ * Responsible for generating and placing initial game objects onto the terrain grid. This includes
+ * penguins, hazards, and food items according to the game rules.
  *
- * This class ensures that objects are spawned in valid locations and do not
- * overlap where prohibited.
+ * <p>This class ensures that objects are spawned in valid locations and do not overlap where
+ * prohibited.
  */
 public class ObjectSpawner {
   private final int GRID_SIZE = TerrainGrid.GRID_SIZE;
@@ -26,8 +26,8 @@ public class ObjectSpawner {
   private final int FOOD_COUNT = 20;
 
   /**
-   * Orchestrates the spawning of all game entities.
-   * Calls specific methods to place penguins, hazards, and food on the provided grid.
+   * Orchestrates the spawning of all game entities. Calls specific methods to place penguins,
+   * hazards, and food on the provided grid.
    *
    * @param grid The TerrainGrid where objects will be placed.
    */
@@ -38,12 +38,11 @@ public class ObjectSpawner {
   }
 
   /**
-   * Generates and places 3 penguins on random edge coordinates of the grid.
-   * It ensures that no two penguins occupy the same square.
-   * It also assigns IDs P1, P2, and P3 to the penguins.
+   * Generates and places 3 penguins on random edge coordinates of the grid. It ensures that no two
+   * penguins occupy the same square. It also assigns IDs P1, P2, and P3 to the penguins.
    *
-   * This method includes a safety mechanism to prevent infinite loops if valid
-   * positions cannot be found within a reasonable number of attempts.
+   * <p>This method includes a safety mechanism to prevent infinite loops if valid positions cannot
+   * be found within a reasonable number of attempts.
    *
    * @param grid The grid to place penguins on.
    * @throws RuntimeException If penguins cannot be spawned after 1000 attempts.
@@ -71,8 +70,8 @@ public class ObjectSpawner {
   }
 
   /**
-   * Generates and places 15 hazards randomly across the grid.
-   * Ensures hazards do not overlap with existing objects.
+   * Generates and places 15 hazards randomly across the grid. Ensures hazards do not overlap with
+   * existing objects.
    *
    * @param grid The grid to place hazards on.
    */
@@ -89,8 +88,8 @@ public class ObjectSpawner {
   }
 
   /**
-   * Generates and places 20 food items randomly across the grid.
-   * Ensures food items do not overlap with existing objects.
+   * Generates and places 20 food items randomly across the grid. Ensures food items do not overlap
+   * with existing objects.
    *
    * @param grid The grid to place food on.
    */
@@ -107,8 +106,8 @@ public class ObjectSpawner {
   }
 
   /**
-   * Calculates a random position situated on the perimeter of the grid.
-   * Used specifically for penguin placement rules.
+   * Calculates a random position situated on the perimeter of the grid. Used specifically for
+   * penguin placement rules.
    *
    * @return A Position object located on one of the four edges.
    */
@@ -116,28 +115,26 @@ public class ObjectSpawner {
     int side = RandUtil.getRandomInt(4);
     int x = 0;
     int y =
-            switch (side) {
-              // top edge
-              case 0 -> {
-                x = RandUtil.getRandomInt(GRID_SIZE);
-                yield 0;
-              }
-              // bottom edge
-              case 1 -> {
-                x = RandUtil.getRandomInt(GRID_SIZE);
-                yield GRID_SIZE - 1;
-              }
-              // left edge
-              case 2 -> {
-                yield RandUtil.getRandomInt(GRID_SIZE);
-              }
-              // right edge
-              case 3 -> {
-                x = GRID_SIZE - 1;
-                yield RandUtil.getRandomInt(GRID_SIZE);
-              }
-              default -> 0;
-            };
+        switch (side) {
+          // top edge
+          case 0 -> {
+            x = RandUtil.getRandomInt(GRID_SIZE);
+            yield 0;
+          }
+          // bottom edge
+          case 1 -> {
+            x = RandUtil.getRandomInt(GRID_SIZE);
+            yield GRID_SIZE - 1;
+          }
+          // left edge
+          case 2 -> RandUtil.getRandomInt(GRID_SIZE);
+          // right edge
+          case 3 -> {
+            x = GRID_SIZE - 1;
+            yield RandUtil.getRandomInt(GRID_SIZE);
+          }
+          default -> 0;
+        };
     return new Position(x, y);
   }
 

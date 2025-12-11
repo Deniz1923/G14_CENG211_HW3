@@ -1,7 +1,6 @@
 package game.util;
 
 import enums.Direction;
-
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -37,7 +36,7 @@ public class InputMaster {
     }
   }
 
-    /** Get direction input from user */
+  /** Get direction input from user */
   public Direction getDirectionInput(String prompt) {
     while (true) {
       System.out.print(prompt);
@@ -69,7 +68,7 @@ public class InputMaster {
   /** Close the scanner when done */
   public void close() {
     try {
-        scanner.close();
+      scanner.close();
     } catch (Exception e) {
       System.err.println("Warning: Failed to close scanner properly.");
     }

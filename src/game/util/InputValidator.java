@@ -16,15 +16,15 @@ public class InputValidator {
     }
   }
 
-    /** Validate direction input (U/D/L/R) */
+  /** Validate direction input (U/D/L/R) */
   public static boolean isValidDirection(String input) {
     if (input == null) return false;
     try {
       String normalized = input.trim().toUpperCase();
       return normalized.equals("U")
-              || normalized.equals("D")
-              || normalized.equals("L")
-              || normalized.equals("R");
+          || normalized.equals("D")
+          || normalized.equals("L")
+          || normalized.equals("R");
     } catch (Exception e) {
       return false;
     }

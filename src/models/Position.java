@@ -2,9 +2,7 @@ package models;
 
 import java.util.Objects;
 
-/**
- * Represents a 2D coordinate with non-negative X and Y values.
- */
+/** Represents a 2D coordinate with non-negative X and Y values. */
 public class Position {
   private final int x; // Made final for immutability
   private final int y;
@@ -23,9 +21,7 @@ public class Position {
     this.y = other.y;
   }
 
-  /**
-   * Initializes a new position at (0, 0).
-   */
+  /** Initializes a new position at (0, 0). */
   public Position() {
     this(0, 0);
   }
