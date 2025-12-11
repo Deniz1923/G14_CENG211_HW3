@@ -140,14 +140,21 @@ public class IcyTerrain {
                     if (obj instanceof models.penguins.Penguin) {
                         models.penguins.Penguin p = (models.penguins.Penguin) obj;
 
-                        // Convert type to readable name
-                        String typeName = switch (p.getType()) {
-                            case "emperor" -> "Emperor Penguin";
-                            case "king" -> "King Penguin";
-                            case "royal" -> "Royal Penguin";
-                            case "rockhopper" -> "Rockhopper Penguin";
-                            default -> "Unknown Penguin";
-                        };
+                        // Determine penguin type by class instance
+                        String typeName;
+                        if (p instanceof models.penguins.EmperorPenguin) {
+                            typeName = "Emperor Penguin";
+                        } else if (p instanceof models.penguins.KingPenguin) {
+                            typeName = "King Penguin";
+                        } else if (p instanceof models.penguins.RoyalPenguin) {
+                            typeName = "Royal Penguin";
+                        } else if (p instanceof models.penguins.RockhopperPenguin) {
+                            typeName = "Rockhopper Penguin";
+                        } else {
+                            typeName = "Unknown Penguin";
+                            System.err.println("Warning: Unknown penguin type detected: " +
+                                    p.getClass().getSimpleName());
+                        }
 
                         // Extract number from notation (P1 → 1)
                         String penguinNumber = p.getNotation().substring(1);

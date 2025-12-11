@@ -139,6 +139,6 @@ public class Food implements ITerrainObject {
      */
     @Override
     public String toString() {
-        return type.toString() + " (" + weight + " units)";
+        return type + " (" + weight + " units)";
     }
 }

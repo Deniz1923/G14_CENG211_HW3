@@ -128,9 +128,8 @@ public class RoyalPenguin extends Penguin {
             if (obstacle == null) {
                 // Empty square - just move
                 updatePositionOnGrid(grid, nextPos);
-            } else if (obstacle instanceof Food) {
+            } else if (obstacle instanceof Food food) {
                 // Collect food and move there
-                Food food = (Food) obstacle;
                 grid.removeObject(nextPos);
                 updatePositionOnGrid(grid, nextPos);
                 pickupFood(food);
@@ -140,8 +139,7 @@ public class RoyalPenguin extends Penguin {
                 updatePositionOnGrid(grid, nextPos);
 
                 // Apply collision effects if it's a hazard
-                if (obstacle instanceof interfaces.IHazard) {
-                    interfaces.IHazard hazard = (interfaces.IHazard) obstacle;
+                if (obstacle instanceof interfaces.IHazard hazard) {
                     hazard.onCollision(this, grid);
                 }
             }

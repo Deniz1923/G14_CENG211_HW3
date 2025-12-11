@@ -133,106 +133,117 @@ public class RockhopperPenguin extends Penguin {
 
                 ITerrainObject obstacle = grid.getObjectAt(nextPos);
 
-                if (obstacle == null) {
-                    // Empty square, continue sliding
-                    updatePositionOnGrid(grid, nextPos);
-                } else if (obstacle instanceof Food) {
-                    // Food found - collect and stop
-                    Food food = (Food) obstacle;
-                    grid.removeObject(nextPos);
-                    updatePositionOnGrid(grid, nextPos);
-                    pickupFood(food);
-                    isMoving = false;
-                } else if (obstacle instanceof IHazard && canJump && useAbilityThisTurn) {
-                    // Attempt to jump over the hazard
-                    IHazard hazard = (IHazard) obstacle;
-                    System.out.println(getNotation() + " attempts to jump over " +
-                            hazard.getNotation() + "!");
-
-                    // Calculate landing position (one square beyond hazard)
-                    int landY = nextY;
-                    int landX = nextX;
-
-                    switch (direction) {
-                        case UP: landY--; break;
-                        case DOWN: landY++; break;
-                        case LEFT: landX--; break;
-                        case RIGHT: landX++; break;
+                switch (obstacle) {
+                    case null ->
+                        // Empty square, continue sliding
+                            updatePositionOnGrid(grid, nextPos);
+                    case Food food -> {
+                        // Food found - collect and stop
+                        grid.removeObject(nextPos);
+                        updatePositionOnGrid(grid, nextPos);
+                        pickupFood(food);
+                        isMoving = false;
                     }
-
-                    Position landPos = new Position(landX, landY);
-
-                    // Check if landing position is valid
-                    if (landX < 0 || landY < 0 || landY >= 10 || landX >= 10) {
-                        System.out.println(getNotation() +
-                                " fails to jump and falls into water!");
-                        grid.removeObject(getPosition());
-                        setPosition(null);
-                        canJump = false;
-                        useAbilityThisTurn = false;
-                        return;
-                    }
-
-                    ITerrainObject landingObstacle = grid.getObjectAt(landPos);
-
-                    if (landingObstacle == null) {
-                        // Successful jump!
-                        System.out.println(getNotation() + " successfully jumps over " +
+                    case IHazard hazard when canJump && useAbilityThisTurn -> {
+                        // Attempt to jump over the hazard
+                        System.out.println(getNotation() + " attempts to jump over " +
                                 hazard.getNotation() + "!");
-                        updatePositionOnGrid(grid, landPos);
-                        canJump = false;
-                        useAbilityThisTurn = false;
-                        // Continue sliding from landing position
-                    } else {
-                        // Landing spot not empty - jump fails
-                        System.out.println(getNotation() +
-                                " fails to jump - landing spot is not empty!");
+
+                        // Calculate landing position (one square beyond hazard)
+                        int landY = nextY;
+                        int landX = nextX;
+
+                        switch (direction) {
+                            case UP:
+                                landY--;
+                                break;
+                            case DOWN:
+                                landY++;
+                                break;
+                            case LEFT:
+                                landX--;
+                                break;
+                            case RIGHT:
+                                landX++;
+                                break;
+                        }
+
+                        Position landPos = new Position(landX, landY);
+
+                        // Check if landing position is valid
+                        if (landX < 0 || landY < 0 || landY >= 10 || landX >= 10) {
+                            System.out.println(getNotation() +
+                                    " fails to jump and falls into water!");
+                            grid.removeObject(getPosition());
+                            setPosition(null);
+                            canJump = false;
+                            useAbilityThisTurn = false;
+                            return;
+                        }
+
+                        ITerrainObject landingObstacle = grid.getObjectAt(landPos);
+
+                        if (landingObstacle == null) {
+                            // Successful jump!
+                            System.out.println(getNotation() + " successfully jumps over " +
+                                    hazard.getNotation() + "!");
+                            updatePositionOnGrid(grid, landPos);
+                            canJump = false;
+                            useAbilityThisTurn = false;
+                            // Continue sliding from landing position
+                        } else {
+                            // Landing spot not empty - jump fails
+                            System.out.println(getNotation() +
+                                    " fails to jump - landing spot is not empty!");
+                            hazard.onCollision(this, grid);
+
+                            // If penguin was eliminated, stop
+                            if (getPosition() == null) {
+                                return;
+                            }
+
+                            // Slide the hazard if it can slide
+                            if (hazard.canSlide()) {
+                                grid.removeObject(hazard.getPosition());
+                                slideHazard(grid, hazard, direction);
+                            }
+
+                            canJump = false;
+                            useAbilityThisTurn = false;
+                            isMoving = false;
+                        }
+                    }
+                    case Penguin otherPenguin -> {
+                        // Collision with another penguin
+                        System.out.println(getNotation() + " collides with " +
+                                otherPenguin.getNotation() + "!");
+                        System.out.println(otherPenguin.getNotation() +
+                                " starts sliding instead!");
+                        isMoving = false;
+                        otherPenguin.slide(grid, direction);
+                    }
+                    case IHazard hazard -> {
+                        // Normal hazard collision (no jump ability active)
+                        System.out.println(getNotation() + " collides with " +
+                                hazard.getNotation() + "!");
+
                         hazard.onCollision(this, grid);
 
-                        // If penguin was eliminated, stop
+                        // Check if penguin was eliminated
                         if (getPosition() == null) {
                             return;
                         }
 
-                        // Slide the hazard if it can slide
+                        // Slide the hazard if possible
                         if (hazard.canSlide()) {
                             grid.removeObject(hazard.getPosition());
                             slideHazard(grid, hazard, direction);
                         }
 
-                        canJump = false;
-                        useAbilityThisTurn = false;
                         isMoving = false;
                     }
-                } else if (obstacle instanceof Penguin) {
-                    // Collision with another penguin
-                    Penguin otherPenguin = (Penguin) obstacle;
-                    System.out.println(getNotation() + " collides with " +
-                            otherPenguin.getNotation() + "!");
-                    System.out.println(otherPenguin.getNotation() +
-                            " starts sliding instead!");
-                    isMoving = false;
-                    otherPenguin.slide(grid, direction);
-                } else if (obstacle instanceof IHazard) {
-                    // Normal hazard collision (no jump ability active)
-                    IHazard hazard = (IHazard) obstacle;
-                    System.out.println(getNotation() + " collides with " +
-                            hazard.getNotation() + "!");
-
-                    hazard.onCollision(this, grid);
-
-                    // Check if penguin was eliminated
-                    if (getPosition() == null) {
-                        return;
+                    default -> {
                     }
-
-                    // Slide the hazard if possible
-                    if (hazard.canSlide()) {
-                        grid.removeObject(hazard.getPosition());
-                        slideHazard(grid, hazard, direction);
-                    }
-
-                    isMoving = false;
                 }
             }
 
@@ -279,27 +290,31 @@ public class RockhopperPenguin extends Penguin {
 
                 ITerrainObject obstacle = grid.getObjectAt(nextPos);
 
-                if (obstacle == null) {
-                    hazard.setPosition(nextPos);
-                    grid.placeObject(nextPos, (ITerrainObject) hazard);
-                    currentPos = nextPos;
-                } else if (obstacle instanceof Food) {
-                    System.out.println(hazard.getNotation() + " destroys " +
-                            obstacle.getNotation() + "!");
-                    grid.removeObject(nextPos);
-                    hazard.setPosition(nextPos);
-                    grid.placeObject(nextPos, (ITerrainObject) hazard);
-                    currentPos = nextPos;
-                } else if (obstacle instanceof HoleInIce) {
-                    HoleInIce hole = (HoleInIce) obstacle;
-                    System.out.println(hazard.getNotation() + " falls into " +
-                            hole.getNotation() + " and plugs it!");
-                    hole.plug();
-                    hazardMoving = false;
-                } else {
-                    hazard.setPosition(currentPos);
-                    grid.placeObject(currentPos, (ITerrainObject) hazard);
-                    hazardMoving = false;
+                switch (obstacle) {
+                    case null -> {
+                        hazard.setPosition(nextPos);
+                        grid.placeObject(nextPos, (ITerrainObject) hazard);
+                        currentPos = nextPos;
+                    }
+                    case Food food -> {
+                        System.out.println(hazard.getNotation() + " destroys " +
+                                obstacle.getNotation() + "!");
+                        grid.removeObject(nextPos);
+                        hazard.setPosition(nextPos);
+                        grid.placeObject(nextPos, (ITerrainObject) hazard);
+                        currentPos = nextPos;
+                    }
+                    case HoleInIce hole -> {
+                        System.out.println(hazard.getNotation() + " falls into " +
+                                hole.getNotation() + " and plugs it!");
+                        hole.plug();
+                        hazardMoving = false;
+                    }
+                    default -> {
+                        hazard.setPosition(currentPos);
+                        grid.placeObject(currentPos, (ITerrainObject) hazard);
+                        hazardMoving = false;
+                    }
                 }
             }
         } catch (Exception e) {
