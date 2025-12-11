@@ -4,11 +4,8 @@ import enums.Direction;
 import game.util.GridRenderer;
 import game.util.InputMaster;
 import game.util.RandUtil;
-import interfaces.IHazard;
-import interfaces.ITerrainObject;
 import models.Food;
 import models.Position;
-import models.hazards.HoleInIce;
 import models.penguins.Penguin;
 import models.penguins.RockhopperPenguin;
 import models.penguins.RoyalPenguin;
@@ -16,8 +13,8 @@ import models.penguins.RoyalPenguin;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
-import static game.TerrainGrid.GRID_SIZE;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Manages the game flow, turns, and player interactions.
@@ -45,6 +42,8 @@ import static game.TerrainGrid.GRID_SIZE;
  * @since 2025-12-08
  */
 public class GameManager {
+    private static final Logger LOGGER = Logger.getLogger(GameManager.class.getName());
+
     /**
      * Maximum number of turns in the game
      */
@@ -149,8 +148,7 @@ public class GameManager {
             System.out.println("\n***** GAME OVER *****");
             calculateScore();
         } catch (Exception e) {
-            System.err.println("Critical error in game loop: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Critical error in game loop", e);
         }
     }
 
@@ -161,7 +159,7 @@ public class GameManager {
      */
     private void selectPlayerPenguin() {
         if (penguins.isEmpty()) {
-            System.err.println("GameManager Warning: No penguins found for player selection.");
+            LOGGER.log(Level.WARNING, "GameManager Warning: No penguins found for player selection.");
             return;
         }
 
@@ -172,7 +170,7 @@ public class GameManager {
             selected.setPlayer(true);
             System.out.println("\n" + selected.getNotation() + " is YOUR PENGUIN!");
         } catch (Exception e) {
-            System.err.println("Error selecting player penguin: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Error selecting player penguin", e);
         }
     }
 
@@ -228,7 +226,7 @@ public class GameManager {
                         p.measureInventory() + " units");
             }
         } catch (Exception e) {
-            System.err.println("Error calculating scores: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Error calculating scores", e);
         }
     }
 
@@ -266,7 +264,6 @@ public class GameManager {
             System.out.println(turnHeader);
 
             // Print penguin type info
-            // Refactored: Uses Enum displayName via p.getType()
             System.out.println(p.getNotation() + " (" + p.getType() + " Penguin) is preparing to move.");
 
             if (p.isPlayer()) {
@@ -277,7 +274,7 @@ public class GameManager {
                 handleAITurn(p);
             }
         } catch (Exception e) {
-            System.err.println("Error processing turn: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Error processing turn", e);
         }
     }
 
@@ -349,7 +346,7 @@ public class GameManager {
                         " IS REMOVED FROM THE GAME!");
             }
         } catch (Exception e) {
-            System.err.println("Error handling player turn: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Error handling player turn", e);
         }
     }
 
@@ -402,7 +399,7 @@ public class GameManager {
         boolean useAbility = false;
 
         if (p instanceof RockhopperPenguin) {
-            // Rockhopper Logic: Exception to the 30% rule.
+            // Rock hopper Logic: Exception to the 30% rule.
             // "The first time they decide to move in the direction of a hazard, they will automatically use their action."
             if (!p.isAbilityUsed() && isFacingHazard(p, chosenDir)) {
                 useAbility = true;
@@ -470,11 +467,12 @@ public class GameManager {
             }
 
             // Check boundaries
-            if (cx < 0 || cy < 0 || cx >= GRID_SIZE || cy >= GRID_SIZE) {
+            if (cx < 0 || cy < 0 || cx >= TerrainGrid.GRID_SIZE || cy >= TerrainGrid.GRID_SIZE) {
                 return MoveOutcome.BAD_WATER_OR_HOLE; // Falls in water
             }
 
-            ITerrainObject obj = grid.getObjectAt(new Position(cx, cy));
+            // Using fully qualified objects since Food/HoleInIce logic is internal
+            interfaces.ITerrainObject obj = grid.getObjectAt(new Position(cx, cy));
 
             switch (obj) {
                 case null -> {
@@ -483,7 +481,7 @@ public class GameManager {
                 case Food food -> {
                     return MoveOutcome.FOOD; // Found food!
                 }
-                case HoleInIce hole -> {
+                case models.hazards.HoleInIce hole -> {
                     if (!hole.isPlugged()) {
                         return MoveOutcome.BAD_WATER_OR_HOLE; // Unplugged hole is fatal
                     }
@@ -514,27 +512,25 @@ public class GameManager {
                 case LEFT -> cx--;
                 case RIGHT -> cx++;
             }
-            if (cx < 0 || cy < 0 || cx >= GRID_SIZE || cy >= GRID_SIZE) return false;
+            if (cx < 0 || cy < 0 || cx >= TerrainGrid.GRID_SIZE || cy >= TerrainGrid.GRID_SIZE) return false;
 
-            ITerrainObject obj = grid.getObjectAt(new Position(cx, cy));
+            interfaces.ITerrainObject obj = grid.getObjectAt(new Position(cx, cy));
 
-            // Skip empty squares and food (Rockhopper doesn't jump over food usually,
-            // rules say "prepare to jump over one hazard")
             switch (obj) {
                 case null -> {
                     continue;
                 }
-                case Food _ -> {
+                case Food food -> {
                     continue;
                 }
 
                 // If it's a hazard (and not a plugged hole, handled generally as hazard here)
-                case IHazard _ -> {
+                case interfaces.IHazard iHazard -> {
                     return true;
                 }
 
                 // Penguins are not hazards for jumping purposes
-                case Penguin _ -> {
+                case Penguin penguin -> {
                     return false;
                 }
                 default -> {
@@ -563,13 +559,12 @@ public class GameManager {
             }
 
             // Check bounds (Water)
-            if (nx < 0 || ny < 0 || nx >= GRID_SIZE || ny >= GRID_SIZE) continue;
+            if (nx < 0 || ny < 0 || nx >= TerrainGrid.GRID_SIZE || ny >= TerrainGrid.GRID_SIZE) continue;
 
-            ITerrainObject obj = grid.getObjectAt(new Position(nx, ny));
+            interfaces.ITerrainObject obj = grid.getObjectAt(new Position(nx, ny));
 
-            // Avoid Hazards (The PDF implies avoiding hazards for the special step)
-            // Note: Holes are Hazards, so this avoids them too.
-            if (obj instanceof IHazard) continue;
+            // Avoid Hazards
+            if (obj instanceof interfaces.IHazard) continue;
 
             // Empty or Food or Penguin (Safe to step onto/interact with safely)
             safeDirs.add(d);
@@ -599,9 +594,9 @@ public class GameManager {
             penguins.clear();
 
             // Scan entire grid for penguins
-            for (int y = 0; y < GRID_SIZE; y++) {
-                for (int x = 0; x < GRID_SIZE; x++) {
-                    ITerrainObject object = grid.getObjectAt(new Position(x, y));
+            for (int y = 0; y < TerrainGrid.GRID_SIZE; y++) {
+                for (int x = 0; x < TerrainGrid.GRID_SIZE; x++) {
+                    interfaces.ITerrainObject object = grid.getObjectAt(new Position(x, y));
                     if (object instanceof Penguin) {
                         penguins.add((Penguin) object);
                     }
@@ -612,30 +607,11 @@ public class GameManager {
             penguins.sort(Comparator.comparing(Penguin::getNotation));
 
             if (penguins.isEmpty()) {
-                System.err.println("GameManager Warning: No penguins found on grid!");
+                LOGGER.log(Level.WARNING, "GameManager Warning: No penguins found on grid!");
             }
         } catch (Exception e) {
-            System.err.println("Error sorting penguins: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Error sorting penguins", e);
         }
-    }
-
-    /**
-     * Gets the list of all penguins in the game.
-     * Used primarily for testing purposes.
-     *
-     * @return An unmodifiable view of the penguin list
-     */
-    public List<Penguin> getPenguins() {
-        return new ArrayList<>(penguins);
-    }
-
-    /**
-     * Gets the terrain grid being managed.
-     *
-     * @return The TerrainGrid instance
-     */
-    public TerrainGrid getGrid() {
-        return grid;
     }
 
     /**

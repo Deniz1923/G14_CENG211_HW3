@@ -3,6 +3,7 @@ package game;
 import game.util.GridRenderer;
 import game.util.InputMaster;
 import models.penguins.Penguin;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,19 +31,29 @@ import java.util.logging.Logger;
 public class IcyTerrain {
     private static final Logger LOGGER = Logger.getLogger(IcyTerrain.class.getName());
 
-    /** Handles user input from console */
+    /**
+     * Handles user input from console
+     */
     private final InputMaster inputMaster;
 
-    /** Renders the grid to console display */
+    /**
+     * Renders the grid to console display
+     */
     private final GridRenderer renderer;
 
-    /** Spawns penguins, hazards, and food on the grid */
+    /**
+     * Spawns penguins, hazards, and food on the grid
+     */
     private final ObjectSpawner spawner;
 
-    /** The 10x10 game grid containing all objects */
+    /**
+     * The 10x10 game grid containing all objects
+     */
     private TerrainGrid gameGrid;
 
-    /** Manages game flow and turn processing */
+    /**
+     * Manages game flow and turn processing
+     */
     private GameManager gameManager;
 
     /**
@@ -149,6 +160,7 @@ public class IcyTerrain {
      * Gets the current game grid.
      * Used primarily for testing or external grid access.
      * <p>
+     *
      * @return The TerrainGrid instance
      */
     public TerrainGrid getGameGrid() {

@@ -11,9 +11,9 @@ public interface IHazard extends ITerrainObject {
 
     /**
      * Handles the logic when a Penguin collides with this Hazard.
-     *
+     * <p>
      * This method should implement specific consequences based on HazardType:
-     *
+     * <p>
      * - LightIceBlock: Stuns penguin, block starts sliding.
      * - HeavyIceBlock: Penguin stops, loses lightest food item.
      * - SeaLion: Penguin bounces back, Sea Lion slides forward.
@@ -26,7 +26,7 @@ public interface IHazard extends ITerrainObject {
 
     /**
      * Determines if this specific hazard is capable of sliding on the ice.
-     *
+     * <p>
      * Used to check if the hazard should continue moving after a collision (e.g., LightIceBlock,
      * SeaLion).
      *

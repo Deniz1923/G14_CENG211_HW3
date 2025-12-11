@@ -181,7 +181,7 @@ public class RandUtil {
      * Generates a random integer between 0 (inclusive) and upper_bound (exclusive).
      * This is a general-purpose random integer generator used throughout the game.
      * <p>
-     * Range: [0, upper_bound]
+     * Range: [0, upper_bound)
      * <p>
      * Example usage:
      * int randomIndex = getRandomInt(3);  // Returns 0, 1, or 2

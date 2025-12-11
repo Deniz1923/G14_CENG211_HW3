@@ -22,19 +22,19 @@ import static game.TerrainGrid.GRID_SIZE;
  *
  * <p>There are four types of penguins, each with unique special abilities:</p>
  * <ul>
- *   <li>KingPenguin - Can stop at the 5th square while sliding</li>
- *   <li>EmperorPenguin - Can stop at the 3rd square while sliding</li>
- *   <li>RoyalPenguin - Can safely move one square before sliding</li>
- *   <li>RockhopperPenguin - Can jump over one hazard in their path</li>
+ * <li>KingPenguin - Can stop at the 5th square while sliding</li>
+ * <li>EmperorPenguin - Can stop at the 3rd square while sliding</li>
+ * <li>RoyalPenguin - Can safely move one square before sliding</li>
+ * <li>RockhopperPenguin - Can jump over one hazard in their path</li>
  * </ul>
  *
  * <p><b>Game mechanics:</b></p>
  * <ul>
- *   <li>Penguins slide continuously until hitting an object or edge</li>
- *   <li>Food is automatically collected when reached (penguin stops)</li>
- *   <li>Colliding with another penguin transfers movement</li>
- *   <li>Hazards have various effects (stun, remove food, eliminate, bounce)</li>
- *   <li>Falling into water eliminates penguin but food counts in scoring</li>
+ * <li>Penguins slide continuously until hitting an object or edge</li>
+ * <li>Food is automatically collected when reached (penguin stops)</li>
+ * <li>Colliding with another penguin transfers movement</li>
+ * <li>Hazards have various effects (stun, remove food, eliminate, bounce)</li>
+ * <li>Falling into water eliminates penguin but food counts in scoring</li>
  * </ul>
  *
  * @author CENG211 Group
@@ -42,6 +42,12 @@ import static game.TerrainGrid.GRID_SIZE;
  * @since 2025-12-08
  */
 public abstract class Penguin implements ITerrainObject {
+    /**
+     * Maximum number of times a penguin can bounce off Sea Lions in a single move.
+     * Prevents infinite recursion (StackOverflow) if trapped between two Sea Lions.
+     */
+    private static final int MAX_BOUNCES = 5;
+
     /**
      * List of food items collected by this penguin
      */
@@ -208,24 +214,24 @@ public abstract class Penguin implements ITerrainObject {
     }
 
     /**
-     * Slides this penguin in the specified direction.
-     * The penguin continues sliding until it hits an obstacle, food, or edge.
-     *
-     * <p>Sliding behavior:</p>
-     * <ul>
-     *   <li>Empty squares - continue sliding</li>
-     *   <li>Food - collect and stop</li>
-     *   <li>Another penguin - stop and transfer movement to them</li>
-     *   <li>SeaLion - bounce back in opposite direction</li>
-     *   <li>Other hazards - collision effects apply</li>
-     *   <li>Grid edge - fall into water (eliminated)</li>
-     * </ul>
+     * Public entry point for sliding. Starts the recursive slide process with 0 bounces.
      *
      * @param grid      The terrain grid
      * @param direction The direction to slide (UP, DOWN, LEFT, RIGHT)
-     * @throws IllegalArgumentException if grid or direction is null
      */
     public void slide(TerrainGrid grid, Direction direction) {
+        slideRecursive(grid, direction, 0);
+    }
+
+    /**
+     * Internal recursive method for sliding logic.
+     * Tracks recursion depth (bounces) to prevent StackOverflowError.
+     *
+     * @param grid        The terrain grid
+     * @param direction   The direction to slide
+     * @param bounceCount Current recursion depth for SeaLion bounces
+     */
+    protected void slideRecursive(TerrainGrid grid, Direction direction, int bounceCount) {
         if (direction == null) {
             throw new IllegalArgumentException(
                     "Penguin Error: Direction cannot be null."
@@ -235,6 +241,12 @@ public abstract class Penguin implements ITerrainObject {
             throw new IllegalArgumentException(
                     "Penguin Error: TerrainGrid cannot be null."
             );
+        }
+
+        // Safety check: Stop if bouncing too many times
+        if (bounceCount > MAX_BOUNCES) {
+            System.out.println(getNotation() + " is too dizzy from bouncing and stops!");
+            return;
         }
 
         try {
@@ -313,8 +325,8 @@ public abstract class Penguin implements ITerrainObject {
                                 getDirectionName(oppositeDir) + "!");
                         isMoving = false;
 
-                        // Penguin slides in opposite direction
-                        slide(grid, oppositeDir);
+                        // CRITICAL FIX: Use recursive call with incremented bounce count
+                        slideRecursive(grid, oppositeDir, bounceCount + 1);
                     }
                     case IHazard hazard -> {
                         // Collision with other hazards

@@ -12,18 +12,18 @@ import models.penguins.Penguin;
  * the penguin's original momentum and starts sliding forward.
  *
  * <p><b>Characteristics</b>:
- *   <p>Can slide (canSlide = true)
- *   <p>Bounces penguins in opposite direction
- *   <p>Inherits movement from colliding penguin
- *   <p>Can fall off edges of the grid
- *   <p>Can destroy food items in its path
- *   <p>Can plug holes when falling into them
- *   <p>Stops when colliding with other penguins
- *   <p>
- *   <p><b>Collision mechanics:</b>
- *   <p>Penguin bounces backward (opposite direction)
- *   <p>SeaLion slides forward (original direction)
- *   <p>Both can collide with other objects during their slides
+ * <p>Can slide (canSlide = true)
+ * <p>Bounces penguins in opposite direction
+ * <p>Inherits movement from colliding penguin
+ * <p>Can fall off edges of the grid
+ * <p>Can destroy food items in its path
+ * <p>Can plug holes when falling into them
+ * <p>Stops when colliding with other penguins
+ * <p>
+ * <p><b>Collision mechanics:</b>
+ * <p>Penguin bounces backward (opposite direction)
+ * <p>SeaLion slides forward (original direction)
+ * <p>Both can collide with other objects during their slides
  * </ul>
  *
  * @author CENG211 14. Group
@@ -53,11 +53,11 @@ public class SeaLion extends Hazard {
      * in the Penguin.slide() method to avoid circular dependencies.</p>
      *
      * <p>Collision sequence:
-     *   <p>Penguin collides with SeaLion
-     *   <p>Collision message is printed
-     *   <p>SeaLion is removed from current position
-     *   <p>SeaLion slides in penguin's original direction
-     *   <p>Penguin bounces in opposite direction
+     * <p>Penguin collides with SeaLion
+     * <p>Collision message is printed
+     * <p>SeaLion is removed from current position
+     * <p>SeaLion slides in penguin's original direction
+     * <p>Penguin bounces in opposite direction
      *
      * @param penguin The penguin that collided with this sea lion
      * @param grid    The terrain grid (used by calling code for movement)

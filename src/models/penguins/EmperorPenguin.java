@@ -60,7 +60,7 @@ public class EmperorPenguin extends Penguin {
 
         try {
             if (useAbilityThisTurn) {
-                slideWithAbility(grid, direction, TARGET_SQUARE);
+                slideWithAbility(grid, direction);
                 useAbilityThisTurn = false;
             } else {
                 super.slide(grid, direction);
@@ -77,15 +77,14 @@ public class EmperorPenguin extends Penguin {
      *
      * @param grid      The terrain grid
      * @param direction The direction to slide
-     * @param stopAt    The target square number to stop at
      */
-    private void slideWithAbility(TerrainGrid grid, Direction direction, int stopAt) {
+    private void slideWithAbility(TerrainGrid grid, Direction direction) {
         System.out.println(getNotation() + " starts sliding " + getDirectionName(direction) + "!");
 
         int stepCount = 0;
         boolean isMoving = true;
 
-        while (isMoving && stepCount < stopAt) {
+        while (isMoving && stepCount < EmperorPenguin.TARGET_SQUARE) {
             stepCount++;
 
             int nextY = getPosition().getY();
@@ -113,20 +112,19 @@ public class EmperorPenguin extends Penguin {
             if (obstacle == null) {
                 // Empty square - continue sliding
                 updatePositionOnGrid(grid, nextPos);
-                if (stepCount == stopAt) {
+                if (stepCount == EmperorPenguin.TARGET_SQUARE) {
                     System.out.println(getNotation() + " stops at an empty square using its special action.");
                     isMoving = false;
                 }
-            } else if (obstacle instanceof Food) {
+            } else if (obstacle instanceof Food food) {
                 // Food found - collect and stop
-                Food food = (Food) obstacle;
                 grid.removeObject(nextPos);
                 updatePositionOnGrid(grid, nextPos);
                 pickupFood(food);
                 isMoving = false;
             } else {
                 // Hit an obstacle before reaching target
-                if (stepCount < stopAt) {
+                if (stepCount < EmperorPenguin.TARGET_SQUARE) {
                     System.out.println(getNotation() + " couldn't reach the 3rd square.");
                 }
                 handleObstacleCollision(grid, obstacle, direction);
@@ -144,13 +142,11 @@ public class EmperorPenguin extends Penguin {
      */
     private void handleObstacleCollision(TerrainGrid grid, ITerrainObject obstacle, Direction direction) {
         try {
-            if (obstacle instanceof Penguin) {
-                Penguin otherPenguin = (Penguin) obstacle;
+            if (obstacle instanceof Penguin otherPenguin) {
                 System.out.println(getNotation() + " collides with " + otherPenguin.getNotation() + "!");
                 System.out.println(otherPenguin.getNotation() + " starts sliding instead!");
                 otherPenguin.slide(grid, direction);
-            } else if (obstacle instanceof IHazard) {
-                IHazard hazard = (IHazard) obstacle;
+            } else if (obstacle instanceof IHazard hazard) {
                 System.out.println(getNotation() + " collides with " + hazard.getNotation() + "!");
                 hazard.onCollision(this, grid);
 
@@ -196,25 +192,29 @@ public class EmperorPenguin extends Penguin {
 
             ITerrainObject obstacle = grid.getObjectAt(nextPos);
 
-            if (obstacle == null) {
-                hazard.setPosition(nextPos);
-                grid.placeObject(nextPos, (ITerrainObject) hazard);
-                currentPos = nextPos;
-            } else if (obstacle instanceof Food) {
-                System.out.println(hazard.getNotation() + " destroys " + obstacle.getNotation() + "!");
-                grid.removeObject(nextPos);
-                hazard.setPosition(nextPos);
-                grid.placeObject(nextPos, (ITerrainObject) hazard);
-                currentPos = nextPos;
-            } else if (obstacle instanceof HoleInIce) {
-                HoleInIce hole = (HoleInIce) obstacle;
-                System.out.println(hazard.getNotation() + " falls into " + hole.getNotation() + " and plugs it!");
-                hole.plug();
-                hazardMoving = false;
-            } else {
-                hazard.setPosition(currentPos);
-                grid.placeObject(currentPos, (ITerrainObject) hazard);
-                hazardMoving = false;
+            switch (obstacle) {
+                case null -> {
+                    hazard.setPosition(nextPos);
+                    grid.placeObject(nextPos, (ITerrainObject) hazard);
+                    currentPos = nextPos;
+                }
+                case Food food -> {
+                    System.out.println(hazard.getNotation() + " destroys " + obstacle.getNotation() + "!");
+                    grid.removeObject(nextPos);
+                    hazard.setPosition(nextPos);
+                    grid.placeObject(nextPos, (ITerrainObject) hazard);
+                    currentPos = nextPos;
+                }
+                case HoleInIce hole -> {
+                    System.out.println(hazard.getNotation() + " falls into " + hole.getNotation() + " and plugs it!");
+                    hole.plug();
+                    hazardMoving = false;
+                }
+                default -> {
+                    hazard.setPosition(currentPos);
+                    grid.placeObject(currentPos, (ITerrainObject) hazard);
+                    hazardMoving = false;
+                }
             }
         }
     }

@@ -56,23 +56,31 @@ public class InputMaster {
      */
     public boolean getYesNoInput(String prompt) {
         if (prompt == null) {
-            throw new IllegalArgumentException(
-                    "InputMaster Error: Prompt cannot be null."
-            );
+            throw new IllegalArgumentException("InputMaster Error: Prompt cannot be null.");
         }
 
         while (true) {
             try {
                 System.out.print(prompt);
-                String input = scanner.nextLine();
 
-                if (InputValidator.isValidYesNo(input)) {
-                    return InputValidator.parseYesNo(input);
+                // CRITICAL FIX: Check if input is available to prevent infinite loop
+                if (scanner.hasNextLine()) {
+                    String input = scanner.nextLine();
+
+                    if (InputValidator.isValidYesNo(input)) {
+                        return InputValidator.parseYesNo(input);
+                    }
+                    System.out.println("Invalid input. Please enter Y or N.");
+                } else {
+                    // Stop the loop if no more input is available (EOF)
+                    throw new RuntimeException("End of input stream reached.");
                 }
-
-                System.out.println("Invalid input. Please enter Y or N.");
+            } catch (RuntimeException re) {
+                // Re-throw critical runtime exceptions (like stream end)
+                throw re;
             } catch (Exception e) {
                 System.err.println("Error reading input: " + e.getMessage());
+                // Break logic could be added here depending on desired behavior
                 System.out.println("Please try again.");
             }
         }
@@ -101,24 +109,30 @@ public class InputMaster {
      */
     public Direction getDirectionInput(String prompt) {
         if (prompt == null) {
-            throw new IllegalArgumentException(
-                    "InputMaster Error: Prompt cannot be null."
-            );
+            throw new IllegalArgumentException("InputMaster Error: Prompt cannot be null.");
         }
 
         while (true) {
             try {
                 System.out.print(prompt);
-                String input = scanner.nextLine();
 
-                if (InputValidator.isValidDirection(input)) {
-                    Direction direction = InputValidator.parseDirection(input);
-                    if (direction != null) {
-                        return direction;
+                // CRITICAL FIX: Check if input is available
+                if (scanner.hasNextLine()) {
+                    String input = scanner.nextLine();
+
+                    if (InputValidator.isValidDirection(input)) {
+                        Direction direction = InputValidator.parseDirection(input);
+                        if (direction != null) {
+                            return direction;
+                        }
                     }
+                    System.out.println("Invalid input. Please enter U, D, L, or R.");
+                } else {
+                    // Stop the loop if no more input is available (EOF)
+                    throw new RuntimeException("End of input stream reached.");
                 }
-
-                System.out.println("Invalid input. Please enter U, D, L, or R.");
+            } catch (RuntimeException re) {
+                throw re;
             } catch (Exception e) {
                 System.err.println("Error reading input: " + e.getMessage());
                 System.out.println("Please try again.");

@@ -38,8 +38,23 @@ public class TerrainGrid {
      *
      * @return The 2D array of terrain objects
      */
+    /**
+     * Gets a copy of the underlying 2D array of the terrain grid.
+     * Returns a defensive copy to prevent external modification of the internal array structure.
+     *
+     * @return A copy of the 2D array of terrain objects
+     */
     public ITerrainObject[][] getTerrainGrid() {
-        return terrainGrid;
+        // Create a new array of the same size
+        ITerrainObject[][] copy = new ITerrainObject[GRID_SIZE][GRID_SIZE];
+
+        // Copy each row to the new array
+        for (int i = 0; i < GRID_SIZE; i++) {
+            // System.arraycopy is efficient for copying array contents
+            System.arraycopy(this.terrainGrid[i], 0, copy[i], 0, GRID_SIZE);
+        }
+
+        return copy;
     }
 
     /**
@@ -61,8 +76,8 @@ public class TerrainGrid {
                     "TerrainGrid Error: Grid must have exactly " + GRID_SIZE + " rows."
             );
         }
-        for (int i = 0; i < terrainGrid.length; i++) {
-            if (terrainGrid[i] == null || terrainGrid[i].length != GRID_SIZE) {
+        for (ITerrainObject[] iTerrainObjects : terrainGrid) {
+            if (iTerrainObjects == null || iTerrainObjects.length != GRID_SIZE) {
                 throw new IllegalArgumentException(
                         "TerrainGrid Error: Each row must have exactly " + GRID_SIZE + " columns."
                 );

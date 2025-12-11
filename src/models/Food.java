@@ -7,7 +7,7 @@ import interfaces.ITerrainObject;
  * Represents a food item on the icy terrain that penguins can collect.
  * Each food item has a specific type (Krill, Crustacean, Anchovy, Squid, or Mackerel)
  * and a weight value between 1-5 units.
- *
+ * <p>
  * Food items implement ITerrainObject, allowing them to be placed on the grid.
  * When a penguin reaches a food item, the penguin collects it and adds it to
  * their inventory, contributing to their total carried weight.

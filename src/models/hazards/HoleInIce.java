@@ -12,11 +12,11 @@ import models.penguins.Penguin;
  * becomes plugged and can no longer eliminate objects.
  *
  * <p>Characteristics:
- *   <p>Cannot slide (canSlide = false)
- *   <p>Eliminates penguins that fall in (removed from game)
- *   <p>Can be plugged by sliding hazards (LightIceBlock or SeaLion)
- *   <p>Once plugged, sliding objects can pass through safely
- *   <p>Notation changes from "HI" to "PH" when plugged
+ * <p>Cannot slide (canSlide = false)
+ * <p>Eliminates penguins that fall in (removed from game)
+ * <p>Can be plugged by sliding hazards (LightIceBlock or SeaLion)
+ * <p>Once plugged, sliding objects can pass through safely
+ * <p>Notation changes from "HI" to "PH" when plugged
  *
  * <p>When eliminated, the penguin retains any food they collected,
  * which is still counted in the final scoring.</p>
@@ -48,10 +48,10 @@ public class HoleInIce extends Hazard {
      * If unplugged, the penguin falls in and is eliminated from the game.
      *
      * <p>When eliminated:
-     *   <p>Penguin is removed from the grid
-     *   <p>Position is set to null (indicating elimination)
-     *   <p>Collected food is retained for final scoring
-     *   <p>Remaining turns are automatically skipped
+     * <p>Penguin is removed from the grid
+     * <p>Position is set to null (indicating elimination)
+     * <p>Collected food is retained for final scoring
+     * <p>Remaining turns are automatically skipped
      *
      * @param penguin The penguin that collided with this hole
      * @param grid    The terrain grid where the elimination occurs

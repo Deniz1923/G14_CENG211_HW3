@@ -4,6 +4,9 @@ import game.TerrainGrid;
 import interfaces.ITerrainObject;
 import models.Position;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Renders the terrain grid to the console in a formatted ASCII table.
  * This class creates a visual representation of the game state with borders,
@@ -28,6 +31,8 @@ import models.Position;
  * @since 2025-12-08
  */
 public class GridRenderer {
+    private static final Logger LOGGER = Logger.getLogger(GridRenderer.class.getName());
+
     /**
      * Width of content inside each cell (in characters)
      */
@@ -85,8 +90,7 @@ public class GridRenderer {
             // Print everything at once
             System.out.print(sb);
         } catch (Exception e) {
-            System.err.println("Error rendering grid: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error rendering grid", e);
         }
     }
 
@@ -125,7 +129,7 @@ public class GridRenderer {
             String symbol = obj.getNotation();
             return (symbol != null) ? symbol : "??";
         } catch (Exception e) {
-            System.err.println("Error getting display symbol: " + e.getMessage());
+            LOGGER.log(Level.WARNING, "Error getting display symbol", e);
             return "??"; // Error indicator
         }
     }
@@ -169,7 +173,7 @@ public class GridRenderer {
 
             return s;
         } catch (Exception e) {
-            System.err.println("Error centering string: " + e.getMessage());
+            LOGGER.log(Level.WARNING, "Error centering string", e);
             // Return padded empty string as fallback
             return String.format("%-" + width + "s", "");
         }

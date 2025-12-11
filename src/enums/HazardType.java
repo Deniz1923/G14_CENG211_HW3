@@ -7,7 +7,7 @@ package enums;
 public enum HazardType {
     /**
      * Light Ice Block (LB): Starts moving when hit.
-     *
+     * <p>
      * - If hit by a penguin: The penguin is stunned (skips next turn).
      * - Can slide and fall off the grid.
      * - Stops if it hits a SeaLion (transmitting movement).
@@ -16,7 +16,7 @@ public enum HazardType {
 
     /**
      * Heavy Ice Block (HB): Cannot be moved.
-     *
+     * <p>
      * - Acts as a wall.
      * - Penalty: The colliding penguin loses their lightest food item.
      */
@@ -24,7 +24,7 @@ public enum HazardType {
 
     /**
      * Sea Lion (SL): Elastic collision behavior.
-     *
+     * <p>
      * - If hit: The penguin bounces back in the opposite direction.
      * - The Sea Lion starts sliding in the penguin's original direction.
      */
@@ -32,7 +32,7 @@ public enum HazardType {
 
     /**
      * Hole In Ice (HI): A trap that removes objects.
-     *
+     * <p>
      * - Penguins falling in are removed from the game (food is still counted).
      * - Sliding objects (LB, SL) falling in will "Plug" the hole, making it safe.
      */

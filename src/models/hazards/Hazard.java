@@ -12,10 +12,10 @@ import models.penguins.Penguin;
  * stunning them, removing food, or eliminating them from the game.
  *
  * <p>There are four types of hazards:
- *   <p>LightIceBlock - Can slide, stuns penguins on collision
- *   <p>HeavyIceBlock - Cannot move, removes lightest food from penguin
- *   <p>SeaLion - Can slide, bounces penguins in opposite direction
- *   <p>HoleInIce - Cannot move, eliminates anything that falls in
+ * <p>LightIceBlock - Can slide, stuns penguins on collision
+ * <p>HeavyIceBlock - Cannot move, removes lightest food from penguin
+ * <p>SeaLion - Can slide, bounces penguins in opposite direction
+ * <p>HoleInIce - Cannot move, eliminates anything that falls in
  *
  * <p>Some hazards can slide on ice (canSlide = true), while others remain
  * stationary. Sliding hazards can be pushed by penguins or other sliding objects.</p>
@@ -145,6 +145,6 @@ public abstract class Hazard implements IHazard {
      */
     @Override
     public String toString() {
-        return hazardType.toString() + " at " + position.displayPosition();
+        return hazardType + " at " + position.displayPosition();
     }
 }

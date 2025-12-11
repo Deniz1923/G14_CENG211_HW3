@@ -12,12 +12,12 @@ import models.penguins.Penguin;
  * transmitted direction. The penguin is stunned and skips their next turn.
  *
  * <p>Characteristics:
- *   <p>Can slide (canSlide = true)
- *   <p>Stuns colliding penguin (they skip next turn)
- *   <p>Starts sliding when hit by penguin or sliding hazard
- *   <p>Can fall off the edges of the grid
- *   <p>Can destroy food items in its path
- *   <p>Can plug holes when falling into them
+ * <p>Can slide (canSlide = true)
+ * <p>Stuns colliding penguin (they skip next turn)
+ * <p>Starts sliding when hit by penguin or sliding hazard
+ * <p>Can fall off the edges of the grid
+ * <p>Can destroy food items in its path
+ * <p>Can plug holes when falling into them
  *
  * @author CENG211 14. Group
  * @version 1.0
