@@ -113,60 +113,64 @@ public abstract class Penguin implements ITerrainObject {
 
             ITerrainObject obstacle = grid.getObjectAt(nextPos);
 
-            if (obstacle == null) {
-                // Empty square, continue sliding
-                updatePositionOnGrid(grid, nextPos);
-            } else if (obstacle instanceof Food) {
-                // Food item found
-                Food food = (Food) obstacle;
-                grid.removeObject(nextPos);
-                updatePositionOnGrid(grid, nextPos);
-                pickupFood(food);
-                isMoving = false;
-            } else if (obstacle instanceof Penguin) {
-                // Collision with another penguin
-                Penguin otherPenguin = (Penguin) obstacle;
-                System.out.println(getNotation() + " collides with " + otherPenguin.getNotation() + "!");
-                System.out.println(otherPenguin.getNotation() + " starts sliding instead!");
-                isMoving = false;
-                // The other penguin starts sliding
-                otherPenguin.slide(grid, direction);
-            } else if (obstacle instanceof SeaLion) {
-                // Special case for SeaLion - penguin bounces back
-                SeaLion seaLion = (SeaLion) obstacle;
-                System.out.println(getNotation() + " collides with " + seaLion.getNotation() + " and bounces back!");
-
-                // Remove SeaLion from current position
-                grid.removeObject(seaLion.getPosition());
-
-                // SeaLion starts sliding in original direction
-                slideHazard(grid, seaLion, direction);
-
-                // Penguin bounces back (opposite direction)
-                Direction oppositeDir = direction.opposite();
-                System.out.println(getNotation() + " bounces " + getDirectionName(oppositeDir) + "!");
-                isMoving = false;
-
-                // Penguin slides in opposite direction
-                slide(grid, oppositeDir);
-            } else if (obstacle instanceof IHazard hazard) {
-                // Collision with other hazards
-                System.out.println(getNotation() + " collides with " + hazard.getNotation() + "!");
-
-                hazard.onCollision(this, grid);
-
-                // Check if penguin is still on grid after collision
-                if (this.position == null) {
-                    return;
+            switch (obstacle) {
+                case null ->
+                    // Empty square, continue sliding
+                        updatePositionOnGrid(grid, nextPos);
+                case Food food -> {
+                    // Food item found
+                    grid.removeObject(nextPos);
+                    updatePositionOnGrid(grid, nextPos);
+                    pickupFood(food);
+                    isMoving = false;
                 }
-
-                if (hazard.canSlide()) {
-                    // Hazard starts sliding
-                    grid.removeObject(hazard.getPosition());
-                    slideHazard(grid, hazard, direction);
+                case Penguin otherPenguin -> {
+                    // Collision with another penguin
+                    System.out.println(getNotation() + " collides with " + otherPenguin.getNotation() + "!");
+                    System.out.println(otherPenguin.getNotation() + " starts sliding instead!");
+                    isMoving = false;
+                    // The other penguin starts sliding
+                    otherPenguin.slide(grid, direction);
                 }
+                case SeaLion seaLion -> {
+                    // Special case for SeaLion - penguin bounces back
+                    System.out.println(getNotation() + " collides with " + seaLion.getNotation() + " and bounces back!");
 
-                isMoving = false;
+                    // Remove SeaLion from current position
+                    grid.removeObject(seaLion.getPosition());
+
+                    // SeaLion starts sliding in original direction
+                    slideHazard(grid, seaLion, direction);
+
+                    // Penguin bounces back (opposite direction)
+                    Direction oppositeDir = direction.opposite();
+                    System.out.println(getNotation() + " bounces " + getDirectionName(oppositeDir) + "!");
+                    isMoving = false;
+
+                    // Penguin slides in opposite direction
+                    slide(grid, oppositeDir);
+                }
+                case IHazard hazard -> {
+                    // Collision with other hazards
+                    System.out.println(getNotation() + " collides with " + hazard.getNotation() + "!");
+
+                    hazard.onCollision(this, grid);
+
+                    // Check if penguin is still on grid after collision
+                    if (this.position == null) {
+                        return;
+                    }
+
+                    if (hazard.canSlide()) {
+                        // Hazard starts sliding
+                        grid.removeObject(hazard.getPosition());
+                        slideHazard(grid, hazard, direction);
+                    }
+
+                    isMoving = false;
+                }
+                default -> {
+                }
             }
         }
     }
@@ -197,35 +201,40 @@ public abstract class Penguin implements ITerrainObject {
 
             ITerrainObject obstacle = grid.getObjectAt(nextPos);
 
-            if (obstacle == null) {
-                // Empty square
-                hazard.setPosition(nextPos);
-                grid.placeObject(nextPos, (ITerrainObject) hazard);
-                currentPos = nextPos;
-            } else if (obstacle instanceof Food) {
-                // Remove food and continue
-                System.out.println(hazard.getNotation() + " destroys " + obstacle.getNotation() + "!");
-                grid.removeObject(nextPos);
-                hazard.setPosition(nextPos);
-                grid.placeObject(nextPos, (ITerrainObject) hazard);
-                currentPos = nextPos;
-            } else if (obstacle instanceof Penguin) {
-                // Stop when hitting another penguin
-                hazard.setPosition(currentPos);
-                grid.placeObject(currentPos, (ITerrainObject) hazard);
-                System.out.println(hazard.getNotation() + " collides with " + obstacle.getNotation() + " and stops!");
-                hazardMoving = false;
-            } else if (obstacle instanceof HoleInIce) {
-                // Hazard plugs the hole
-                HoleInIce hole = (HoleInIce) obstacle;
-                System.out.println(hazard.getNotation() + " falls into " + hole.getNotation() + " and plugs it!");
-                hole.plug();
-                hazardMoving = false;
-            } else {
-                // Hit another hazard
-                hazard.setPosition(currentPos);
-                grid.placeObject(currentPos, (ITerrainObject) hazard);
-                hazardMoving = false;
+            switch (obstacle) {
+                case null -> {
+                    // Empty square
+                    hazard.setPosition(nextPos);
+                    grid.placeObject(nextPos, hazard);
+                    currentPos = nextPos;
+                }
+                case Food food -> {
+                    // Remove food and continue
+                    System.out.println(hazard.getNotation() + " destroys " + obstacle.getNotation() + "!");
+                    grid.removeObject(nextPos);
+                    hazard.setPosition(nextPos);
+                    grid.placeObject(nextPos, hazard);
+                    currentPos = nextPos;
+                }
+                case Penguin penguin -> {
+                    // Stop when hitting another penguin
+                    hazard.setPosition(currentPos);
+                    grid.placeObject(currentPos, hazard);
+                    System.out.println(hazard.getNotation() + " collides with " + obstacle.getNotation() + " and stops!");
+                    hazardMoving = false;
+                }
+                case HoleInIce hole -> {
+                    // Hazard plugs the hole
+                    System.out.println(hazard.getNotation() + " falls into " + hole.getNotation() + " and plugs it!");
+                    hole.plug();
+                    hazardMoving = false;
+                }
+                default -> {
+                    // Hit another hazard
+                    hazard.setPosition(currentPos);
+                    grid.placeObject(currentPos, hazard);
+                    hazardMoving = false;
+                }
             }
         }
     }

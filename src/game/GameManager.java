@@ -10,6 +10,8 @@ import interfaces.ITerrainObject;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import models.Food;
 import models.Position;
 import models.penguins.Penguin;
@@ -68,6 +70,7 @@ public class GameManager {
                 // Render grid after each penguin's move
                 System.out.println("\nNew state of the grid:");
                 renderer.renderState(grid);
+                sleep(2);
             }
         }
 
@@ -170,21 +173,41 @@ public class GameManager {
      * Handles the player's turn with input prompts
      */
     private void handlePlayerTurn(Penguin p) {
+        boolean useAbility = false;
         System.out.println("YOUR PENGUIN");
 
-        // Ask if player wants to use special ability
-        boolean useAbility = inputMaster.getYesNoInput("Will " + p.getNotation() + " use its special action? Answer with Y or N: ");
+        if(!p.isAbilityUsed()){
+            useAbility = inputMaster.getYesNoInput("Will " + p.getNotation() + " use its special action? Answer with Y or N: ");
+        }
+        else{
+            System.out.println(p.getNotation() + " has already used its special skill!");
+        }
 
-        if (useAbility) {
+
+        if (useAbility && !p.isAbilityUsed()) {
+            System.out.println("[DEBUG] Inside Ability Block"); // DEBUG 1
+
             System.out.println(p.getNotation() + " chooses to USE its special action.");
-            p.specialAbility();
 
-            // Special handling for RoyalPenguin - needs direction for special move
+            // CAREFUL: Ensure p.specialAbility() doesn't have a while(true) loop!
+            p.specialAbility();
+            p.setAbilityUsed(true);
+
+            System.out.println("[DEBUG] Ability set to used. Checking if Royal..."); // DEBUG 2
+
             if (p instanceof RoyalPenguin royal) {
+                System.out.println("[DEBUG] It is a Royal Penguin. Waiting for input..."); // DEBUG 3
+
+                // IF IT HANGS HERE: It's your InputMaster/Scanner
                 Direction specialDir = inputMaster.getDirectionInput("Which direction for the special move? Answer with U (Up), D (Down), L (Left), R (Right): ");
+
+                System.out.println("[DEBUG] Input received: " + specialDir + ". Performing move..."); // DEBUG 4
+
+                // IF IT HANGS HERE: It's an infinite loop in performSpecialMove
                 royal.performSpecialMove(grid, specialDir);
 
-                // Check if penguin was eliminated during special move
+                System.out.println("[DEBUG] Move performed."); // DEBUG 5
+
                 if (p.getPosition() == null) {
                     System.out.println("*** " + p.getNotation() + " IS REMOVED FROM THE GAME!");
                     return;
@@ -194,11 +217,10 @@ public class GameManager {
             System.out.println(p.getNotation() + " does NOT use its special action.");
         }
 
-        // Ask for movement direction
+        // Standard Movement
         Direction direction = inputMaster.getDirectionInput("Which direction will " + p.getNotation() + " move? Answer with U (Up), D (Down), L (Left), R (Right): ");
         p.slide(grid, direction);
 
-        // Check if penguin was eliminated
         if (p.getPosition() == null) {
             System.out.println("*** " + p.getNotation() + " IS REMOVED FROM THE GAME!");
         }
@@ -214,7 +236,7 @@ public class GameManager {
         // RockhopperPenguin automatically uses ability when moving toward hazard
         // For others, 30% chance
         if (!(p instanceof RockhopperPenguin)) {
-            useAbility = RandUtil.getRandomInt(10) < 3; // 30% chance (0-2 out of 0-9)
+            useAbility = RandUtil.getRandomInt(TerrainGrid.GRID_SIZE) < 3; // 30% chance (0-2 out of 0-9)
         }
 
         if (useAbility && !p.isAbilityUsed()) {
@@ -244,6 +266,12 @@ public class GameManager {
         // Check if penguin was eliminated
         if (p.getPosition() == null) {
             System.out.println("*** " + p.getNotation() + " IS REMOVED FROM THE GAME!");
+        }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
         }
     }
 
@@ -275,5 +303,13 @@ public class GameManager {
             return str;
         }
         return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
+
+    public void sleep(int time){
+        try {
+            TimeUnit.SECONDS.sleep(time);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }

@@ -3,6 +3,7 @@ package models.penguins;
 import enums.Direction;
 import enums.PenguinType;
 import game.TerrainGrid;
+import interfaces.IHazard;
 import interfaces.ITerrainObject;
 import models.Food;
 import models.Position;
@@ -60,17 +61,15 @@ public class RoyalPenguin extends Penguin {
         if (obstacle == null) {
             // Empty square
             updatePositionOnGrid(grid, nextPos);
-        } else if (obstacle instanceof Food) {
+        } else if (obstacle instanceof Food food) {
             // Collect food
-            Food food = (Food) obstacle;
             grid.removeObject(nextPos);
             updatePositionOnGrid(grid, nextPos);
             pickupFood(food);
         } else {
             // Hit something (hazard or penguin) - still moves but consequences apply
             updatePositionOnGrid(grid, nextPos);
-            if (obstacle instanceof interfaces.IHazard) {
-                interfaces.IHazard hazard = (interfaces.IHazard) obstacle;
+            if (obstacle instanceof IHazard hazard) {
                 hazard.onCollision(this, grid);
             }
         }

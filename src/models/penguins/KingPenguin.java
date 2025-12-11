@@ -3,6 +3,7 @@ package models.penguins;
 import enums.Direction;
 import enums.PenguinType;
 import game.TerrainGrid;
+import models.Food;
 import models.Position;
 
 public class KingPenguin extends Penguin {
@@ -76,8 +77,7 @@ public class KingPenguin extends Penguin {
                     System.out.println(getNotation() + " stops at an empty square using its special action.");
                     isMoving = false;
                 }
-            } else if (obstacle instanceof models.Food) {
-                models.Food food = (models.Food) obstacle;
+            } else if (obstacle instanceof Food food) {
                 grid.removeObject(nextPos);
                 updatePositionOnGrid(grid, nextPos);
                 pickupFood(food);

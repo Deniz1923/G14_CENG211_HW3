@@ -24,11 +24,11 @@ public class GridRenderer {
     sb.append(horizontalBorder).append("\n");
 
     // Loop through Y (Rows)
-    for (int y = 0; y < 10; y++) {
+    for (int y = 0; y < TerrainGrid.GRID_SIZE; y++) {
       sb.append("|"); // Start of row
 
       // Loop through X (Cols)
-      for (int x = 0; x < 10; x++) {
+      for (int x = 0; x < TerrainGrid.GRID_SIZE; x++) {
         ITerrainObject obj = grid.getObjectAt(new Position(x, y));
         String symbol = getDisplaySymbol(obj);
 
