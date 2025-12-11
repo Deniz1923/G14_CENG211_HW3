@@ -29,7 +29,7 @@ import models.hazards.HoleInIce;
  * first time they move toward a hazard, rather than using the standard 30%
  * chance that other penguins use.</p>
  *
- * @author CENG211 Group
+ * @author CENG211 14. Group
  * @version 1.0
  * @since 2025-12-08
  */

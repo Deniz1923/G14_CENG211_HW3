@@ -12,7 +12,7 @@ import interfaces.ITerrainObject;
  * When a penguin reaches a food item, the penguin collects it and adds it to
  * their inventory, contributing to their total carried weight.</p>
  *
- * @author CENG211 Group
+ * @author CENG211 14. Group
  * @version 1.0
  * @since 2025-12-08
  */
@@ -120,16 +120,6 @@ public class Food implements ITerrainObject {
         return type.getNotation();
     }
 
-    /**
-     * Returns the symbol used to represent this food item.
-     * Currently identical to getNotation().
-     *
-     * @return The food type's symbol string
-     */
-    @Override
-    public String getSymbol() {
-        return type.getNotation();
-    }
 
     /**
      * Returns a string representation of this food item.

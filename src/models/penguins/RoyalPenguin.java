@@ -25,7 +25,7 @@ import models.Position;
  * <p>The special move is considered "safe" in that it's controlled, but
  * the penguin must still be careful not to step into dangerous squares.</p>
  *
- * @author CENG211 Group
+ * @author CENG211 14. Group
  * @version 1.0
  * @since 2025-12-08
  */

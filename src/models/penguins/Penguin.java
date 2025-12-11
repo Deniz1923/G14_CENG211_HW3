@@ -251,65 +251,68 @@ public abstract class Penguin implements ITerrainObject {
 
                 ITerrainObject obstacle = grid.getObjectAt(nextPos);
 
-                if (obstacle == null) {
-                    // Empty square, continue sliding
-                    updatePositionOnGrid(grid, nextPos);
-                } else if (obstacle instanceof Food) {
-                    // Food item found - collect and stop
-                    Food food = (Food) obstacle;
-                    grid.removeObject(nextPos);
-                    updatePositionOnGrid(grid, nextPos);
-                    pickupFood(food);
-                    isMoving = false;
-                } else if (obstacle instanceof Penguin) {
-                    // Collision with another penguin - transfer movement
-                    Penguin otherPenguin = (Penguin) obstacle;
-                    System.out.println(getNotation() + " collides with " +
-                            otherPenguin.getNotation() + "!");
-                    System.out.println(otherPenguin.getNotation() +
-                            " starts sliding instead!");
-                    isMoving = false;
-                    otherPenguin.slide(grid, direction);
-                } else if (obstacle instanceof SeaLion) {
-                    // Special case for SeaLion - penguin bounces back
-                    SeaLion seaLion = (SeaLion) obstacle;
-                    System.out.println(getNotation() + " collides with " +
-                            seaLion.getNotation() + " and bounces back!");
-
-                    // Remove SeaLion from current position
-                    grid.removeObject(seaLion.getPosition());
-
-                    // SeaLion starts sliding in original direction
-                    slideHazard(grid, seaLion, direction);
-
-                    // Penguin bounces back (opposite direction)
-                    Direction oppositeDir = direction.opposite();
-                    System.out.println(getNotation() + " bounces " +
-                            getDirectionName(oppositeDir) + "!");
-                    isMoving = false;
-
-                    // Penguin slides in opposite direction
-                    slide(grid, oppositeDir);
-                } else if (obstacle instanceof IHazard) {
-                    // Collision with other hazards
-                    IHazard hazard = (IHazard) obstacle;
-                    System.out.println(getNotation() + " collides with " +
-                            hazard.getNotation() + "!");
-
-                    hazard.onCollision(this, grid);
-
-                    // Check if penguin is still on grid after collision
-                    if (this.position == null) {
-                        return;
+                switch (obstacle) {
+                    case null ->
+                        // Empty square, continue sliding
+                            updatePositionOnGrid(grid, nextPos);
+                    case Food food -> {
+                        // Food item found - collect and stop
+                        grid.removeObject(nextPos);
+                        updatePositionOnGrid(grid, nextPos);
+                        pickupFood(food);
+                        isMoving = false;
                     }
-
-                    // If hazard can slide, make it slide
-                    if (hazard.canSlide()) {
-                        grid.removeObject(hazard.getPosition());
-                        slideHazard(grid, hazard, direction);
+                    case Penguin otherPenguin -> {
+                        // Collision with another penguin - transfer movement
+                        System.out.println(getNotation() + " collides with " +
+                                otherPenguin.getNotation() + "!");
+                        System.out.println(otherPenguin.getNotation() +
+                                " starts sliding instead!");
+                        isMoving = false;
+                        otherPenguin.slide(grid, direction);
                     }
+                    case SeaLion seaLion -> {
+                        // Special case for SeaLion - penguin bounces back
+                        System.out.println(getNotation() + " collides with " +
+                                seaLion.getNotation() + " and bounces back!");
 
-                    isMoving = false;
+                        // Remove SeaLion from current position
+                        grid.removeObject(seaLion.getPosition());
+
+                        // SeaLion starts sliding in original direction
+                        slideHazard(grid, seaLion, direction);
+
+                        // Penguin bounces back (opposite direction)
+                        Direction oppositeDir = direction.opposite();
+                        System.out.println(getNotation() + " bounces " +
+                                getDirectionName(oppositeDir) + "!");
+                        isMoving = false;
+
+                        // Penguin slides in opposite direction
+                        slide(grid, oppositeDir);
+                    }
+                    case IHazard hazard -> {
+                        // Collision with other hazards
+                        System.out.println(getNotation() + " collides with " +
+                                hazard.getNotation() + "!");
+
+                        hazard.onCollision(this, grid);
+
+                        // Check if penguin is still on grid after collision
+                        if (this.position == null) {
+                            return;
+                        }
+
+                        // If hazard can slide, make it slide
+                        if (hazard.canSlide()) {
+                            grid.removeObject(hazard.getPosition());
+                            slideHazard(grid, hazard, direction);
+                        }
+
+                        isMoving = false;
+                    }
+                    default -> {
+                    }
                 }
             }
         } catch (Exception e) {
@@ -541,16 +544,6 @@ public abstract class Penguin implements ITerrainObject {
      */
     @Override
     public String getNotation() {
-        return penguinID;
-    }
-
-    /**
-     * Returns the symbol used to represent this penguin on the grid.
-     *
-     * @return The penguin ID (P1, P2, or P3)
-     */
-    @Override
-    public String getSymbol() {
         return penguinID;
     }
 

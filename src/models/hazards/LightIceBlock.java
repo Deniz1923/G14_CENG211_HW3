@@ -21,7 +21,7 @@ import models.penguins.Penguin;
  *   <li>Can plug holes when falling into them</li>
  * </ul>
  *
- * @author CENG211 Group
+ * @author CENG211 14. Group
  * @version 1.0
  * @since 2025-12-08
  */
@@ -76,16 +76,6 @@ public class LightIceBlock extends Hazard {
         } catch (Exception e) {
             System.err.println("Error during LightIceBlock collision: " + e.getMessage());
         }
-    }
-
-    /**
-     * Returns the symbol representing this light ice block on the grid.
-     *
-     * @return "LB" - the abbreviation for Light Ice Block
-     */
-    @Override
-    public String getSymbol() {
-        return "LB";
     }
 
     /**

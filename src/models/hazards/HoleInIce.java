@@ -23,7 +23,7 @@ import models.penguins.Penguin;
  * <p>When eliminated, the penguin retains any food they collected,
  * which is still counted in the final scoring.</p>
  *
- * @author CENG211 Group
+ * @author CENG211 14. Group
  * @version 1.0
  * @since 2025-12-08
  */
@@ -125,17 +125,6 @@ public class HoleInIce extends Hazard {
      */
     @Override
     public String getNotation() {
-        return isPlugged ? "PH" : "HI";
-    }
-
-    /**
-     * Returns the symbol representing this hole on the grid.
-     * Same as getNotation() - "PH" if plugged, "HI" if unplugged.
-     *
-     * @return "PH" for plugged hole, "HI" for hole in ice
-     */
-    @Override
-    public String getSymbol() {
         return isPlugged ? "PH" : "HI";
     }
 

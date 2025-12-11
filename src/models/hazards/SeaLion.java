@@ -1,10 +1,7 @@
 package models.hazards;
 
-import enums.Direction;
 import enums.HazardType;
 import game.TerrainGrid;
-import interfaces.ITerrainObject;
-import models.Food;
 import models.Position;
 import models.penguins.Penguin;
 
@@ -32,7 +29,7 @@ import models.penguins.Penguin;
  *   <li>Both can collide with other objects during their slides</li>
  * </ul>
  *
- * @author CENG211 Group
+ * @author CENG211 14. Group
  * @version 1.0
  * @since 2025-12-08
  */
@@ -94,16 +91,6 @@ public class SeaLion extends Hazard {
         } catch (Exception e) {
             System.err.println("Error during SeaLion collision: " + e.getMessage());
         }
-    }
-
-    /**
-     * Returns the symbol representing this sea lion on the grid.
-     *
-     * @return "SL" - the abbreviation for Sea Lion
-     */
-    @Override
-    public String getSymbol() {
-        return "SL";
     }
 
     /**

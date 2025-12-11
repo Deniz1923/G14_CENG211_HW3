@@ -18,7 +18,7 @@ import models.penguins.Penguin;
  *   <li>If penguin carries no food, no penalty is applied</li>
  * </ul>
  *
- * @author CENG211 Group
+ * @author CENG211 14. Group
  * @version 1.0
  * @since 2025-12-08
  */
@@ -67,16 +67,6 @@ public class HeavyIceBlock extends Hazard {
     } catch (Exception e) {
       System.err.println("Error during HeavyIceBlock collision: " + e.getMessage());
     }
-  }
-
-  /**
-   * Returns the symbol representing this heavy ice block on the grid.
-   *
-   * @return "HB" - the abbreviation for Heavy Ice Block
-   */
-  @Override
-  public String getSymbol() {
-    return "HB";
   }
 
   /**

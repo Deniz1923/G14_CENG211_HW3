@@ -22,7 +22,7 @@ import models.penguins.Penguin;
  * <p>Some hazards can slide on ice (canSlide = true), while others remain
  * stationary. Sliding hazards can be pushed by penguins or other sliding objects.</p>
  *
- * @author CENG211 Group
+ * @author CENG211 14. Group
  * @version 1.0
  * @since 2025-12-08
  */
@@ -133,17 +133,6 @@ public abstract class Hazard implements IHazard {
    */
   @Override
   public abstract void onCollision(Penguin penguin, TerrainGrid grid);
-
-  /**
-   * Returns the symbol used to represent this hazard.
-   * Default implementation returns null; subclasses should override.
-   *
-   * @return The hazard's symbol string, or null if not implemented
-   */
-  @Override
-  public String getSymbol() {
-    return getNotation();
-  }
 
   /**
    * Returns a string representation of this hazard.
