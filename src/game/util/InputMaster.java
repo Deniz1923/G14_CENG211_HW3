@@ -4,46 +4,171 @@ import enums.Direction;
 import java.util.Scanner;
 
 /**
- * Class for taking input from the User. Please call {@link #close()} when the last input is taken.
+ * Handles all user input for the Sliding Penguins game.
+ * This class provides methods to get validated input from the player,
+ * including yes/no responses and directional commands.
+ *
+ * <p>Input validation:</p>
+ * <ul>
+ *   <li>Case-insensitive (Y/y/N/n accepted)</li>
+ *   <li>Automatic retry on invalid input</li>
+ *   <li>Clear error messages for user guidance</li>
+ * </ul>
+ *
+ * <p><b>IMPORTANT:</b> Always call {@link #close()} when finished
+ * with input to properly release the Scanner resource!</p>
+ *
+ * @author CENG211 Group
+ * @version 1.0
+ * @since 2025-12-08
  */
 public class InputMaster {
+  /** Scanner for reading console input */
   private final Scanner scanner;
 
+  /**
+   * Constructs an InputMaster with a new Scanner for System.in.
+   * The scanner will remain open until close() is called.
+   */
   public InputMaster() {
     this.scanner = new Scanner(System.in);
   }
 
-  /** Get yes/no input from user */
+  /**
+   * Gets yes/no input from the user with validation.
+   * Continuously prompts until valid input is received.
+   *
+   * <p>Valid inputs (case-insensitive):</p>
+   * <ul>
+   *   <li>"Y" or "y" → returns true</li>
+   *   <li>"N" or "n" → returns false</li>
+   * </ul>
+   *
+   * <p>Invalid input displays error message and re-prompts.</p>
+   *
+   * <p>Example usage:</p>
+   * <pre>
+   * boolean useAbility = inputMaster.getYesNoInput(
+   *     "Use special ability? (Y/N): "
+   * );
+   * </pre>
+   *
+   * @param prompt The message to display to the user
+   * @return true if user enters Y/y, false if user enters N/n
+   * @throws IllegalArgumentException if prompt is null
+   */
   public boolean getYesNoInput(String prompt) {
-    while (true) {
-      System.out.print(prompt);
-      String input = scanner.nextLine();
-
-      if (InputValidator.isValidYesNo(input)) {
-        return InputValidator.parseYesNo(input);
-      }
-      System.out.println("Invalid input. Please enter Y or N.");
+    if (prompt == null) {
+      throw new IllegalArgumentException(
+              "InputMaster Error: Prompt cannot be null."
+      );
     }
-  }
 
-  /** Get direction input from user */
-  public Direction getDirectionInput(String prompt) {
     while (true) {
-      System.out.print(prompt);
-      String input = scanner.nextLine();
+      try {
+        System.out.print(prompt);
+        String input = scanner.nextLine();
 
-      if (InputValidator.isValidDirection(input)) {
-        Direction direction = InputValidator.parseDirection(input);
-        if (direction != null) {
-          return direction;
+        if (InputValidator.isValidYesNo(input)) {
+          return InputValidator.parseYesNo(input);
         }
+
+        System.out.println("Invalid input. Please enter Y or N.");
+      } catch (Exception e) {
+        System.err.println("Error reading input: " + e.getMessage());
+        System.out.println("Please try again.");
       }
-      System.out.println("Invalid input. Please enter U, D, L, or R.");
     }
   }
 
-  /** Close the scanner when done */
+  /**
+   * Gets directional input from the user with validation.
+   * Continuously prompts until valid input is received.
+   *
+   * <p>Valid inputs (case-insensitive):</p>
+   * <ul>
+   *   <li>"U" or "u" → Direction.UP</li>
+   *   <li>"D" or "d" → Direction.DOWN</li>
+   *   <li>"L" or "l" → Direction.LEFT</li>
+   *   <li>"R" or "r" → Direction.RIGHT</li>
+   * </ul>
+   *
+   * <p>Invalid input displays error message and re-prompts.</p>
+   *
+   * <p>Example usage:</p>
+   * <pre>
+   * Direction dir = inputMaster.getDirectionInput(
+   *     "Choose direction (U/D/L/R): "
+   * );
+   * </pre>
+   *
+   * @param prompt The message to display to the user
+   * @return The Direction enum corresponding to user input
+   * @throws IllegalArgumentException if prompt is null
+   */
+  public Direction getDirectionInput(String prompt) {
+    if (prompt == null) {
+      throw new IllegalArgumentException(
+              "InputMaster Error: Prompt cannot be null."
+      );
+    }
+
+    while (true) {
+      try {
+        System.out.print(prompt);
+        String input = scanner.nextLine();
+
+        if (InputValidator.isValidDirection(input)) {
+          Direction direction = InputValidator.parseDirection(input);
+          if (direction != null) {
+            return direction;
+          }
+        }
+
+        System.out.println("Invalid input. Please enter U, D, L, or R.");
+      } catch (Exception e) {
+        System.err.println("Error reading input: " + e.getMessage());
+        System.out.println("Please try again.");
+      }
+    }
+  }
+
+  /**
+   * Closes the scanner and releases System.in resource.
+   *
+   * <p><b>CRITICAL:</b> This method MUST be called when input is no
+   * longer needed, typically at the end of the main method.</p>
+   *
+   * <p>Failing to close the scanner can cause:</p>
+   * <ul>
+   *   <li>Resource leaks</li>
+   *   <li>Problems in unit tests</li>
+   *   <li>IDE warnings</li>
+   * </ul>
+   *
+   * <p>Example:</p>
+   * <pre>
+   * IcyTerrain terrain = new IcyTerrain();
+   * terrain.closeInputMaster(); // Always close!
+   * </pre>
+   */
   public void close() {
-    scanner.close();
+    try {
+      if (scanner != null) {
+        scanner.close();
+      }
+    } catch (Exception e) {
+      System.err.println("Error closing scanner: " + e.getMessage());
+    }
+  }
+
+  /**
+   * Checks if the scanner is still open and functional.
+   * Useful for testing and debugging.
+   *
+   * @return true if scanner can still be used, false otherwise
+   */
+  public boolean isOpen() {
+    return scanner != null && scanner.hasNextLine();
   }
 }

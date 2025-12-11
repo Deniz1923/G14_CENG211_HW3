@@ -4,79 +4,202 @@ import game.TerrainGrid;
 import interfaces.ITerrainObject;
 import models.Position;
 
+/**
+ * Renders the terrain grid to the console in a formatted ASCII table.
+ * This class creates a visual representation of the game state with borders,
+ * centered content, and proper spacing for readability.
+ *
+ * <p>Rendering format:</p>
+ * <pre>
+ * +----+----+----+...
+ * | P1 |    | Kr |...
+ * +----+----+----+...
+ * | HB | LB |    |...
+ * +----+----+----+...
+ * </pre>
+ *
+ * <p>Features:</p>
+ * <ul>
+ *   <li>Fixed 4-character cell width for consistent alignment</li>
+ *   <li>Centered notation in each cell</li>
+ *   <li>Horizontal borders between rows</li>
+ *   <li>Vertical separators between columns</li>
+ *   <li>Empty cells shown as blank spaces</li>
+ * </ul>
+ *
+ * @author CENG211 Group
+ * @version 1.0
+ * @since 2025-12-08
+ */
 public class GridRenderer {
-  private static final int CELL_WIDTH = 4; // Width of content inside the cell
+  /** Width of content inside each cell (in characters) */
+  private static final int CELL_WIDTH = 4;
 
   /**
    * Renders the current state of the TerrainGrid to the console.
+   * Creates a formatted ASCII table showing all objects on the grid.
    *
-   * @param grid The game grid to render.
+   * <p>The grid is rendered from top (y=0) to bottom (y=9), and from
+   * left (x=0) to right (x=9). Each cell displays the object's notation
+   * or remains empty if no object is present.</p>
+   *
+   * <p>Example output:</p>
+   * <pre>
+   * +----+----+----+----+----+----+----+----+----+----+
+   * | Kr |    | P1 |    |    | LB |    | Cr |    | HB |
+   * +----+----+----+----+----+----+----+----+----+----+
+   * |    | Ma | SL |    | Cr |    | LB |    |    |    |
+   * +----+----+----+----+----+----+----+----+----+----+
+   * ...
+   * </pre>
+   *
+   * @param grid The game grid to render
+   * @throws IllegalArgumentException if grid is null
    */
   public void renderState(TerrainGrid grid) {
     if (grid == null) {
-      throw new IllegalArgumentException("Renderer Error: Cannot render a null TerrainGrid.");
+      throw new IllegalArgumentException(
+              "GridRenderer Error: Cannot render a null TerrainGrid."
+      );
     }
 
-    StringBuilder sb = new StringBuilder();
-    String horizontalBorder = buildHorizontalBorder();
+    try {
+      StringBuilder sb = new StringBuilder();
+      String horizontalBorder = buildHorizontalBorder();
 
-    // Top Border
-    sb.append(horizontalBorder).append("\n");
+      // Top Border
+      sb.append(horizontalBorder).append("\n");
 
-    // Loop through Y (Rows)
-    for (int y = 0; y < 10; y++) {
-      sb.append("|"); // Start of row
+      // Loop through Y (Rows)
+      for (int y = 0; y < 10; y++) {
+        sb.append("|"); // Start of row
 
-      // Loop through X (Cols)
-      for (int x = 0; x < 10; x++) {
-        ITerrainObject obj = grid.getObjectAt(new Position(x, y));
-        String symbol = getDisplaySymbol(obj);
+        // Loop through X (Cols)
+        for (int x = 0; x < 10; x++) {
+          ITerrainObject obj = grid.getObjectAt(new Position(x, y));
+          String symbol = getDisplaySymbol(obj);
 
-        // Center and append symbol
-        sb.append(centerString(symbol)).append("|");
+          // Center and append symbol
+          sb.append(centerString(symbol)).append("|");
+        }
+        sb.append("\n"); // End of row content
+        sb.append(horizontalBorder).append("\n"); // Bottom border for this row
       }
-      sb.append("\n"); // End of row content
-      sb.append(horizontalBorder).append("\n"); // Bottom border for this row
-    }
 
-    // Print everything at once
-    System.out.print(sb);
+      // Print everything at once
+      System.out.print(sb);
+    } catch (Exception e) {
+      System.err.println("Error rendering grid: " + e.getMessage());
+      e.printStackTrace();
+    }
   }
 
-  /** Generates the horizontal border string "+----+----+" */
+  /**
+   * Generates the horizontal border string for the grid.
+   * Creates a line of "+" symbols separated by dashes.
+   *
+   * <p>Format: +----+----+----+... (10 cells total)</p>
+   *
+   * @return The complete horizontal border string
+   */
   private String buildHorizontalBorder() {
-    // Must match CELL_WIDTH (4 dashes)
+    // Must match CELL_WIDTH (4 dashes per cell)
     return "+" + "----+".repeat(10);
   }
 
-  /** Securely extracts the symbol. */
+  /**
+   * Safely extracts the display symbol from a terrain object.
+   * Returns an empty string for null objects, otherwise returns
+   * the object's notation.
+   *
+   * <p>Symbols include:</p>
+   * <ul>
+   *   <li>Penguins: P1, P2, P3</li>
+   *   <li>Food: Kr, Cr, An, Sq, Ma</li>
+   *   <li>Hazards: LB, HB, SL, HI, PH</li>
+   * </ul>
+   *
+   * @param obj The terrain object to get symbol from
+   * @return The object's notation, or empty string if null
+   */
   private String getDisplaySymbol(ITerrainObject obj) {
     if (obj == null) {
-      return ""; // Return empty string to be padded by centerString
+      return ""; // Empty cell
     }
-    String symbol = obj.getNotation();
-    return (symbol != null) ? symbol : "??";
+
+    try {
+      String symbol = obj.getNotation();
+      return (symbol != null) ? symbol : "??";
+    } catch (Exception e) {
+      System.err.println("Error getting display symbol: " + e.getMessage());
+      return "??"; // Error indicator
+    }
   }
 
-  /** Centers a string within the defined CELL_WIDTH. */
+  /**
+   * Centers a string within the defined CELL_WIDTH.
+   * Adds padding spaces on both sides to center the content.
+   *
+   * <p>Centering algorithm:</p>
+   * <ol>
+   *   <li>Calculate total padding needed</li>
+   *   <li>Distribute padding: half before, half after</li>
+   *   <li>Handle odd padding by favoring left side</li>
+   * </ol>
+   *
+   * <p>Example: "P1" in 4-char cell → " P1 "</p>
+   *
+   * @param s The string to center (can be null or empty)
+   * @return The centered string with exact CELL_WIDTH characters
+   */
   private String centerString(String s) {
-    if (s == null) s = "";
+    if (s == null) {
+      s = "";
+    }
 
     int width = CELL_WIDTH;
 
-    // If the string is too long, trim it (Security against layout breaking)
-    if (s.length() > width) {
-      return s.substring(0, width);
+    try {
+      // If the string is too long, trim it (security against layout breaking)
+      if (s.length() > width) {
+        return s.substring(0, width);
+      }
+
+      // Calculate padding
+      int padSize = width - s.length();
+      int padStart = s.length() + padSize / 2;
+
+      // Pad start (add spaces before content)
+      s = String.format("%" + padStart + "s", s);
+
+      // Pad end (ensure full cell width)
+      s = String.format("%-" + width + "s", s);
+
+      return s;
+    } catch (Exception e) {
+      System.err.println("Error centering string: " + e.getMessage());
+      // Return padded empty string as fallback
+      return String.format("%-" + width + "s", "");
     }
+  }
 
-    int padSize = width - s.length();
-    int padStart = s.length() + padSize / 2;
+  /**
+   * Validates if a string will fit in a cell.
+   * Useful for checking symbols before rendering.
+   *
+   * @param s The string to check
+   * @return true if string fits within CELL_WIDTH, false otherwise
+   */
+  public boolean fitsInCell(String s) {
+    return s != null && s.length() <= CELL_WIDTH;
+  }
 
-    // Pad Start
-    s = String.format("%" + padStart + "s", s);
-    // Pad End (to ensure full cell width)
-    s = String.format("%-" + width + "s", s);
-
-    return s;
+  /**
+   * Gets the cell width used by this renderer.
+   *
+   * @return The CELL_WIDTH constant (4 characters)
+   */
+  public int getCellWidth() {
+    return CELL_WIDTH;
   }
 }
