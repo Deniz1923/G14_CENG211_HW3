@@ -29,4 +29,6 @@ public interface ITerrainObject {
    * If it is a Penguin, returns penguinID according to the specification.
    */
   String getNotation();
+
+  String getSymbol();
 }
