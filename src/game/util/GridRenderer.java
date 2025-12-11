@@ -9,23 +9,19 @@ import models.Position;
  * This class creates a visual representation of the game state with borders,
  * centered content, and proper spacing for readability.
  *
- * <p>Rendering format:</p>
- * <pre>
+ * Rendering format:
  * +----+----+----+...
  * | P1 |    | Kr |...
  * +----+----+----+...
  * | HB | LB |    |...
  * +----+----+----+...
- * </pre>
  *
- * <p>Features:</p>
- * <ul>
- *   <li>Fixed 4-character cell width for consistent alignment</li>
- *   <li>Centered notation in each cell</li>
- *   <li>Horizontal borders between rows</li>
- *   <li>Vertical separators between columns</li>
- *   <li>Empty cells shown as blank spaces</li>
- * </ul>
+ * Features:
+ * - Fixed 4-character cell width for consistent alignment
+ * - Centered notation in each cell
+ * - Horizontal borders between rows
+ * - Vertical separators between columns
+ * - Empty cells shown as blank spaces
  *
  * @author CENG211 Group
  * @version 1.0
@@ -39,19 +35,17 @@ public class GridRenderer {
    * Renders the current state of the TerrainGrid to the console.
    * Creates a formatted ASCII table showing all objects on the grid.
    *
-   * <p>The grid is rendered from top (y=0) to bottom (y=9), and from
+   * The grid is rendered from top (y=0) to bottom (y=9), and from
    * left (x=0) to right (x=9). Each cell displays the object's notation
-   * or remains empty if no object is present.</p>
+   * or remains empty if no object is present.
    *
-   * <p>Example output:</p>
-   * <pre>
+   * Example output:
    * +----+----+----+----+----+----+----+----+----+----+
    * | Kr |    | P1 |    |    | LB |    | Cr |    | HB |
    * +----+----+----+----+----+----+----+----+----+----+
    * |    | Ma | SL |    | Cr |    | LB |    |    |    |
    * +----+----+----+----+----+----+----+----+----+----+
    * ...
-   * </pre>
    *
    * @param grid The game grid to render
    * @throws IllegalArgumentException if grid is null
@@ -98,7 +92,7 @@ public class GridRenderer {
    * Generates the horizontal border string for the grid.
    * Creates a line of "+" symbols separated by dashes.
    *
-   * <p>Format: +----+----+----+... (10 cells total)</p>
+   * Format: +----+----+----+... (10 cells total)
    *
    * @return The complete horizontal border string
    */
@@ -112,12 +106,10 @@ public class GridRenderer {
    * Returns an empty string for null objects, otherwise returns
    * the object's notation.
    *
-   * <p>Symbols include:</p>
-   * <ul>
-   *   <li>Penguins: P1, P2, P3</li>
-   *   <li>Food: Kr, Cr, An, Sq, Ma</li>
-   *   <li>Hazards: LB, HB, SL, HI, PH</li>
-   * </ul>
+   * Symbols include:
+   * - Penguins: P1, P2, P3
+   * - Food: Kr, Cr, An, Sq, Ma
+   * - Hazards: LB, HB, SL, HI, PH
    *
    * @param obj The terrain object to get symbol from
    * @return The object's notation, or empty string if null
@@ -140,14 +132,12 @@ public class GridRenderer {
    * Centers a string within the defined CELL_WIDTH.
    * Adds padding spaces on both sides to center the content.
    *
-   * <p>Centering algorithm:</p>
-   * <ol>
-   *   <li>Calculate total padding needed</li>
-   *   <li>Distribute padding: half before, half after</li>
-   *   <li>Handle odd padding by favoring left side</li>
-   * </ol>
+   * Centering algorithm:
+   * 1. Calculate total padding needed
+   * 2. Distribute padding: half before, half after
+   * 3. Handle odd padding by favoring left side
    *
-   * <p>Example: "P1" in 4-char cell → " P1 "</p>
+   * Example: "P1" in 4-char cell -> " P1 "
    *
    * @param s The string to center (can be null or empty)
    * @return The centered string with exact CELL_WIDTH characters

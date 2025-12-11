@@ -7,16 +7,14 @@ import enums.Direction;
  * This class provides validation and conversion methods for various
  * input types used in the Sliding Penguins game.
  *
- * <p>All methods are static and the class is not meant to be instantiated.
- * It serves as a centralized location for input validation logic.</p>
+ * All methods are static and the class is not meant to be instantiated.
+ * It serves as a centralized location for input validation logic.
  *
- * <p>Input handling features:</p>
- * <ul>
- *   <li>Case-insensitive validation</li>
- *   <li>Whitespace trimming</li>
- *   <li>Null-safe operations</li>
- *   <li>Clear validation rules</li>
- * </ul>
+ * Input handling features:
+ * - Case-insensitive validation
+ * - Whitespace trimming
+ * - Null-safe operations
+ * - Clear validation rules
  *
  * @author CENG211 Group
  * @version 1.0
@@ -38,19 +36,15 @@ public class InputValidator {
    * Validates yes/no input (Y/N).
    * Accepts both uppercase and lowercase, with optional whitespace.
    *
-   * <p>Valid inputs:</p>
-   * <ul>
-   *   <li>"Y" or "y" (with or without surrounding whitespace)</li>
-   *   <li>"N" or "n" (with or without surrounding whitespace)</li>
-   * </ul>
+   * Valid inputs:
+   * - "Y" or "y" (with or without surrounding whitespace)
+   * - "N" or "n" (with or without surrounding whitespace)
    *
-   * <p>Example:</p>
-   * <pre>
-   * isValidYesNo("Y")    → true
-   * isValidYesNo("  n ") → true
-   * isValidYesNo("yes")  → false
-   * isValidYesNo(null)   → false
-   * </pre>
+   * Example:
+   * isValidYesNo("Y")    -> true
+   * isValidYesNo("  n ") -> true
+   * isValidYesNo("yes")  -> false
+   * isValidYesNo(null)   -> false
    *
    * @param input The user input string to validate
    * @return true if input is valid Y/N, false otherwise
@@ -72,21 +66,17 @@ public class InputValidator {
    * Validates direction input (U/D/L/R).
    * Accepts both uppercase and lowercase, with optional whitespace.
    *
-   * <p>Valid inputs:</p>
-   * <ul>
-   *   <li>"U" or "u" → Up</li>
-   *   <li>"D" or "d" → Down</li>
-   *   <li>"L" or "l" → Left</li>
-   *   <li>"R" or "r" → Right</li>
-   * </ul>
+   * Valid inputs:
+   * - "U" or "u" -> Up
+   * - "D" or "d" -> Down
+   * - "L" or "l" -> Left
+   * - "R" or "r" -> Right
    *
-   * <p>Example:</p>
-   * <pre>
-   * isValidDirection("U")     → true
-   * isValidDirection("  l  ") → true
-   * isValidDirection("up")    → false
-   * isValidDirection(null)    → false
-   * </pre>
+   * Example:
+   * isValidDirection("U")     -> true
+   * isValidDirection("  l  ") -> true
+   * isValidDirection("up")    -> false
+   * isValidDirection(null)    -> false
    *
    * @param input The user input string to validate
    * @return true if input is valid direction, false otherwise
@@ -111,13 +101,11 @@ public class InputValidator {
    * Parses yes/no input to boolean value.
    * Should only be called after isValidYesNo() returns true.
    *
-   * <p>Conversion:</p>
-   * <ul>
-   *   <li>"Y" or "y" → true</li>
-   *   <li>"N" or "n" → false</li>
-   * </ul>
+   * Conversion:
+   * - "Y" or "y" -> true
+   * - "N" or "n" -> false
    *
-   * <p>This method is case-insensitive and trims whitespace.</p>
+   * This method is case-insensitive and trims whitespace.
    *
    * @param input The validated user input (Y or N)
    * @return true for Y, false for N
@@ -143,15 +131,13 @@ public class InputValidator {
    * Parses direction input to Direction enum.
    * Should only be called after isValidDirection() returns true.
    *
-   * <p>Conversion mapping:</p>
-   * <ul>
-   *   <li>"U" or "u" → Direction.UP</li>
-   *   <li>"D" or "d" → Direction.DOWN</li>
-   *   <li>"L" or "l" → Direction.LEFT</li>
-   *   <li>"R" or "r" → Direction.RIGHT</li>
-   * </ul>
+   * Conversion mapping:
+   * - "U" or "u" -> Direction.UP
+   * - "D" or "d" -> Direction.DOWN
+   * - "L" or "l" -> Direction.LEFT
+   * - "R" or "r" -> Direction.RIGHT
    *
-   * <p>This method is case-insensitive and trims whitespace.</p>
+   * This method is case-insensitive and trims whitespace.
    *
    * @param input The validated user input (U/D/L/R)
    * @return The corresponding Direction enum value

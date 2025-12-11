@@ -11,21 +11,19 @@ import java.security.SecureRandom;
  * This class provides methods to generate random game elements including
  * penguins, hazards, food items, directions, and numeric values.
  *
- * <p>Uses {@link SecureRandom} instead of standard {@link java.util.Random}
+ * Uses SecureRandom instead of standard java.util.Random
  * for better randomness and security. This is important for fairness in
- * game mechanics and prevents predictable patterns.</p>
+ * game mechanics and prevents predictable patterns.
  *
- * <p>All methods are static and thread-safe. The class caches enum value
- * arrays for performance optimization.</p>
+ * All methods are static and thread-safe. The class caches enum value
+ * arrays for performance optimization.
  *
- * <p>Random distributions:</p>
- * <ul>
- *   <li>All penguin types: equal probability (25% each)</li>
- *   <li>All hazard types: equal probability (25% each)</li>
- *   <li>All food types: equal probability (20% each)</li>
- *   <li>Food weights: uniform distribution 1-5 units</li>
- *   <li>Directions: equal probability (25% each)</li>
- * </ul>
+ * Random distributions:
+ * - All penguin types: equal probability (25% each)
+ * - All hazard types: equal probability (25% each)
+ * - All food types: equal probability (20% each)
+ * - Food weights: uniform distribution 1-5 units
+ * - Directions: equal probability (25% each)
  *
  * @author CENG211 Group
  * @version 1.0
@@ -62,14 +60,12 @@ public class RandUtil {
    * Generates a random food weight between 1 and 5 units (inclusive).
    * All weights have equal probability of being selected.
    *
-   * <p>Weight distribution:</p>
-   * <ul>
-   *   <li>1 unit: 20%</li>
-   *   <li>2 units: 20%</li>
-   *   <li>3 units: 20%</li>
-   *   <li>4 units: 20%</li>
-   *   <li>5 units: 20%</li>
-   * </ul>
+   * Weight distribution:
+   * - 1 unit: 20%
+   * - 2 units: 20%
+   * - 3 units: 20%
+   * - 4 units: 20%
+   * - 5 units: 20%
    *
    * @return A random integer between 1 and 5 (inclusive)
    */
@@ -87,14 +83,12 @@ public class RandUtil {
    * Generates a random food type.
    * All five food types have equal probability (20% each).
    *
-   * <p>Possible returns:</p>
-   * <ul>
-   *   <li>FoodType.KRILL</li>
-   *   <li>FoodType.CRUSTACEAN</li>
-   *   <li>FoodType.ANCHOVY</li>
-   *   <li>FoodType.SQUID</li>
-   *   <li>FoodType.MACKEREL</li>
-   * </ul>
+   * Possible returns:
+   * - FoodType.KRILL
+   * - FoodType.CRUSTACEAN
+   * - FoodType.ANCHOVY
+   * - FoodType.SQUID
+   * - FoodType.MACKEREL
    *
    * @return A randomly selected FoodType
    */
@@ -111,15 +105,13 @@ public class RandUtil {
    * Generates a random direction.
    * All four directions have equal probability (25% each).
    *
-   * <p>Possible returns:</p>
-   * <ul>
-   *   <li>Direction.UP</li>
-   *   <li>Direction.DOWN</li>
-   *   <li>Direction.LEFT</li>
-   *   <li>Direction.RIGHT</li>
-   * </ul>
+   * Possible returns:
+   * - Direction.UP
+   * - Direction.DOWN
+   * - Direction.LEFT
+   * - Direction.RIGHT
    *
-   * <p>Used for AI penguin movement decisions.</p>
+   * Used for AI penguin movement decisions.
    *
    * @return A randomly selected Direction
    */
@@ -136,13 +128,11 @@ public class RandUtil {
    * Generates a random penguin type.
    * All four penguin types have equal probability (25% each).
    *
-   * <p>Possible returns:</p>
-   * <ul>
-   *   <li>PenguinType.EMPEROR - Can stop at 3rd square</li>
-   *   <li>PenguinType.KING - Can stop at 5th square</li>
-   *   <li>PenguinType.ROYAL - Can move one square safely</li>
-   *   <li>PenguinType.ROCKHOPPER - Can jump over hazards</li>
-   * </ul>
+   * Possible returns:
+   * - PenguinType.EMPEROR - Can stop at 3rd square
+   * - PenguinType.KING - Can stop at 5th square
+   * - PenguinType.ROYAL - Can move one square safely
+   * - PenguinType.ROCKHOPPER - Can jump over hazards
    *
    * @return A randomly selected PenguinType
    */
@@ -159,13 +149,11 @@ public class RandUtil {
    * Generates a random hazard type.
    * All four hazard types have equal probability (25% each).
    *
-   * <p>Possible returns:</p>
-   * <ul>
-   *   <li>HazardType.LIGHT_ICE_BLOCK - Can slide, stuns penguins</li>
-   *   <li>HazardType.HEAVY_ICE_BLOCK - Immovable, removes food</li>
-   *   <li>HazardType.SEA_LION - Can slide, bounces penguins</li>
-   *   <li>HazardType.HOLE_IN_ICE - Eliminates penguins</li>
-   * </ul>
+   * Possible returns:
+   * - HazardType.LIGHT_ICE_BLOCK - Can slide, stuns penguins
+   * - HazardType.HEAVY_ICE_BLOCK - Immovable, removes food
+   * - HazardType.SEA_LION - Can slide, bounces penguins
+   * - HazardType.HOLE_IN_ICE - Eliminates penguins
    *
    * @return A randomly selected HazardType
    */
@@ -182,13 +170,11 @@ public class RandUtil {
    * Generates a random integer between 0 (inclusive) and upper_bound (exclusive).
    * This is a general-purpose random integer generator used throughout the game.
    *
-   * <p>Range: [0, upper_bound)</p>
+   * Range: [0, upper_bound)
    *
-   * <p>Example usage:</p>
-   * <pre>
+   * Example usage:
    * int randomIndex = getRandomInt(3);  // Returns 0, 1, or 2
    * int randomX = getRandomInt(10);     // Returns 0-9 for grid position
-   * </pre>
    *
    * @param upper_bound The exclusive upper limit (must be positive)
    * @return A random integer from 0 to upper_bound-1
@@ -213,12 +199,10 @@ public class RandUtil {
    * Generates a random integer within a specified range (inclusive).
    * Convenience method for generating values in a specific range.
    *
-   * <p>Range: [min, max] (both inclusive)</p>
+   * Range: [min, max] (both inclusive)
    *
-   * <p>Example:</p>
-   * <pre>
+   * Example:
    * int dice = getRandomIntInRange(1, 6);  // Simulates dice roll
-   * </pre>
    *
    * @param min The minimum value (inclusive)
    * @param max The maximum value (inclusive)
@@ -259,12 +243,10 @@ public class RandUtil {
    * Returns true with the specified probability.
    * Useful for implementing percentage-based decisions (like 30% AI ability use).
    *
-   * <p>Example:</p>
-   * <pre>
+   * Example:
    * if (getRandomBooleanWithProbability(0.30)) {
-   *     // This happens 30% of the time
+   * // This happens 30% of the time
    * }
-   * </pre>
    *
    * @param probability The probability of returning true (0.0 to 1.0)
    * @return true with given probability, false otherwise

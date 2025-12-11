@@ -8,15 +8,13 @@ import java.util.Scanner;
  * This class provides methods to get validated input from the player,
  * including yes/no responses and directional commands.
  *
- * <p>Input validation:</p>
- * <ul>
- *   <li>Case-insensitive (Y/y/N/n accepted)</li>
- *   <li>Automatic retry on invalid input</li>
- *   <li>Clear error messages for user guidance</li>
- * </ul>
+ * Input validation:
+ * - Case-insensitive (Y/y/N/n accepted)
+ * - Automatic retry on invalid input
+ * - Clear error messages for user guidance
  *
- * <p><b>IMPORTANT:</b> Always call {@link #close()} when finished
- * with input to properly release the Scanner resource!</p>
+ * IMPORTANT: Always call close() when finished
+ * with input to properly release the Scanner resource!
  *
  * @author CENG211 Group
  * @version 1.0
@@ -38,20 +36,16 @@ public class InputMaster {
    * Gets yes/no input from the user with validation.
    * Continuously prompts until valid input is received.
    *
-   * <p>Valid inputs (case-insensitive):</p>
-   * <ul>
-   *   <li>"Y" or "y" → returns true</li>
-   *   <li>"N" or "n" → returns false</li>
-   * </ul>
+   * Valid inputs (case-insensitive):
+   * - "Y" or "y" -> returns true
+   * - "N" or "n" -> returns false
    *
-   * <p>Invalid input displays error message and re-prompts.</p>
+   * Invalid input displays error message and re-prompts.
    *
-   * <p>Example usage:</p>
-   * <pre>
+   * Example usage:
    * boolean useAbility = inputMaster.getYesNoInput(
-   *     "Use special ability? (Y/N): "
+   * "Use special ability? (Y/N): "
    * );
-   * </pre>
    *
    * @param prompt The message to display to the user
    * @return true if user enters Y/y, false if user enters N/n
@@ -85,22 +79,18 @@ public class InputMaster {
    * Gets directional input from the user with validation.
    * Continuously prompts until valid input is received.
    *
-   * <p>Valid inputs (case-insensitive):</p>
-   * <ul>
-   *   <li>"U" or "u" → Direction.UP</li>
-   *   <li>"D" or "d" → Direction.DOWN</li>
-   *   <li>"L" or "l" → Direction.LEFT</li>
-   *   <li>"R" or "r" → Direction.RIGHT</li>
-   * </ul>
+   * Valid inputs (case-insensitive):
+   * - "U" or "u" -> Direction.UP
+   * - "D" or "d" -> Direction.DOWN
+   * - "L" or "l" -> Direction.LEFT
+   * - "R" or "r" -> Direction.RIGHT
    *
-   * <p>Invalid input displays error message and re-prompts.</p>
+   * Invalid input displays error message and re-prompts.
    *
-   * <p>Example usage:</p>
-   * <pre>
+   * Example usage:
    * Direction dir = inputMaster.getDirectionInput(
-   *     "Choose direction (U/D/L/R): "
+   * "Choose direction (U/D/L/R): "
    * );
-   * </pre>
    *
    * @param prompt The message to display to the user
    * @return The Direction enum corresponding to user input
@@ -136,21 +126,17 @@ public class InputMaster {
   /**
    * Closes the scanner and releases System.in resource.
    *
-   * <p><b>CRITICAL:</b> This method MUST be called when input is no
-   * longer needed, typically at the end of the main method.</p>
+   * CRITICAL: This method MUST be called when input is no
+   * longer needed, typically at the end of the main method.
    *
-   * <p>Failing to close the scanner can cause:</p>
-   * <ul>
-   *   <li>Resource leaks</li>
-   *   <li>Problems in unit tests</li>
-   *   <li>IDE warnings</li>
-   * </ul>
+   * Failing to close the scanner can cause:
+   * - Resource leaks
+   * - Problems in unit tests
+   * - IDE warnings
    *
-   * <p>Example:</p>
-   * <pre>
+   * Example:
    * IcyTerrain terrain = new IcyTerrain();
    * terrain.closeInputMaster(); // Always close!
-   * </pre>
    */
   public void close() {
     try {
