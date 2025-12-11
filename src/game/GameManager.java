@@ -184,16 +184,24 @@ public class GameManager {
         try {
             System.out.println("***** SCOREBOARD FOR THE PENGUINS *****");
 
+            // FIX: Defensive copy to prevent concurrent modification
+            List<Penguin> scorePenguins = new ArrayList<>(penguins);
+
             // Sort penguins by carried weight (descending order)
-            penguins.sort((p1, p2) ->
+            scorePenguins.sort((p1, p2) ->
                     Integer.compare(p2.getCarriedWeight(), p1.getCarriedWeight()));
 
-            for (int i = 0; i < penguins.size(); i++) {
-                Penguin p = penguins.get(i);
+            for (int i = 0; i < scorePenguins.size(); i++) {
+                Penguin p = scorePenguins.get(i);
+
+                // FIX: Verify penguin is not null
+                if (p == null) {
+                    continue;
+                }
+
                 int rank = i + 1;
                 String suffix = getSuffix(rank);
 
-                // Build header
                 String header = p.getNotation();
                 if (p.isPlayer()) {
                     header += " (Your Penguin)";
@@ -201,15 +209,18 @@ public class GameManager {
 
                 System.out.println("* " + rank + suffix + " place: " + header);
 
-                // Display food items
                 StringBuilder foodInfo = new StringBuilder();
                 List<Food> items = p.getInventory();
 
-                if (items.isEmpty()) {
+                if (items == null || items.isEmpty()) {
                     foodInfo.append("None");
                 } else {
                     for (int j = 0; j < items.size(); j++) {
                         Food f = items.get(j);
+                        // FIX: Null check for food item
+                        if (f == null) {
+                            continue;
+                        }
                         foodInfo.append(f.getNotation())
                                 .append(" (")
                                 .append(f.getWeight())
@@ -227,6 +238,8 @@ public class GameManager {
             }
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error calculating scores", e);
+            // FIX: Inform user about the error
+            System.err.println("*** Error calculating final scores. Check logs for details.");
         }
     }
 
@@ -357,8 +370,8 @@ public class GameManager {
     private void handleAITurn(Penguin p) {
         // 1. Evaluate all directions based on where the slide leads
         List<Direction> foodDirs = new ArrayList<>();
-        List<Direction> safeDirs = new ArrayList<>(); // Hazards (except holes) or Empty stops
-        List<Direction> fatalDirs = new ArrayList<>(); // Water or Holes
+        List<Direction> safeDirs = new ArrayList<>();
+        List<Direction> fatalDirs = new ArrayList<>();
 
         for (Direction d : Direction.values()) {
             MoveOutcome outcome = simulateMove(p, d);
@@ -373,70 +386,64 @@ public class GameManager {
 
         // 2. Choose the best direction based on priority
         Direction chosenDir;
-        MoveOutcome expectedOutcome;
 
         if (!foodDirs.isEmpty()) {
-            // Priority 1: Food
             chosenDir = foodDirs.get(RandUtil.getRandomInt(foodDirs.size()));
-            expectedOutcome = MoveOutcome.FOOD;
         } else if (!safeDirs.isEmpty()) {
-            // Priority 2: Safe Obstacle (Hazards, Walls, Penguins)
             chosenDir = safeDirs.get(RandUtil.getRandomInt(safeDirs.size()));
-            expectedOutcome = MoveOutcome.SAFE_OBSTACLE;
         } else {
-            // Priority 3: Water/Death (No choice)
-            // Even if fatal, we must choose one
             if (!fatalDirs.isEmpty()) {
                 chosenDir = fatalDirs.get(RandUtil.getRandomInt(fatalDirs.size()));
             } else {
-                // Should theoretically not happen if lists cover all 4 directions, but fallback
                 chosenDir = RandUtil.getRandomDirection();
             }
-            expectedOutcome = MoveOutcome.BAD_WATER_OR_HOLE;
         }
 
         // 3. Determine Ability Usage
         boolean useAbility = false;
 
         if (p instanceof RockhopperPenguin) {
-            // Rock hopper Logic: Exception to the 30% rule.
-            // "The first time they decide to move in the direction of a hazard, they will automatically use their action."
+            // FIX: Rockhopper Logic - auto-use when facing hazard
             if (!p.isAbilityUsed() && isFacingHazard(p, chosenDir)) {
                 useAbility = true;
-                System.out.println(p.getNotation() + " will automatically USE its special action because it faces a hazard.");
+                // Note: Message will be printed later in the unified block
             }
         } else {
             // Standard Logic: 30% chance for others (King, Emperor, Royal)
             if (!p.isAbilityUsed()) {
-                useAbility = RandUtil.getRandomInt(10) < 3; // 30% chance (0, 1, 2 out of 0-9)
+                useAbility = RandUtil.getRandomInt(10) < 3;
             }
         }
 
         // 4. Execute Ability Logic
         if (useAbility && !p.isAbilityUsed()) {
-            // Print usage message (Rockhopper already printed its specific reason above if triggered)
-            if (!(p instanceof RockhopperPenguin)) {
+            // FIX: Print specific message for Rockhopper, generic for others
+            if (p instanceof RockhopperPenguin) {
+                System.out.println(p.getNotation() +
+                        " will automatically USE its special action because it faces a hazard.");
+            } else {
                 System.out.println(p.getNotation() + " chooses to USE its special action.");
             }
 
             p.specialAbility();
+            p.setAbilityUsed(true);
 
-            // Special handling for RoyalPenguin AI (Single Step)
+            // Special handling for RoyalPenguin AI
             if (p instanceof RoyalPenguin royal) {
-                // Royal AI Logic: "random direction that does not lead them to a Hazard or falling to water"
                 Direction royalDir = getSafeRoyalMove(royal);
                 royal.performSpecialMove(grid, royalDir);
 
-                // Check if penguin was eliminated during special move
+                // FIX: Check if penguin was eliminated during special move
                 if (p.getPosition() == null) {
                     System.out.println("*** " + p.getNotation() + " IS REMOVED FROM THE GAME!");
                     return;
                 }
             }
         } else {
-            // Match PDF format for non-usage
-            // Rockhopper only prints this if it didn't trigger the auto-jump
-            System.out.println(p.getNotation() + " does NOT use its special action.");
+            // FIX: Only print non-usage message if ability is available
+            if (!p.isAbilityUsed()) {
+                System.out.println(p.getNotation() + " does NOT use its special action.");
+            }
         }
 
         // 5. Execute Slide
@@ -446,6 +453,55 @@ public class GameManager {
         // Check if penguin was eliminated after slide
         if (p.getPosition() == null) {
             System.out.println("*** " + p.getNotation() + " IS REMOVED FROM THE GAME!");
+        }
+    }
+
+    /**
+     * Checks if the *immediate* obstacle in the sliding path is a Hazard.
+     * Used specifically for Rockhopper logic.
+     */
+    private boolean isFacingHazard(Penguin p, Direction d) {
+        // FIX: Add null check for position
+        if (p.getPosition() == null) {
+            return false;
+        }
+
+        int cx = p.getPosition().getX();
+        int cy = p.getPosition().getY();
+
+        // Trace path until we hit something or fall off
+        while (true) {
+            switch (d) {
+                case UP -> cy--;
+                case DOWN -> cy++;
+                case LEFT -> cx--;
+                case RIGHT -> cx++;
+            }
+
+            // FIX: Check bounds before accessing grid
+            if (cx < 0 || cy < 0 || cx >= TerrainGrid.GRID_SIZE || cy >= TerrainGrid.GRID_SIZE) {
+                return false;
+            }
+
+            interfaces.ITerrainObject obj = grid.getObjectAt(new Position(cx, cy));
+
+            switch (obj) {
+                case null -> {
+                    continue;
+                }
+                case Food food -> {
+                    continue;
+                }
+                case interfaces.IHazard iHazard -> {
+                    return true;
+                }
+                case Penguin penguin -> {
+                    return false;
+                }
+                default -> {
+                    return false;
+                }
+            }
         }
     }
 
@@ -496,50 +552,8 @@ public class GameManager {
         }
     }
 
-    /**
-     * Checks if the *immediate* obstacle in the sliding path is a Hazard.
-     * Used specifically for Rockhopper logic.
-     */
-    private boolean isFacingHazard(Penguin p, Direction d) {
-        int cx = p.getPosition().getX();
-        int cy = p.getPosition().getY();
 
-        // Trace path until we hit something or fall off
-        while (true) {
-            switch (d) {
-                case UP -> cy--;
-                case DOWN -> cy++;
-                case LEFT -> cx--;
-                case RIGHT -> cx++;
-            }
-            if (cx < 0 || cy < 0 || cx >= TerrainGrid.GRID_SIZE || cy >= TerrainGrid.GRID_SIZE) return false;
 
-            interfaces.ITerrainObject obj = grid.getObjectAt(new Position(cx, cy));
-
-            switch (obj) {
-                case null -> {
-                    continue;
-                }
-                case Food food -> {
-                    continue;
-                }
-
-                // If it's a hazard (and not a plugged hole, handled generally as hazard here)
-                case interfaces.IHazard iHazard -> {
-                    return true;
-                }
-
-                // Penguins are not hazards for jumping purposes
-                case Penguin penguin -> {
-                    return false;
-                }
-                default -> {
-                }
-            }
-
-            return false;
-        }
-    }
 
     /**
      * Determines a safe single-step move for Royal Penguin AI.

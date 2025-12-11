@@ -87,37 +87,36 @@ public class IcyTerrain {
      */
     private void initializeGame() {
         try {
-            // Display welcome message
             System.out.println(
                     "Welcome to Sliding Penguins Puzzle Game App. " +
                             "An 10x10 icy terrain grid is being generated."
             );
 
-            // 1. Spawn Objects securely
             System.out.print(
                     "Penguins, Hazards, and Food items are also being generated."
             );
             spawner.spawnObjects(gameGrid);
 
-            // 2. Render the initial state
             System.out.println(" The initial icy terrain grid:");
             renderer.renderState(gameGrid);
 
-            // 3. Display penguin types
             displayPenguinInfo();
 
-            // 4. Start the game
             gameManager = new GameManager(gameGrid, renderer, inputMaster);
             gameManager.gameLoop();
 
         } catch (IllegalArgumentException e) {
-            // Specific handling for argument validation errors
             System.out.println("Game initialization failed.");
             System.out.println("Reason: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Initialization error", e);
+        } catch (RuntimeException e) {
+            // FIX: Catch runtime exceptions separately
+            System.out.println("A critical runtime error occurred during game initialization.");
+            System.out.println("Error: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Runtime error during initialization", e);
+            throw e; // Re-throw to stop execution
         } catch (Exception e) {
-            // General exception handling
-            System.out.println("An exception has occurred during game initialization.");
-            // Replaced printStackTrace with Logger
+            System.out.println("An unexpected exception has occurred during game initialization.");
             LOGGER.log(Level.SEVERE, "Unexpected error during game initialization", e);
         }
     }

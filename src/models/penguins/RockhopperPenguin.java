@@ -157,27 +157,17 @@ public class RockhopperPenguin extends Penguin {
                         isMoving = false;
                     }
                     case IHazard hazard when canJump && useAbilityThisTurn -> {
-                        // Attempt to jump over the hazard
                         System.out.println(getNotation() + " attempts to jump over " +
                                 hazard.getNotation() + "!");
 
-                        // Calculate landing position (one square beyond hazard)
                         int landY = nextY;
                         int landX = nextX;
 
                         switch (direction) {
-                            case UP:
-                                landY--;
-                                break;
-                            case DOWN:
-                                landY++;
-                                break;
-                            case LEFT:
-                                landX--;
-                                break;
-                            case RIGHT:
-                                landX++;
-                                break;
+                            case UP: landY--; break;
+                            case DOWN: landY++; break;
+                            case LEFT: landX--; break;
+                            case RIGHT: landX++; break;
                         }
 
                         Position landPos = new Position(landX, landY);
@@ -203,18 +193,29 @@ public class RockhopperPenguin extends Penguin {
                             canJump = false;
                             useAbilityThisTurn = false;
                             // Continue sliding from landing position
+                        } else if (landingObstacle instanceof Food food) {
+                            // FIX: Can land on food during jump
+                            System.out.println(getNotation() + " successfully jumps over " +
+                                    hazard.getNotation() + " and lands on food!");
+                            grid.removeObject(landPos);
+                            updatePositionOnGrid(grid, landPos);
+                            pickupFood(food);
+                            canJump = false;
+                            useAbilityThisTurn = false;
+                            isMoving = false; // Stop after landing on food
                         } else {
                             // Landing spot not empty - jump fails
                             System.out.println(getNotation() +
                                     " fails to jump - landing spot is not empty!");
                             hazard.onCollision(this, grid);
 
-                            // If penguin was eliminated, stop
+                            // FIX: Check if penguin was eliminated
                             if (getPosition() == null) {
+                                canJump = false;
+                                useAbilityThisTurn = false;
                                 return;
                             }
 
-                            // Slide the hazard if it can slide
                             if (hazard.canSlide()) {
                                 grid.removeObject(hazard.getPosition());
                                 slideHazard(grid, hazard, direction);
@@ -225,6 +226,7 @@ public class RockhopperPenguin extends Penguin {
                             isMoving = false;
                         }
                     }
+
                     case Penguin otherPenguin -> {
                         // Collision with another penguin
                         System.out.println(getNotation() + " collides with " +

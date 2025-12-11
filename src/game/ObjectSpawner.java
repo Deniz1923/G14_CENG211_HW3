@@ -92,37 +92,33 @@ public class ObjectSpawner {
      */
     private void spawnPenguins(TerrainGrid grid) {
         int penguinsSpawned = 0;
-        //List<Penguin> penguinList = new ArrayList<>();
         int attempts = 0;
-        int maxAttempts = 1000; // Prevent infinite loops
+        int maxAttempts = 1000;
 
         try {
             while (penguinsSpawned < PENGUIN_COUNT) {
                 if (attempts++ > maxAttempts) {
-                    throw new RuntimeException(
-                            "Failed to spawn all penguins after " + maxAttempts + " attempts"
+                    // FIX: More informative error message
+                    String error = String.format(
+                            "Failed to spawn all penguins after %d attempts. " +
+                                    "Spawned %d out of %d penguins.",
+                            maxAttempts, penguinsSpawned, PENGUIN_COUNT
                     );
+                    throw new RuntimeException(error);
                 }
 
                 Position position = getRandomEdgePosition();
 
-                // Check if position is empty
                 if (grid.getObjectAt(position) == null) {
-                    // Generate random penguin type
                     Penguin penguin = generateRandomPenguin(position);
-
-                    // Assign penguin ID (P1, P2, P3)
                     penguin.setPenguinID("P" + (penguinsSpawned + 1));
-
-                    // Place on grid
                     grid.placeObject(position, penguin);
-                    //penguinList.add(penguin);
                     penguinsSpawned++;
                 }
             }
         } catch (Exception e) {
             System.err.println("Error spawning penguins: " + e.getMessage());
-            throw e;
+            throw new RuntimeException("Critical error during penguin spawning", e);
         }
     }
 
