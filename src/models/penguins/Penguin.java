@@ -1,18 +1,19 @@
 package models.penguins;
 
-import static game.TerrainGrid.GRID_SIZE;
-
 import enums.Direction;
 import enums.PenguinType;
 import game.TerrainGrid;
 import interfaces.IHazard;
 import interfaces.ITerrainObject;
-import java.util.ArrayList;
-import java.util.List;
 import models.Food;
 import models.Position;
 import models.hazards.HoleInIce;
 import models.hazards.SeaLion;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static game.TerrainGrid.GRID_SIZE;
 
 /**
  * Abstract base class for all penguin types in the Sliding Penguins game.
@@ -41,35 +42,51 @@ import models.hazards.SeaLion;
  * @since 2025-12-08
  */
 public abstract class Penguin implements ITerrainObject {
-    /** List of food items collected by this penguin */
+    /**
+     * List of food items collected by this penguin
+     */
     private final ArrayList<Food> inventory;
 
-    /** The type of this penguin (King, Emperor, Royal, or Rockhopper) */
+    /**
+     * The type of this penguin (King, Emperor, Royal, or Rockhopper)
+     */
     private final PenguinType type;
 
-    /** Current position on the grid (null if eliminated) */
+    /**
+     * Current position on the grid (null if eliminated)
+     */
     private Position position;
 
-    /** Total weight of food currently carried */
+    /**
+     * Total weight of food currently carried
+     */
     private int carriedWeight = 0;
 
-    /** Whether this penguin is stunned and will skip their next turn */
+    /**
+     * Whether this penguin is stunned and will skip their next turn
+     */
     private boolean stunned = false;
 
-    /** Unique identifier (P1, P2, or P3) */
+    /**
+     * Unique identifier (P1, P2, or P3)
+     */
     private String penguinID = "??";
 
-    /** Whether this penguin is controlled by the human player */
+    /**
+     * Whether this penguin is controlled by the human player
+     */
     private boolean isPlayer = false;
 
-    /** Whether this penguin has used their special ability */
+    /**
+     * Whether this penguin has used their special ability
+     */
     private boolean abilityUsed = false;
 
     /**
      * Constructs a Penguin with specified type and position.
      *
      * @param penguinType The type of penguin (King, Emperor, Royal, Rockhopper)
-     * @param position The initial position on the grid (must be on edge)
+     * @param position    The initial position on the grid (must be on edge)
      * @throws IllegalArgumentException if penguinType is null
      * @throws IllegalArgumentException if position is null
      */
@@ -204,7 +221,7 @@ public abstract class Penguin implements ITerrainObject {
      *   <li>Grid edge - fall into water (eliminated)</li>
      * </ul>
      *
-     * @param grid The terrain grid
+     * @param grid      The terrain grid
      * @param direction The direction to slide (UP, DOWN, LEFT, RIGHT)
      * @throws IllegalArgumentException if grid or direction is null
      */
@@ -232,10 +249,18 @@ public abstract class Penguin implements ITerrainObject {
 
                 // Calculate next position based on direction
                 switch (direction) {
-                    case UP: nextY--; break;
-                    case DOWN: nextY++; break;
-                    case LEFT: nextX--; break;
-                    case RIGHT: nextX++; break;
+                    case UP:
+                        nextY--;
+                        break;
+                    case DOWN:
+                        nextY++;
+                        break;
+                    case LEFT:
+                        nextX--;
+                        break;
+                    case RIGHT:
+                        nextX++;
+                        break;
                 }
 
                 Position nextPos = new Position(nextX, nextY);
@@ -324,8 +349,8 @@ public abstract class Penguin implements ITerrainObject {
      * Slides a hazard in the specified direction after collision.
      * Hazards continue sliding until hitting an obstacle or falling off the grid.
      *
-     * @param grid The terrain grid
-     * @param hazard The hazard to slide
+     * @param grid      The terrain grid
+     * @param hazard    The hazard to slide
      * @param direction The direction to slide
      */
     private void slideHazard(TerrainGrid grid, IHazard hazard, Direction direction) {
@@ -338,10 +363,18 @@ public abstract class Penguin implements ITerrainObject {
                 int nextX = currentPos.getX();
 
                 switch (direction) {
-                    case UP: nextY--; break;
-                    case DOWN: nextY++; break;
-                    case LEFT: nextX--; break;
-                    case RIGHT: nextX++; break;
+                    case UP:
+                        nextY--;
+                        break;
+                    case DOWN:
+                        nextY++;
+                        break;
+                    case LEFT:
+                        nextX--;
+                        break;
+                    case RIGHT:
+                        nextX++;
+                        break;
                 }
 
                 Position nextPos = new Position(nextX, nextY);
@@ -528,7 +561,7 @@ public abstract class Penguin implements ITerrainObject {
      * Updates this penguin's position on the grid by removing from old
      * position and placing at new position.
      *
-     * @param grid The terrain grid
+     * @param grid        The terrain grid
      * @param newPosition The new position to move to
      */
     private void updatePositionOnGrid(TerrainGrid grid, Position newPosition) {

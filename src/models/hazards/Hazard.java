@@ -27,120 +27,126 @@ import models.penguins.Penguin;
  * @since 2025-12-08
  */
 public abstract class Hazard implements IHazard {
-  /** Indicates whether this hazard can slide on ice */
-  protected final boolean canSlide;
+    /**
+     * Indicates whether this hazard can slide on ice
+     */
+    protected final boolean canSlide;
 
-  /** The type of this hazard */
-  protected final HazardType hazardType;
+    /**
+     * The type of this hazard
+     */
+    protected final HazardType hazardType;
 
-  /** The current position of this hazard on the grid */
-  protected Position position;
+    /**
+     * The current position of this hazard on the grid
+     */
+    protected Position position;
 
-  /**
-   * Constructs a Hazard with specified position, sliding capability, and type.
-   *
-   * @param position The initial position on the grid
-   * @param canSlide Whether this hazard can slide when pushed
-   * @param hazardType The type of hazard
-   * @throws IllegalArgumentException if position is null
-   * @throws IllegalArgumentException if hazardType is null
-   */
-  public Hazard(Position position, boolean canSlide, HazardType hazardType) {
-    if (position == null) {
-      throw new IllegalArgumentException(
-              "Hazard Error: Position cannot be null."
-      );
+    /**
+     * Constructs a Hazard with specified position, sliding capability, and type.
+     *
+     * @param position   The initial position on the grid
+     * @param canSlide   Whether this hazard can slide when pushed
+     * @param hazardType The type of hazard
+     * @throws IllegalArgumentException if position is null
+     * @throws IllegalArgumentException if hazardType is null
+     */
+    public Hazard(Position position, boolean canSlide, HazardType hazardType) {
+        if (position == null) {
+            throw new IllegalArgumentException(
+                    "Hazard Error: Position cannot be null."
+            );
+        }
+        if (hazardType == null) {
+            throw new IllegalArgumentException(
+                    "Hazard Error: HazardType cannot be null."
+            );
+        }
+
+        this.position = position;
+        this.canSlide = canSlide;
+        this.hazardType = hazardType;
     }
-    if (hazardType == null) {
-      throw new IllegalArgumentException(
-              "Hazard Error: HazardType cannot be null."
-      );
+
+    /**
+     * Gets the current position of this hazard on the grid.
+     *
+     * @return The Position object representing the hazard's location
+     */
+    @Override
+    public Position getPosition() {
+        return position;
     }
 
-    this.position = position;
-    this.canSlide = canSlide;
-    this.hazardType = hazardType;
-  }
-
-  /**
-   * Gets the current position of this hazard on the grid.
-   *
-   * @return The Position object representing the hazard's location
-   */
-  @Override
-  public Position getPosition() {
-    return position;
-  }
-
-  /**
-   * Sets the position of this hazard on the grid.
-   * Used when the hazard is moved or placed on the grid.
-   *
-   * @param position The new position
-   * @throws IllegalArgumentException if position is null
-   */
-  @Override
-  public void setPosition(Position position) {
-    if (position == null) {
-      throw new IllegalArgumentException(
-              "Hazard Error: Cannot set position to null."
-      );
+    /**
+     * Sets the position of this hazard on the grid.
+     * Used when the hazard is moved or placed on the grid.
+     *
+     * @param position The new position
+     * @throws IllegalArgumentException if position is null
+     */
+    @Override
+    public void setPosition(Position position) {
+        if (position == null) {
+            throw new IllegalArgumentException(
+                    "Hazard Error: Cannot set position to null."
+            );
+        }
+        this.position = position;
     }
-    this.position = position;
-  }
 
-  /**
-   * Checks if this hazard can slide on ice.
-   * Sliding hazards can be pushed by penguins or other sliding objects.
-   *
-   * @return true if the hazard can slide, false otherwise
-   */
-  @Override
-  public boolean canSlide() {
-    return canSlide;
-  }
+    /**
+     * Checks if this hazard can slide on ice.
+     * Sliding hazards can be pushed by penguins or other sliding objects.
+     *
+     * @return true if the hazard can slide, false otherwise
+     */
+    @Override
+    public boolean canSlide() {
+        return canSlide;
+    }
 
-  /**
-   * Returns the notation used to display this hazard on the grid.
-   * The notation is a 2-letter abbreviation:
-   * <ul>
-   *   <li>LB - LightIceBlock</li>
-   *   <li>HB - HeavyIceBlock</li>
-   *   <li>SL - SeaLion</li>
-   *   <li>HI - HoleInIce (or PH when plugged)</li>
-   * </ul>
-   *
-   * @return The hazard type's notation string
-   */
-  @Override
-  public String getNotation() {
-    return hazardType.getNotation();
-  }
+    /**
+     * Returns the notation used to display this hazard on the grid.
+     * The notation is a 2-letter abbreviation:
+     * <ul>
+     *   <li>LB - LightIceBlock</li>
+     *   <li>HB - HeavyIceBlock</li>
+     *   <li>SL - SeaLion</li>
+     *   <li>HI - HoleInIce (or PH when plugged)</li>
+     * </ul>
+     *
+     * @return The hazard type's notation string
+     */
+    @Override
+    public String getNotation() {
+        return hazardType.getNotation();
+    }
 
-  /**
-   * Handles collision between a penguin and this hazard.
-   * Each hazard type has different effects on collision:
-   * <ul>
-   *   <li>LightIceBlock - Stuns the penguin</li>
-   *   <li>HeavyIceBlock - Removes penguin's lightest food</li>
-   *   <li>SeaLion - Bounces penguin in opposite direction</li>
-   *   <li>HoleInIce - Eliminates the penguin from the game</li>
-   * </ul>
-   *
-   * @param penguin The penguin that collided with this hazard
-   * @param grid The terrain grid where the collision occurred
-   * @throws IllegalArgumentException if penguin or grid is null
-   */
-  @Override
-  public abstract void onCollision(Penguin penguin, TerrainGrid grid);
+    /**
+     * Handles collision between a penguin and this hazard.
+     * Each hazard type has different effects on collision:
+     * <ul>
+     *   <li>LightIceBlock - Stuns the penguin</li>
+     *   <li>HeavyIceBlock - Removes penguin's lightest food</li>
+     *   <li>SeaLion - Bounces penguin in opposite direction</li>
+     *   <li>HoleInIce - Eliminates the penguin from the game</li>
+     * </ul>
+     *
+     * @param penguin The penguin that collided with this hazard
+     * @param grid    The terrain grid where the collision occurred
+     * @throws IllegalArgumentException if penguin or grid is null
+     */
+    @Override
+    public abstract void onCollision(Penguin penguin, TerrainGrid grid);
 
-  /**
-   * Returns a string representation of this hazard.
-   *
-   * @return A string containing the hazard type and position
-   */
-  @Override
-  public String toString() {
-    return hazardType.toString() + " at " + position.displayPosition();
-  }
+    /**
+     * Returns a string representation of this hazard.
+     *
+     * @return A string containing the hazard type and position
+     */
+    @Override
+    public String toString() {
+        return hazardType.toString() + " at " + position.displayPosition();
+    }
 }

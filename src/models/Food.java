@@ -8,30 +8,36 @@ import interfaces.ITerrainObject;
  * Each food item has a specific type (Krill, Crustacean, Anchovy, Squid, or Mackerel)
  * and a weight value between 1-5 units.
  *
- * <p>Food items implement ITerrainObject, allowing them to be placed on the grid.
+ * Food items implement ITerrainObject, allowing them to be placed on the grid.
  * When a penguin reaches a food item, the penguin collects it and adds it to
- * their inventory, contributing to their total carried weight.</p>
+ * their inventory, contributing to their total carried weight.
  *
  * @author CENG211 14. Group
  * @version 1.0
  * @since 2025-12-08
  */
 public class Food implements ITerrainObject {
-    /** The type of food (Krill, Crustacean, Anchovy, Squid, or Mackerel) */
+    /**
+     * The type of food (Krill, Crustacean, Anchovy, Squid, or Mackerel)
+     */
     private final FoodType type;
 
-    /** The weight of this food item in units (1-5) */
+    /**
+     * The weight of this food item in units (1-5)
+     */
     private final int weight;
 
-    /** The current position of this food item on the grid */
+    /**
+     * The current position of this food item on the grid
+     */
     private Position position;
 
     /**
      * Constructs a Food item with specified type, position, and weight.
      *
-     * @param type The type of food (cannot be null)
+     * @param type     The type of food (cannot be null)
      * @param position The initial position on the grid (cannot be null)
-     * @param weight The weight in units (must be between 1 and 5 inclusive)
+     * @param weight   The weight in units (must be between 1 and 5 inclusive)
      * @throws IllegalArgumentException if type is null
      * @throws IllegalArgumentException if position is null
      * @throws IllegalArgumentException if weight is not between 1 and 5
@@ -105,13 +111,11 @@ public class Food implements ITerrainObject {
     /**
      * Returns the notation used to display this food item on the grid.
      * The notation is a 2-letter abbreviation of the food type:
-     * <ul>
-     *   <li>Kr - Krill</li>
-     *   <li>Cr - Crustacean</li>
-     *   <li>An - Anchovy</li>
-     *   <li>Sq - Squid</li>
-     *   <li>Ma - Mackerel</li>
-     * </ul>
+     * - Kr: Krill
+     * - Cr: Crustacean
+     * - An: Anchovy
+     * - Sq: Squid
+     * - Ma: Mackerel
      *
      * @return The food type's notation string
      */
@@ -123,7 +127,7 @@ public class Food implements ITerrainObject {
 
     /**
      * Returns a string representation of this food item.
-     * Format: "FoodType (weight units)"
+     * Format: FoodType (weight units)
      *
      * @return A descriptive string of the food item
      */

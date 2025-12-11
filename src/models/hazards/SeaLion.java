@@ -65,7 +65,7 @@ public class SeaLion extends Hazard {
      * </ol>
      *
      * @param penguin The penguin that collided with this sea lion
-     * @param grid The terrain grid (used by calling code for movement)
+     * @param grid    The terrain grid (used by calling code for movement)
      * @throws IllegalArgumentException if penguin is null
      * @throws IllegalArgumentException if grid is null
      */

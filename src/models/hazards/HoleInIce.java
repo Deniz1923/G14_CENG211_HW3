@@ -28,7 +28,9 @@ import models.penguins.Penguin;
  * @since 2025-12-08
  */
 public class HoleInIce extends Hazard {
-    /** Indicates whether this hole has been plugged by a sliding hazard */
+    /**
+     * Indicates whether this hole has been plugged by a sliding hazard
+     */
     private boolean isPlugged = false;
 
     /**
@@ -56,7 +58,7 @@ public class HoleInIce extends Hazard {
      * </ul>
      *
      * @param penguin The penguin that collided with this hole
-     * @param grid The terrain grid where the elimination occurs
+     * @param grid    The terrain grid where the elimination occurs
      * @throws IllegalArgumentException if penguin is null
      * @throws IllegalArgumentException if grid is null
      */

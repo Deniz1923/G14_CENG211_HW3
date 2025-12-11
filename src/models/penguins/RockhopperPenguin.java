@@ -34,10 +34,14 @@ import models.hazards.HoleInIce;
  * @since 2025-12-08
  */
 public class RockhopperPenguin extends Penguin {
-    /** Flag indicating if ability should be used this turn */
+    /**
+     * Flag indicating if ability should be used this turn
+     */
     private boolean useAbilityThisTurn = false;
 
-    /** Flag indicating if penguin is ready to jump over a hazard */
+    /**
+     * Flag indicating if penguin is ready to jump over a hazard
+     */
     private boolean canJump = false;
 
     /**
@@ -86,7 +90,7 @@ public class RockhopperPenguin extends Penguin {
      *   <li>Failure: Normal collision occurs, ability wasted</li>
      * </ol>
      *
-     * @param grid The terrain grid
+     * @param grid      The terrain grid
      * @param direction The direction to slide (UP, DOWN, LEFT, RIGHT)
      * @throws IllegalArgumentException if grid or direction is null
      */
@@ -115,10 +119,18 @@ public class RockhopperPenguin extends Penguin {
 
                 // Calculate next position
                 switch (direction) {
-                    case UP: nextY--; break;
-                    case DOWN: nextY++; break;
-                    case LEFT: nextX--; break;
-                    case RIGHT: nextX++; break;
+                    case UP:
+                        nextY--;
+                        break;
+                    case DOWN:
+                        nextY++;
+                        break;
+                    case LEFT:
+                        nextX--;
+                        break;
+                    case RIGHT:
+                        nextX++;
+                        break;
                 }
 
                 Position nextPos = new Position(nextX, nextY);
@@ -260,8 +272,8 @@ public class RockhopperPenguin extends Penguin {
     /**
      * Helper method to slide a hazard after collision.
      *
-     * @param grid The terrain grid
-     * @param hazard The hazard to slide
+     * @param grid      The terrain grid
+     * @param hazard    The hazard to slide
      * @param direction The direction to slide
      */
     private void slideHazard(TerrainGrid grid, IHazard hazard, Direction direction) {
@@ -274,10 +286,18 @@ public class RockhopperPenguin extends Penguin {
                 int nextX = currentPos.getX();
 
                 switch (direction) {
-                    case UP: nextY--; break;
-                    case DOWN: nextY++; break;
-                    case LEFT: nextX--; break;
-                    case RIGHT: nextX++; break;
+                    case UP:
+                        nextY--;
+                        break;
+                    case DOWN:
+                        nextY++;
+                        break;
+                    case LEFT:
+                        nextX--;
+                        break;
+                    case RIGHT:
+                        nextX++;
+                        break;
                 }
 
                 Position nextPos = new Position(nextX, nextY);
@@ -325,7 +345,7 @@ public class RockhopperPenguin extends Penguin {
     /**
      * Updates the penguin's position on the grid.
      *
-     * @param grid The terrain grid
+     * @param grid        The terrain grid
      * @param newPosition The new position
      */
     private void updatePositionOnGrid(TerrainGrid grid, Position newPosition) {

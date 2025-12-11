@@ -7,7 +7,7 @@ import models.penguins.Penguin;
 /**
  * Main game controller that initializes and manages the Sliding Penguins game.
  * This class handles the complete game lifecycle from initialization to completion.
- *
+ * <p>
  * Initialization sequence:
  * 1. Create input master for player interaction
  * 2. Create grid renderer for displaying game state
@@ -17,7 +17,7 @@ import models.penguins.Penguin;
  * 6. Display initial grid state
  * 7. Show penguin information
  * 8. Start game manager and run game loop
- *
+ * <p>
  * This class also handles error management and provides graceful
  * failure messages if initialization fails.
  *
@@ -26,26 +26,36 @@ import models.penguins.Penguin;
  * @since 2025-12-08
  */
 public class IcyTerrain {
-    /** Handles user input from console */
+    /**
+     * Handles user input from console
+     */
     private final InputMaster inputMaster;
 
-    /** Renders the grid to console display */
+    /**
+     * Renders the grid to console display
+     */
     private final GridRenderer renderer;
 
-    /** Spawns penguins, hazards, and food on the grid */
+    /**
+     * Spawns penguins, hazards, and food on the grid
+     */
     private final ObjectSpawner spawner;
 
-    /** The 10x10 game grid containing all objects */
+    /**
+     * The 10x10 game grid containing all objects
+     */
     private TerrainGrid gameGrid;
 
-    /** Manages game flow and turn processing */
+    /**
+     * Manages game flow and turn processing
+     */
     private GameManager gameManager;
 
     /**
      * Constructs an IcyTerrain and initializes the game.
      * This constructor automatically starts the complete game initialization
      * process, including grid creation, object spawning, and game execution.
-     *
+     * <p>
      * If any errors occur during initialization, they are caught and
      * displayed with appropriate error messages.
      */
@@ -66,7 +76,7 @@ public class IcyTerrain {
      * 3. Render initial grid state
      * 4. Display penguin type information
      * 5. Create game manager and start game loop
-     *
+     * <p>
      * Error handling:
      * - IllegalArgumentException - Displays reason for initialization failure
      * - General Exception - Displays error message and stack trace
@@ -172,7 +182,7 @@ public class IcyTerrain {
      * Closes the input master's scanner resource.
      * This MUST be called when the game ends to properly release
      * the System.in resource and prevent resource leaks.
-     *
+     * <p>
      * Call this in the main method after the game completes:
      * IcyTerrain terrain = new IcyTerrain();
      * terrain.closeInputMaster(); // Always close!

@@ -5,18 +5,18 @@ package enums;
  * ability that can be used once per game.
  */
 public enum PenguinType {
-  EMPEROR("Emperor"),
-  KING("King"),
-  ROCKHOPPER("Rockhopper"),
-  ROYAL("Royal");
+    EMPEROR("Emperor"),
+    KING("King"),
+    ROCKHOPPER("Rockhopper"),
+    ROYAL("Royal");
 
-  private final String displayName;
+    private final String displayName;
 
-  PenguinType(String displayName) {
-    this.displayName = displayName;
-  }
+    PenguinType(String displayName) {
+        this.displayName = displayName;
+    }
 
-  public String getDisplayName() {
-    return displayName;
-  }
+    public String getDisplayName() {
+        return displayName;
+    }
 }

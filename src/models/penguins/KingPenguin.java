@@ -15,8 +15,8 @@ import models.hazards.HoleInIce;
  * If the direction has less than five free squares, the ability is still considered used.
  */
 public class KingPenguin extends Penguin {
-    private boolean useAbilityThisTurn = false;
     private static final int TARGET_SQUARE = 5;
+    private boolean useAbilityThisTurn = false;
 
     /**
      * Constructs a KingPenguin at the specified position.
@@ -48,7 +48,7 @@ public class KingPenguin extends Penguin {
      * If the special ability is active, attempts to stop at the fifth square.
      * Otherwise, uses the standard sliding behavior.
      *
-     * @param grid The terrain grid
+     * @param grid      The terrain grid
      * @param direction The direction to slide
      * @throws IllegalArgumentException if grid or direction is null
      */
@@ -75,9 +75,9 @@ public class KingPenguin extends Penguin {
      * Slides the penguin with the special ability active.
      * Attempts to stop at the specified target square.
      *
-     * @param grid The terrain grid
+     * @param grid      The terrain grid
      * @param direction The direction to slide
-     * @param stopAt The target square number to stop at
+     * @param stopAt    The target square number to stop at
      */
     private void slideWithAbility(TerrainGrid grid, Direction direction, int stopAt) {
         System.out.println(getNotation() + " starts sliding " + getDirectionName(direction) + "!");
@@ -138,8 +138,8 @@ public class KingPenguin extends Penguin {
     /**
      * Handles collision with obstacles (penguins or hazards).
      *
-     * @param grid The terrain grid
-     * @param obstacle The obstacle that was hit
+     * @param grid      The terrain grid
+     * @param obstacle  The obstacle that was hit
      * @param direction The direction of movement
      */
     private void handleObstacleCollision(TerrainGrid grid, ITerrainObject obstacle, Direction direction) {
@@ -167,8 +167,8 @@ public class KingPenguin extends Penguin {
     /**
      * Slides a hazard in the specified direction after collision.
      *
-     * @param grid The terrain grid
-     * @param hazard The hazard to slide
+     * @param grid      The terrain grid
+     * @param hazard    The hazard to slide
      * @param direction The direction to slide the hazard
      */
     private void slideHazardHelper(TerrainGrid grid, IHazard hazard, Direction direction) {
@@ -222,7 +222,7 @@ public class KingPenguin extends Penguin {
     /**
      * Updates the penguin's position on the grid.
      *
-     * @param grid The terrain grid
+     * @param grid        The terrain grid
      * @param newPosition The new position
      */
     private void updatePositionOnGrid(TerrainGrid grid, Position newPosition) {

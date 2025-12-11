@@ -49,7 +49,7 @@ public class LightIceBlock extends Hazard {
      * the skipped turn.</p>
      *
      * @param penguin The penguin that collided with this light ice block
-     * @param grid The terrain grid (not used in this implementation)
+     * @param grid    The terrain grid (not used in this implementation)
      * @throws IllegalArgumentException if penguin is null
      * @throws IllegalArgumentException if grid is null
      */

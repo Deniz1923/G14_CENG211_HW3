@@ -30,7 +30,9 @@ import models.Position;
  * @since 2025-12-08
  */
 public class RoyalPenguin extends Penguin {
-    /** Flag indicating if ability should be used this turn */
+    /**
+     * Flag indicating if ability should be used this turn
+     */
     private boolean useAbilityThisTurn = false;
 
     /**
@@ -76,7 +78,7 @@ public class RoyalPenguin extends Penguin {
      * <p>Unlike regular sliding, this move is exactly one square and
      * stops regardless of what's there (except elimination cases).</p>
      *
-     * @param grid The terrain grid
+     * @param grid      The terrain grid
      * @param direction The direction to move (UP, DOWN, LEFT, RIGHT)
      * @throws IllegalArgumentException if grid or direction is null
      */
@@ -105,10 +107,18 @@ public class RoyalPenguin extends Penguin {
 
             // Calculate the single-square move
             switch (direction) {
-                case UP: nextY--; break;
-                case DOWN: nextY++; break;
-                case LEFT: nextX--; break;
-                case RIGHT: nextX++; break;
+                case UP:
+                    nextY--;
+                    break;
+                case DOWN:
+                    nextY++;
+                    break;
+                case LEFT:
+                    nextX--;
+                    break;
+                case RIGHT:
+                    nextX++;
+                    break;
             }
 
             Position nextPos = new Position(nextX, nextY);
@@ -166,7 +176,7 @@ public class RoyalPenguin extends Penguin {
      * Updates the penguin's position on the grid.
      * Removes penguin from old position and places at new position.
      *
-     * @param grid The terrain grid
+     * @param grid        The terrain grid
      * @param newPosition The new position to move to
      */
     private void updatePositionOnGrid(TerrainGrid grid, Position newPosition) {

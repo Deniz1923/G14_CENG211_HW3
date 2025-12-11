@@ -1,16 +1,11 @@
 package game;
 
-import static game.TerrainGrid.GRID_SIZE;
-
 import enums.Direction;
 import game.util.GridRenderer;
 import game.util.InputMaster;
 import game.util.RandUtil;
 import interfaces.IHazard;
 import interfaces.ITerrainObject;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 import models.Food;
 import models.Position;
 import models.hazards.HoleInIce;
@@ -18,18 +13,24 @@ import models.penguins.Penguin;
 import models.penguins.RockhopperPenguin;
 import models.penguins.RoyalPenguin;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+import static game.TerrainGrid.GRID_SIZE;
+
 /**
  * Manages the game flow, turns, and player interactions.
  * This is the central controller that orchestrates the entire game,
  * handling turn management, player input, AI decisions, and scoring.
- *
+ * <p>
  * Game structure:
  * - 4 turns total (MAX_TURNS = 4)
  * - 3 penguins compete (sorted by ID: P1, P2, P3)
  * - One penguin is randomly assigned to the player
  * - Each turn: P1 -> P2 -> P3 -> (repeat)
  * - Winner determined by total food weight at end
- *
+ * <p>
  * Turn sequence for each penguin:
  * 1. Check if penguin is eliminated (position == null) - skip if yes
  * 2. Check if penguin is stunned - skip turn and clear stun flag
@@ -44,26 +45,36 @@ import models.penguins.RoyalPenguin;
  * @since 2025-12-08
  */
 public class GameManager {
-    /** Maximum number of turns in the game */
+    /**
+     * Maximum number of turns in the game
+     */
     private static final int MAX_TURNS = 4;
 
-    /** The game grid containing all objects */
+    /**
+     * The game grid containing all objects
+     */
     private final TerrainGrid grid;
 
-    /** Renders the grid to console */
+    /**
+     * Renders the grid to console
+     */
     private final GridRenderer renderer;
 
-    /** Handles player input */
+    /**
+     * Handles player input
+     */
     private final InputMaster inputMaster;
 
-    /** List of all penguins in the game (sorted by notation) */
+    /**
+     * List of all penguins in the game (sorted by notation)
+     */
     private final List<Penguin> penguins;
 
     /**
      * Constructs a GameManager with the required game components.
      *
-     * @param grid The terrain grid containing all game objects
-     * @param renderer The grid renderer for displaying game state
+     * @param grid        The terrain grid containing all game objects
+     * @param renderer    The grid renderer for displaying game state
      * @param inputMaster The input handler for player interaction
      * @throws IllegalArgumentException if any parameter is null
      */
@@ -241,7 +252,7 @@ public class GameManager {
      * Displays turn header and delegates to appropriate handler
      * (player or AI) based on penguin's isPlayer flag.
      *
-     * @param p The penguin taking their turn
+     * @param p          The penguin taking their turn
      * @param turnNumber The current turn number (1-4)
      */
     private void processTurn(Penguin p, int turnNumber) {
@@ -274,7 +285,7 @@ public class GameManager {
      * Handles the player's turn with input prompts.
      * Asks the player if they want to use special ability,
      * then asks for movement direction.
-     *
+     * <p>
      * Special handling for RoyalPenguin:
      * - If ability is used, asks for special move direction
      * - Executes special move before regular slide
@@ -288,7 +299,7 @@ public class GameManager {
             System.out.println("YOUR PENGUIN");
 
             // Ask if player wants to use special ability
-            if(!p.isAbilityUsed()){
+            if (!p.isAbilityUsed()) {
                 useAbility = inputMaster.getYesNoInput(
                         "Will " + p.getNotation() +
                                 " use its special action? Answer with Y or N: "
@@ -317,10 +328,9 @@ public class GameManager {
                 }
             } else {
                 // Match PDF format: "does NOT to use" (grammatically incorrect but matches example)
-                if(p.isAbilityUsed()){
+                if (p.isAbilityUsed()) {
                     System.out.println(p.getNotation() + " has already used its special action.");
-                }
-                else{
+                } else {
                     System.out.println(p.getNotation() + " does NOT to use its special action.");
                 }
 
@@ -440,15 +450,6 @@ public class GameManager {
         if (p.getPosition() == null) {
             System.out.println("*** " + p.getNotation() + " IS REMOVED FROM THE GAME!");
         }
-    }
-
-    /**
-     * Enum to classify the result of a move simulation.
-     */
-    private enum MoveOutcome {
-        FOOD,
-        SAFE_OBSTACLE,     // Hits wall, penguin, or non-fatal hazard
-        BAD_WATER_OR_HOLE  // Dies
     }
 
     /**
@@ -586,7 +587,7 @@ public class GameManager {
      * Collects all penguins from the grid and sorts them by notation (P1, P2, P3).
      * This ensures turns are processed in correct order regardless of
      * where penguins were spawned on the grid.
-     *
+     * <p>
      * Process:
      * 1. Clear existing penguin list
      * 2. Scan entire grid for penguins
@@ -635,5 +636,14 @@ public class GameManager {
      */
     public TerrainGrid getGrid() {
         return grid;
+    }
+
+    /**
+     * Enum to classify the result of a move simulation.
+     */
+    private enum MoveOutcome {
+        FOOD,
+        SAFE_OBSTACLE,     // Hits wall, penguin, or non-fatal hazard
+        BAD_WATER_OR_HOLE  // Dies
     }
 }
