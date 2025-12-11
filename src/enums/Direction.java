@@ -9,8 +9,7 @@ public enum Direction {
 
   /**
    * Returns the opposite cardinal direction.
-   *
-   * <p>Useful for logic such as the Sea Lion collision, where the penguin bounces back in the
+   * Useful for logic such as the Sea Lion collision, where the penguin bounces back in the
    * reverse direction of its travel.
    *
    * @return The opposite Direction constant.
