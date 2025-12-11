@@ -150,7 +150,13 @@ public abstract class Penguin implements ITerrainObject {
           System.out.println(otherPenguin.getNotation() + " starts sliding instead!");
           isMoving = false;
           // The other penguin starts sliding
-          otherPenguin.slide(grid, direction);
+          if (otherPenguin.getPosition() != null) {
+            System.out.println(otherPenguin.getNotation() + " starts sliding instead!");
+            otherPenguin.slide(grid, direction);
+          } else {
+            System.out.println(
+                otherPenguin.getNotation() + " is already eliminated and cannot slide!");
+          }
         }
         case SeaLion seaLion -> {
           // Special case for SeaLion - penguin bounces back
@@ -253,10 +259,21 @@ public abstract class Penguin implements ITerrainObject {
           hazardMoving = false;
         }
         case HoleInIce hole -> {
-          // Hazard plugs the hole
-          System.out.println(
-              hazard.getNotation() + " falls into " + hole.getNotation() + " and plugs it!");
-          hole.plug();
+          if (!hole.isPlugged()) {
+            // Hazard plugs the unplugged hole
+            System.out.println(
+                hazard.getNotation() + " falls into " + hole.getNotation() + " and plugs it!");
+            hole.plug();
+          } else {
+            // Hole already plugged, treat as obstacle
+            hazard.setPosition(currentPos);
+            grid.placeObject(currentPos, hazard);
+            System.out.println(
+                hazard.getNotation()
+                    + " collides with plugged "
+                    + hole.getNotation()
+                    + " and stops!");
+          }
           hazardMoving = false;
         }
         default -> {

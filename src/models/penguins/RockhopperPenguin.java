@@ -7,6 +7,7 @@ import interfaces.IHazard;
 import interfaces.ITerrainObject;
 import models.Food;
 import models.Position;
+import models.hazards.HoleInIce;
 
 public class RockhopperPenguin extends Penguin {
   private boolean useAbilityThisTurn = false;
@@ -47,18 +48,10 @@ public class RockhopperPenguin extends Penguin {
       int nextX = getPosition().getX();
 
       switch (direction) {
-        case UP:
-          nextY--;
-          break;
-        case DOWN:
-          nextY++;
-          break;
-        case LEFT:
-          nextX--;
-          break;
-        case RIGHT:
-          nextX++;
-          break;
+        case UP -> nextY--;
+        case DOWN -> nextY++;
+        case LEFT -> nextX--;
+        case RIGHT -> nextX++;
       }
 
       Position nextPos = new Position(nextX, nextY);
@@ -91,18 +84,10 @@ public class RockhopperPenguin extends Penguin {
           int landX = nextX;
 
           switch (direction) {
-            case UP:
-              landY--;
-              break;
-            case DOWN:
-              landY++;
-              break;
-            case LEFT:
-              landX--;
-              break;
-            case RIGHT:
-              landX++;
-              break;
+            case UP -> landY--;
+            case DOWN -> landY++;
+            case LEFT -> landX--;
+            case RIGHT -> landX++;
           }
 
           Position landPos = new Position(landX, landY);
@@ -145,7 +130,13 @@ public class RockhopperPenguin extends Penguin {
           System.out.println(getNotation() + " collides with " + otherPenguin.getNotation() + "!");
           System.out.println(otherPenguin.getNotation() + " starts sliding instead!");
           isMoving = false;
-          otherPenguin.slide(grid, direction);
+          if (otherPenguin.getPosition() != null) {
+            System.out.println(otherPenguin.getNotation() + " starts sliding instead!");
+            otherPenguin.slide(grid, direction);
+          } else {
+            System.out.println(
+                otherPenguin.getNotation() + " is already eliminated and cannot slide!");
+          }
         }
         case IHazard hazard -> {
           System.out.println(getNotation() + " collides with " + hazard.getNotation() + "!");
@@ -177,18 +168,10 @@ public class RockhopperPenguin extends Penguin {
       int nextX = currentPos.getX();
 
       switch (direction) {
-        case UP:
-          nextY--;
-          break;
-        case DOWN:
-          nextY++;
-          break;
-        case LEFT:
-          nextX--;
-          break;
-        case RIGHT:
-          nextX++;
-          break;
+        case UP -> nextY--;
+        case DOWN -> nextY++;
+        case LEFT -> nextX--;
+        case RIGHT -> nextX++;
       }
 
       Position nextPos = new Position(nextX, nextY);
@@ -201,20 +184,36 @@ public class RockhopperPenguin extends Penguin {
 
       ITerrainObject obstacle = grid.getObjectAt(nextPos);
 
-      if (obstacle == null) {
-        hazard.setPosition(nextPos);
-        grid.placeObject(nextPos, hazard);
-        currentPos = nextPos;
-      } else if (obstacle instanceof Food) {
-        System.out.println(hazard.getNotation() + " destroys " + obstacle.getNotation() + "!");
-        grid.removeObject(nextPos);
-        hazard.setPosition(nextPos);
-        grid.placeObject(nextPos, hazard);
-        currentPos = nextPos;
-      } else {
-        hazard.setPosition(currentPos);
-        grid.placeObject(currentPos, hazard);
-        hazardMoving = false;
+      switch (obstacle) {
+        case null -> {
+          hazard.setPosition(nextPos);
+          grid.placeObject(nextPos, hazard);
+          currentPos = nextPos;
+        }
+        case Food food -> {
+          System.out.println(hazard.getNotation() + " destroys " + obstacle.getNotation() + "!");
+          grid.removeObject(nextPos);
+          hazard.setPosition(nextPos);
+          grid.placeObject(nextPos, hazard);
+          currentPos = nextPos;
+        }
+        case HoleInIce hole -> {
+          // IMPORTANT FIX: Check if hole is already plugged
+          if (!hole.isPlugged()) {
+            System.out.println(
+                hazard.getNotation() + " falls into " + hole.getNotation() + " and plugs it!");
+            hole.plug();
+          } else {
+            hazard.setPosition(currentPos);
+            grid.placeObject(currentPos, hazard);
+          }
+            hazardMoving = false;
+        }
+        default -> {
+          hazard.setPosition(currentPos);
+          grid.placeObject(currentPos, hazard);
+          hazardMoving = false;
+        }
       }
     }
   }
